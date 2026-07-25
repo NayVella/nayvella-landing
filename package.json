@@ -1,0 +1,10 @@
+{
+  "name": "nayvella-landing",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:worker": "node tests/test-lead-worker.mjs",
+    "test:config": "node tests/test-public-config.mjs",
+    "test:all": "npm run test:worker && npm run test:config && python3 tests/test-frontend-structure.py && python3 tests/run-static-validation.py"
+  }
+}

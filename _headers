@@ -1,0 +1,21 @@
+/*
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' https://challenges.cloudflare.com 'sha256-olCWI+Odov6OUS7wjsfu8uK4fmKWlZVRDgclBW4kLN0=' 'sha256-kPHyOlwklFwOX2VHA0H1uHlHRvYDMrGLEEDccSC7RlY=' 'sha256-UhL+UHIJQtWidOe20rxvYvEnDFZgs0iTRUFBhcBiQY8=' 'sha256-JnXdCxgLkP79Fjay1xxqZsI3ega2D9trgEa4l1b0hQU=' 'sha256-SI2v9I1Tz57avFbKPk9qN6bJpm3p7VuDA8lkXtFdRO4=' 'sha256-0YuryS6uJLvPZN9jHGed4ND+Y/mlQelBI1aeGlKAutI=' 'sha256-NoNDK107g+cCzKeEcosl+YwdiRqzQ3yS66jrI/ACvic=' 'sha256-SY1nE3svuLthn8cC10yJPjbNOcsUDmLUkV7p86xY7mo=' 'sha256-IGU17ZWgf37LF45nwcB3YSYenyinZMoozShR7wZd68M=' 'sha256-5MIhVhSxhFXGHTtB+dc5dUb/rf6p3/XePuATgnIwLHE=' 'sha256-cd1AmAhIjQsz+H1QL2SLgzxyOxnR3ciSw4YsQJR7NdA=' 'sha256-EpF6311VCvjNvnttYe2H60GI7RmJT8xpc3WwJJA8E0Q=' 'sha256-DW9PFzlAnH0XdbQiswVHh7Ta7KMiG5KYeYrhzQpa538=' 'sha256-hDF0/ZSh64BQcrJndGhcqlKRVJvrBgLa03tO0TSBXQU=' 'sha256-5PfGy5xT2CWBLHflKeT49UrFlUYl44xyAkS41NEY4q0=' 'sha256-pzKBaT0CQt9CXr9Xn980J3wWX/NK7oRS98swyfBkAZk=' 'sha256-RZhyMU+ji1Lhq/XvCbAzDz08EE71d2EScdUUVAb7Y1M=' 'sha256-e78aS8rlZt/r7z5FBU35QXldO6Z+kskVrzmqOz5xbdg='; script-src-attr 'none'; style-src 'self'; style-src-attr 'none'; font-src 'self'; img-src 'self' data:; connect-src 'self' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; manifest-src 'self'; upgrade-insecure-requests
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  X-Frame-Options: DENY
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/ar/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/en/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/api/*
+  Cache-Control: no-store

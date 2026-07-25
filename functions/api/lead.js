@@ -1,93 +1,180 @@
-// Cloudflare Pages Function — handles POST /api/lead
-// Requires a D1 database bound to this project as "DB" (see setup instructions).
-
 const ALLOWED_SEGMENTS = new Set([
   'customer_lead',
   'merchant_lead',
   'clinic_lead',
   'specialist_lead',
 ]);
+const MAX_BODY_BYTES = 20_000;
+const RATE_LIMIT_MAX = 8;
 
-function json(obj, status) {
-  return new Response(JSON.stringify(obj), {
-    status,
-    headers: { 'Content-Type': 'application/json' },
+function json(body, status = 200, origin = '') {
+  const headers = {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Cache-Control': 'no-store',
+    'Vary': 'Origin',
+  };
+  if (origin) headers['Access-Control-Allow-Origin'] = origin;
+  return new Response(JSON.stringify(body), { status, headers });
+}
+
+function allowedOrigin(request, env) {
+  const origin = request.headers.get('Origin') || '';
+  if (!origin) return '';
+  const requestOrigin = new URL(request.url).origin;
+  const configured = (env.SITE_ORIGIN || '').replace(/\/$/, '');
+  return origin === requestOrigin || (configured && origin === configured) ? origin : null;
+}
+
+function validEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((value || '').trim());
+}
+
+function log(event, request, details = {}) {
+  console.log(JSON.stringify({
+    service: 'nayvella-leads',
+    event,
+    at: new Date().toISOString(),
+    requestId: request.headers.get('CF-Ray') || crypto.randomUUID(),
+    ...details,
+  }));
+}
+
+async function sha256(value) {
+  const bytes = new TextEncoder().encode(value);
+  const digest = await crypto.subtle.digest('SHA-256', bytes);
+  return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function verifyTurnstile(token, secret, ip) {
+  if (!secret) return true;
+  if (!token) return false;
+  const form = new FormData();
+  form.append('secret', secret);
+  form.append('response', token);
+  if (ip) form.append('remoteip', ip);
+  const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+    method: 'POST',
+    body: form,
+  });
+  const result = await response.json();
+  return Boolean(result.success);
+}
+
+export async function onRequestOptions({ request, env }) {
+  const origin = allowedOrigin(request, env);
+  if (origin === null) return json({ error: 'origin_not_allowed' }, 403);
+  const allowOrigin = origin || new URL(request.url).origin;
+  return new Response(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': allowOrigin,
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Accept',
+      'Access-Control-Max-Age': '86400',
+      'Vary': 'Origin',
+    },
   });
 }
 
-function isValidEmail(v) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((v || '').trim());
-}
-
 export async function onRequestPost({ request, env }) {
+  const origin = allowedOrigin(request, env);
+  if (origin === null) {
+    log('blocked_origin', request);
+    return json({ error: 'origin_not_allowed' }, 403);
+  }
+  if (!env.DB) {
+    log('configuration_error', request, { component: 'DB' });
+    return json({ error: 'server_configuration_error' }, 500, origin);
+  }
+  const contentType = (request.headers.get('Content-Type') || '').split(';')[0].trim();
+  if (contentType !== 'application/json') return json({ error: 'unsupported_media_type' }, 415, origin);
+  const declaredLength = Number(request.headers.get('Content-Length') || 0);
+  if (declaredLength > MAX_BODY_BYTES) return json({ error: 'payload_too_large' }, 413, origin);
+
   let body;
   try {
-    body = await request.json();
-  } catch (e) {
-    body = {};
-  }
-  body = body || {};
-
-  const { segment, partial, hp, consent, consentAt, utm, ...fields } = body;
-
-  // Honeypot field — if a bot filled it, pretend success and store nothing.
-  if (hp) {
-    return json({ ok: true }, 200);
+    const raw = await request.text();
+    if (new TextEncoder().encode(raw).byteLength > MAX_BODY_BYTES) return json({ error: 'payload_too_large' }, 413, origin);
+    body = JSON.parse(raw);
+  } catch {
+    return json({ error: 'invalid_json' }, 400, origin);
   }
 
-  if (!segment || !ALLOWED_SEGMENTS.has(segment)) {
-    return json({ error: 'invalid_segment' }, 400);
-  }
+  const { segment, partial, hp, consent, consentAt, utm, turnstileToken, ...fields } = body || {};
+  if (hp) return json({ ok: true }, 200, origin);
+  if (!ALLOWED_SEGMENTS.has(segment)) return json({ error: 'invalid_segment' }, 400, origin);
+  if (partial) return json({ error: 'partial_submission_not_allowed' }, 400, origin);
+  if (!consent) return json({ error: 'consent_required' }, 400, origin);
 
-  const email = (fields.email || '').trim();
-  const isPartial = !!partial;
-
-  // Full submissions require consent and a valid email before we store anything.
-  if (!isPartial) {
-    if (!consent) {
-      return json({ error: 'consent_required' }, 400);
-    }
-    if (!isValidEmail(email)) {
-      return json({ error: 'invalid_email' }, 400);
-    }
+  const email = (fields.email || '').trim().toLowerCase();
+  if (!validEmail(email)) return json({ error: 'invalid_email' }, 400, origin);
+  const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+  if (!(await verifyTurnstile(turnstileToken, env.TURNSTILE_SECRET_KEY, ip))) {
+    log('turnstile_failed', request, { segment });
+    return json({ error: 'turnstile_failed' }, 400, origin);
   }
 
   try {
-    await env.DB.prepare(`
-      CREATE TABLE IF NOT EXISTS nayvella_leads (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        segment TEXT NOT NULL,
-        is_partial INTEGER NOT NULL DEFAULT 0,
-        email TEXT,
-        consent INTEGER NOT NULL DEFAULT 0,
-        consent_at TEXT,
-        payload TEXT NOT NULL,
-        utm TEXT,
-        created_at TEXT NOT NULL DEFAULT (datetime('now'))
-      )
-    `).run();
+    const salt = env.RATE_LIMIT_SALT || env.TURNSTILE_SECRET_KEY || 'nayvella-rate-limit-v1';
+
+    // Indexed, bounded maintenance prevents anti-abuse tables from growing indefinitely.
+    await env.DB.prepare(`DELETE FROM lead_dedup WHERE expires_at <= datetime('now')`).run();
+    await env.DB.prepare(`DELETE FROM lead_rate_limits WHERE updated_at < datetime('now', '-48 hours')`).run();
+
+    const clientHash = await sha256(`${salt}:${ip}:${segment}`);
+    const windowStart = new Date(Math.floor(Date.now() / 3_600_000) * 3_600_000).toISOString();
 
     await env.DB.prepare(`
-      INSERT INTO nayvella_leads
-        (segment, is_partial, email, consent, consent_at, payload, utm)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-    `).bind(
-      segment,
-      isPartial ? 1 : 0,
-      email || null,
-      consent ? 1 : 0,
-      consent ? (consentAt || new Date().toISOString()) : null,
-      JSON.stringify(fields),
-      JSON.stringify(utm || {})
-    ).run();
+      INSERT INTO lead_rate_limits(client_hash, segment, window_start, request_count, updated_at)
+      VALUES (?, ?, ?, 1, datetime('now'))
+      ON CONFLICT(client_hash, segment, window_start)
+      DO UPDATE SET request_count = request_count + 1, updated_at = datetime('now')
+    `).bind(clientHash, segment, windowStart).run();
 
-    return json({ ok: true }, 200);
-  } catch (err) {
-    return json({ error: 'server_error' }, 500);
+    const rate = await env.DB.prepare(`
+      SELECT request_count FROM lead_rate_limits
+      WHERE client_hash = ? AND segment = ? AND window_start = ?
+    `).bind(clientHash, segment, windowStart).first();
+    if (Number(rate?.request_count || 0) > RATE_LIMIT_MAX) {
+      log('rate_limited', request, { segment });
+      return json({ error: 'rate_limited' }, 429, origin);
+    }
+
+    const dedupeHash = await sha256(`${salt}:${email}:${segment}`);
+    const claim = await env.DB.prepare(`
+      INSERT OR IGNORE INTO lead_dedup(dedupe_hash, expires_at, created_at)
+      VALUES (?, datetime('now', '+24 hours'), datetime('now'))
+    `).bind(dedupeHash).run();
+    if (Number(claim?.meta?.changes || 0) !== 1) {
+      log('duplicate_blocked', request, { segment });
+      return json({ error: 'duplicate_submission' }, 409, origin);
+    }
+
+    try {
+      await env.DB.prepare(`
+        INSERT INTO nayvella_leads(segment, email, consent, consent_at, payload, utm, created_at)
+        VALUES (?, ?, 1, ?, ?, ?, datetime('now'))
+      `).bind(
+        segment,
+        email,
+        consentAt || new Date().toISOString(),
+        JSON.stringify(fields),
+        JSON.stringify(utm || {})
+      ).run();
+    } catch (insertError) {
+      await env.DB.prepare(`DELETE FROM lead_dedup WHERE dedupe_hash = ?`).bind(dedupeHash).run();
+      throw insertError;
+    }
+
+    log('lead_created', request, { segment });
+    return json({ ok: true }, 201, origin);
+  } catch (error) {
+    log('db_error', request, { segment, code: error?.name || 'error' });
+    return json({ error: 'server_error' }, 500, origin);
   }
 }
 
-// Any method other than POST is not allowed on this endpoint.
-export async function onRequestGet() {
-  return json({ error: 'method_not_allowed' }, 405);
+export async function onRequestGet({ request, env }) {
+  const origin = allowedOrigin(request, env);
+  return json({ error: 'method_not_allowed' }, 405, origin === null ? '' : origin);
 }

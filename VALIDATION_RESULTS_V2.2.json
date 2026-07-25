@@ -1,0 +1,30 @@
+{
+  "release": "NayVella Landing v2.2 Preview Candidate",
+  "static_validation": {
+    "html_files_checked": 19,
+    "local_references_checked": 596,
+    "jsonld_blocks_parsed": 18,
+    "inline_style_attributes": 0,
+    "dead_hash_links": 0,
+    "jsonld_csp_hashes": 18,
+    "issues": []
+  },
+  "worker_tests": {
+    "passed": true,
+    "scenarios": 8,
+    "rate_limit_test_leads_created": 8
+  },
+  "public_config_tests": {
+    "passed": true,
+    "scenarios": 3
+  },
+  "frontend_structure": {
+    "passed": true,
+    "routes_checked": 10
+  },
+  "syntax_and_css": {
+    "javascript_node_check": "passed",
+    "css_parse_errors": 0,
+    "select_elements_repaired": 22
+  }
+}

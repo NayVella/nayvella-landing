@@ -1,0 +1,40 @@
+{
+  "release": "NayVella Landing v2.1 – Production Candidate",
+  "built_from_uploaded_file": "nayvella-landing-v2.0-production(1).zip",
+  "source_sha256": "097daa0d9b6dbd3b96829312fa11c57c2c97f718c7afd5b2dcbcc85a58979a4e",
+  "source_release": "NayVella Landing v2.0 Production",
+  "build_date_utc": "2026-07-25T03:40:49.671549+00:00",
+  "metrics": {
+    "ar": {
+      "before_bytes": 945698,
+      "after_bytes": 39143,
+      "reduction_percent": 95.86,
+      "before_gzip_bytes": 569470,
+      "after_gzip_bytes": 7092
+    },
+    "en": {
+      "before_bytes": 935599,
+      "after_bytes": 35977,
+      "reduction_percent": 96.15,
+      "before_gzip_bytes": 568831,
+      "after_gzip_bytes": 6606
+    },
+    "shared": {
+      "css_bytes": 13253,
+      "js_bytes": 14056,
+      "fonts_bytes": 267248,
+      "images_bytes": 100116
+    }
+  },
+  "validation": {
+    "static_html_files": 19,
+    "local_references": 596,
+    "jsonld_blocks": 18,
+    "static_issues": 0,
+    "worker_unit_scenarios": 8,
+    "css_parse": "passed",
+    "javascript_syntax": "passed"
+  },
+  "status": "production_candidate",
+  "production_ready_gate": "Cloudflare Preview deployment, D1 integration, Turnstile, Lighthouse, browser matrix, social preview and external schema validation must pass."
+}
