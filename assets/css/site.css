@@ -424,3 +424,18 @@ html[dir="rtl"] .select-input{background-position:left 16px center}
 .reveal-delay-6{animation-delay:.42s!important}
 .turnstile-slot:not(:empty){display:block;margin-top:14px}
 .form-status:not(:empty){padding-top:6px}
+
+
+/* NayVella v2.2 review fixes — typography, accessibility and status messaging */
+html[lang^="ar"] body{font-family:'Lama Sans',sans-serif}
+html[lang^="en"] body{font-family:'Jost',sans-serif}
+html[lang^="ar"] .disp-font,html[lang^="ar"] .body-text{font-family:'Lama Sans',sans-serif}
+html[lang^="en"] .disp-font,html[lang^="en"] .body-text{font-family:'Jost',sans-serif}
+html[lang^="ar"] button,html[lang^="ar"] input,html[lang^="ar"] select,html[lang^="ar"] textarea{font-family:'Lama Sans',sans-serif}
+html[lang^="en"] button,html[lang^="en"] input,html[lang^="en"] select,html[lang^="en"] textarea{font-family:'Jost',sans-serif}
+html[lang^="en"] .footer-link{font-family:'Jost',sans-serif}
+html[lang^="ar"] .footer-link{font-family:'Lama Sans',sans-serif}
+.nv-s-4b7246864d6f,.nv-s-947dfb02ab4b,.nv-s-ca1f6b514c2f{color:#5f5969!important}
+.prelaunch-inner .body-text{color:#5f5969!important}
+.footer-h4{display:block}
+.form-status[role="status"]{color:#a3403a;font-size:13px;line-height:1.5}

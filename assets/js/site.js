@@ -7,14 +7,14 @@
   const text = {
     ar: {
       network: 'تعذر إرسال الطلب حالياً. حاول مرة أخرى.',
-      duplicate: 'سبق تسجيل هذا البريد لهذه الفئة خلال الفترة الأخيرة.',
+      duplicate: 'سبق تسجيل هذا البريد لهذه الفئة خلال آخر 24 ساعة.',
       rate: 'تم تجاوز عدد المحاولات المسموح. حاول لاحقاً.',
       turnstile: 'أكمل التحقق الأمني ثم أعد المحاولة.',
       invalid: 'يرجى مراجعة البيانات المطلوبة.'
     },
     en: {
       network: 'The request could not be submitted. Please try again.',
-      duplicate: 'This email was recently registered for this category.',
+      duplicate: 'This email has already been registered for this category within the last 24 hours.',
       rate: 'Too many attempts. Please try again later.',
       turnstile: 'Complete the security check and try again.',
       invalid: 'Please review the required information.'
@@ -349,7 +349,12 @@
         const success = form.parentElement?.querySelector('.success-state');
         setVisible(success, true, 'flex');
       } else {
-        if (status) status.textContent = errorMessage(result.error);
+        if (status) status.textContent = '';
+        const submitError = form.querySelector(`.${formName}-submit-err`);
+        if (submitError) {
+          const messageNode = submitError.querySelector('span:last-child') || submitError;
+          messageNode.textContent = errorMessage(result.error);
+        }
         showErrors(`.${formName}-submit-err`, true, 'flex');
         if (result.error === 'turnstile_failed') resetTurnstile(form);
       }
