@@ -7,6 +7,12 @@ const ALLOWED_SEGMENTS = new Set([
   'clinic_lead',
   'specialist_lead',
 ]);
+const REQUIRED_FIELDS = {
+  customer_lead: ['email'],
+  merchant_lead: ['brand', 'contact', 'email', 'mobile'],
+  clinic_lead: ['name', 'contact', 'email', 'mobile'],
+  specialist_lead: ['name', 'email', 'mobile'],
+};
 
 function json(obj, status) {
   return new Response(JSON.stringify(obj), {
@@ -17,6 +23,16 @@ function json(obj, status) {
 
 function isValidEmail(v) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((v || '').trim());
+}
+
+function isValidMobile(v) {
+  return /^(05\d{8}|\+9665\d{8})$/.test((v || '').replace(/[\s-]/g, ''));
+}
+
+function hasRequiredFields(segment, fields) {
+  return REQUIRED_FIELDS[segment].every((field) => (
+    typeof fields[field] === 'string' && fields[field].trim()
+  ));
 }
 
 export async function onRequestPost({ request, env }) {
@@ -38,18 +54,22 @@ export async function onRequestPost({ request, env }) {
   if (!segment || !ALLOWED_SEGMENTS.has(segment)) {
     return json({ error: 'invalid_segment' }, 400);
   }
+  if (partial) {
+    return json({ error: 'partial_submission_not_allowed' }, 400);
+  }
+  if (consent !== true) {
+    return json({ error: 'consent_required' }, 400);
+  }
+  if (!hasRequiredFields(segment, fields)) {
+    return json({ error: 'missing_required_fields' }, 400);
+  }
 
-  const email = (fields.email || '').trim();
-  const isPartial = !!partial;
-
-  // Full submissions require consent and a valid email before we store anything.
-  if (!isPartial) {
-    if (!consent) {
-      return json({ error: 'consent_required' }, 400);
-    }
-    if (!isValidEmail(email)) {
-      return json({ error: 'invalid_email' }, 400);
-    }
+  const email = fields.email.trim();
+  if (!isValidEmail(email)) {
+    return json({ error: 'invalid_email' }, 400);
+  }
+  if (segment !== 'customer_lead' && !isValidMobile(fields.mobile)) {
+    return json({ error: 'invalid_mobile' }, 400);
   }
 
   try {
@@ -73,10 +93,10 @@ export async function onRequestPost({ request, env }) {
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `).bind(
       segment,
-      isPartial ? 1 : 0,
-      email || null,
-      consent ? 1 : 0,
-      consent ? (consentAt || new Date().toISOString()) : null,
+      0,
+      email,
+      1,
+      consentAt || new Date().toISOString(),
       JSON.stringify(fields),
       JSON.stringify(utm || {})
     ).run();
