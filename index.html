@@ -1154,9 +1154,6 @@ html[data-lang="en"] .footer-link{font-family:'Jost',sans-serif}
       step1.style.display='none'; step2.style.display='block';
       if(progressBar) progressBar.style.width='100%';
       updateStepLabel(2);
-      // Fire-and-forget: persist step-1 data so it isn't lost if the visitor abandons before step 2.
-      // Not blocking navigation on this — a slow/failed partial save shouldn't stop the user from continuing.
-      sendLead(buildPayload(formName, form, true)).catch(function(){});
       window.scrollTo({top: form.getBoundingClientRect().top + window.scrollY - 100, behavior:'smooth'});
     });
     if(backBtn) backBtn.addEventListener('click', function(){
