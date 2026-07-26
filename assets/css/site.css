@@ -521,7 +521,9 @@ html[lang^="ar"] .footer-link{font-family:'Lama Sans',sans-serif}
 .legal-section p{margin:0 0 12px}.legal-section p:last-child{margin-bottom:0}
 .legal-section ul{margin:8px 0 12px;padding-inline-start:24px}
 .legal-section a{color:#2C1E51;text-decoration-thickness:1px;text-underline-offset:3px}
-.footer-brand-image{display:block;width:min(220px,100%);height:auto;object-fit:contain}
+.footer-brand-image,#site-footer img[src$="nayvella-brand-banner.png"]{display:block;width:min(220px,100%)!important;max-width:100%;height:auto!important;object-fit:contain;pointer-events:none}
+#site-footer .footer-col{min-width:0}
+#site-footer .footer-link,#site-footer .footer-contact-link{position:relative;z-index:1;overflow-wrap:anywhere}
 .form-status[role="status"]:not(:empty){min-height:1.5em}
 form[aria-busy="true"]{cursor:progress}
 button:disabled{cursor:progress;opacity:.72}

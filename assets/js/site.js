@@ -32,6 +32,15 @@
 
   const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
+  // Cross-document navigation must not inherit a previous page's footer position.
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  const resetDocumentScroll = () => {
+    if (location.hash) return;
+    window.requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: 'auto' }));
+  };
+  resetDocumentScroll();
+  window.addEventListener('pageshow', resetDocumentScroll);
+
   function setVisible(element, visible, display = 'block') {
     if (!element) return;
     element.classList.remove('js-hide', 'js-show-block', 'js-show-flex');
