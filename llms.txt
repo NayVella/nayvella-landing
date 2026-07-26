@@ -1,0 +1,16 @@
+# NayVella
+
+NayVella is a Saudi beauty and skincare marketplace and technology platform owned and operated by Meridian Glow Company in Riyadh, Saudi Arabia.
+
+## Core facts
+- Market: Saudi Arabia at launch, with future Gulf expansion potential.
+- Participants: customers, merchants and brands, licensed clinics and doctors, and beauty professionals.
+- AI: guidance-oriented and informational; it does not provide medical diagnosis.
+- Status: in development and preparing for launch.
+
+## Primary references
+- Arabic overview: https://nayvella.com/ar/
+- English overview: https://nayvella.com/en/
+- Trust Center: https://nayvella.com/en/trust-center/
+- Privacy Policy: https://nayvella.com/en/privacy/
+- Contact: https://nayvella.com/en/contact/
