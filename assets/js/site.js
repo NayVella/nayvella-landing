@@ -10,14 +10,16 @@
       duplicate: 'سبق تسجيل هذا البريد لهذه الفئة خلال آخر 24 ساعة.',
       rate: 'تم تجاوز عدد المحاولات المسموح. حاول لاحقاً.',
       turnstile: 'أكمل التحقق الأمني ثم أعد المحاولة.',
-      invalid: 'يرجى مراجعة البيانات المطلوبة.'
+      invalid: 'يرجى مراجعة البيانات المطلوبة.',
+      sending: 'جارٍ إرسال الطلب بأمان…'
     },
     en: {
       network: 'The request could not be submitted. Please try again.',
       duplicate: 'This email has already been registered for this category within the last 24 hours.',
       rate: 'Too many attempts. Please try again later.',
       turnstile: 'Complete the security check and try again.',
-      invalid: 'Please review the required information.'
+      invalid: 'Please review the required information.',
+      sending: 'Submitting securely…'
     }
   }[lang];
 
@@ -340,10 +342,12 @@
 
       const submit = form.querySelector('.primary-btn[type="submit"], button[type="submit"]');
       if (submit) submit.disabled = true;
-      if (status) status.textContent = '';
+      form.setAttribute('aria-busy', 'true');
+      if (status) status.textContent = text.sending;
       showErrors(`.${formName}-submit-err`, false);
       const result = await submitLead(buildPayload(formName, form));
       if (submit) submit.disabled = false;
+      form.removeAttribute('aria-busy');
       if (result.ok) {
         setVisible(form, false);
         const success = form.parentElement?.querySelector('.success-state');

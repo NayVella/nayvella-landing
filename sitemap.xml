@@ -1,111 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  <url>
-    <loc>https://nayvella.com/ar/</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/"/>
-  </url>
-  <url>
-    <loc>https://nayvella.com/ar/customers/</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/customers/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/customers/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/customers/"/>
-  </url>
-  <url>
-    <loc>https://nayvella.com/ar/merchants/</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/merchants/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/merchants/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/merchants/"/>
-  </url>
-  <url>
-    <loc>https://nayvella.com/ar/clinics-doctors/</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/clinics-doctors/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/clinics-doctors/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/clinics-doctors/"/>
-  </url>
-  <url>
-    <loc>https://nayvella.com/ar/beauty-experts/</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/beauty-experts/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/beauty-experts/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/beauty-experts/"/>
-  </url>
-  <url>
-    <loc>https://nayvella.com/ar/trust-center/</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/trust-center/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/trust-center/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/trust-center/"/>
-  </url>
-  <url>
-    <loc>https://nayvella.com/ar/privacy/</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/privacy/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/privacy/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/privacy/"/>
-  </url>
-  <url>
-    <loc>https://nayvella.com/ar/terms/</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/terms/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/terms/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/terms/"/>
-  </url>
-  <url>
-    <loc>https://nayvella.com/ar/contact/</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/contact/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/contact/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/contact/"/>
-  </url>
-  <url>
-    <loc>https://nayvella.com/en/</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/"/>
-  </url>
-  <url>
-    <loc>https://nayvella.com/en/customers/</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/customers/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/customers/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/customers/"/>
-  </url>
-  <url>
-    <loc>https://nayvella.com/en/merchants/</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/merchants/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/merchants/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/merchants/"/>
-  </url>
-  <url>
-    <loc>https://nayvella.com/en/clinics-doctors/</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/clinics-doctors/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/clinics-doctors/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/clinics-doctors/"/>
-  </url>
-  <url>
-    <loc>https://nayvella.com/en/beauty-experts/</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/beauty-experts/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/beauty-experts/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/beauty-experts/"/>
-  </url>
-  <url>
-    <loc>https://nayvella.com/en/trust-center/</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/trust-center/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/trust-center/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/trust-center/"/>
-  </url>
-  <url>
-    <loc>https://nayvella.com/en/privacy/</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/privacy/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/privacy/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/privacy/"/>
-  </url>
-  <url>
-    <loc>https://nayvella.com/en/terms/</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/terms/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/terms/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/terms/"/>
-  </url>
-  <url>
-    <loc>https://nayvella.com/en/contact/</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/contact/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/contact/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/contact/"/>
-  </url>
+  <url><loc>https://nayvella.com/ar/</loc><xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/"/><xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/"/></url>
+  <url><loc>https://nayvella.com/ar/customers/</loc><xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/customers/"/><xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/customers/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/customers/"/></url>
+  <url><loc>https://nayvella.com/ar/merchants/</loc><xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/merchants/"/><xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/merchants/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/merchants/"/></url>
+  <url><loc>https://nayvella.com/ar/clinics-doctors/</loc><xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/clinics-doctors/"/><xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/clinics-doctors/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/clinics-doctors/"/></url>
+  <url><loc>https://nayvella.com/ar/beauty-experts/</loc><xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/beauty-experts/"/><xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/beauty-experts/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/beauty-experts/"/></url>
+  <url><loc>https://nayvella.com/ar/faq/</loc><xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/faq/"/><xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/faq/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/faq/"/></url>
+  <url><loc>https://nayvella.com/ar/trust-center/</loc><xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/trust-center/"/><xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/trust-center/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/trust-center/"/></url>
+  <url><loc>https://nayvella.com/ar/privacy/</loc><xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/privacy/"/><xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/privacy/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/privacy/"/></url>
+  <url><loc>https://nayvella.com/ar/terms/</loc><xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/terms/"/><xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/terms/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/terms/"/></url>
+  <url><loc>https://nayvella.com/ar/contact/</loc><xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/contact/"/><xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/contact/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/contact/"/></url>
+  <url><loc>https://nayvella.com/en/</loc><xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/"/><xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/"/></url>
+  <url><loc>https://nayvella.com/en/customers/</loc><xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/customers/"/><xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/customers/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/customers/"/></url>
+  <url><loc>https://nayvella.com/en/merchants/</loc><xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/merchants/"/><xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/merchants/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/merchants/"/></url>
+  <url><loc>https://nayvella.com/en/clinics-doctors/</loc><xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/clinics-doctors/"/><xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/clinics-doctors/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/clinics-doctors/"/></url>
+  <url><loc>https://nayvella.com/en/beauty-experts/</loc><xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/beauty-experts/"/><xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/beauty-experts/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/beauty-experts/"/></url>
+  <url><loc>https://nayvella.com/en/faq/</loc><xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/faq/"/><xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/faq/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/faq/"/></url>
+  <url><loc>https://nayvella.com/en/trust-center/</loc><xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/trust-center/"/><xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/trust-center/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/trust-center/"/></url>
+  <url><loc>https://nayvella.com/en/privacy/</loc><xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/privacy/"/><xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/privacy/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/privacy/"/></url>
+  <url><loc>https://nayvella.com/en/terms/</loc><xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/terms/"/><xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/terms/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/terms/"/></url>
+  <url><loc>https://nayvella.com/en/contact/</loc><xhtml:link rel="alternate" hreflang="ar" href="https://nayvella.com/ar/contact/"/><xhtml:link rel="alternate" hreflang="en" href="https://nayvella.com/en/contact/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://nayvella.com/ar/contact/"/></url>
 </urlset>

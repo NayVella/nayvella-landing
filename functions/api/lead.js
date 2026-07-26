@@ -61,19 +61,32 @@ async function sha256(value) {
   return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
-async function verifyTurnstile(token, secret, ip) {
-  if (!secret) return true;
-  if (!token) return false;
+async function verifyTurnstile(token, secret, ip, expectedHostnames = '') {
+  if (!secret || !token) return false;
+  const normalizedToken = String(token).trim();
+  const isPreviewTestToken = normalizedToken === 'XXXX.DUMMY.TOKEN.XXXX';
+  const hasValidProductionShape = /^[A-Za-z0-9._-]{20,2048}$/.test(normalizedToken);
+  if (!isPreviewTestToken && !hasValidProductionShape) return false;
   const form = new FormData();
   form.append('secret', secret);
-  form.append('response', token);
+  form.append('response', normalizedToken);
   if (ip) form.append('remoteip', ip);
-  const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-    method: 'POST',
-    body: form,
-  });
-  const result = await response.json();
-  return Boolean(result.success);
+  try {
+    const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      body: form,
+    });
+    if (!response.ok) return false;
+    const result = await response.json();
+    if (!result.success) return false;
+    const allowedHostnames = expectedHostnames
+      .split(',')
+      .map((hostname) => hostname.trim().toLowerCase())
+      .filter(Boolean);
+    return !allowedHostnames.length || allowedHostnames.includes(String(result.hostname || '').toLowerCase());
+  } catch {
+    return false;
+  }
 }
 
 export async function onRequestOptions({ request, env }) {
@@ -129,13 +142,22 @@ export async function onRequestPost({ request, env }) {
     return json({ error: 'invalid_mobile' }, 400, origin);
   }
   const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
-  if (!(await verifyTurnstile(turnstileToken, env.TURNSTILE_SECRET_KEY, ip))) {
+  if (!(await verifyTurnstile(
+    turnstileToken,
+    env.TURNSTILE_SECRET_KEY,
+    ip,
+    env.TURNSTILE_EXPECTED_HOSTNAMES
+  ))) {
     log('turnstile_failed', request, { segment });
     return json({ error: 'turnstile_failed' }, 400, origin);
   }
 
   try {
-    const salt = env.RATE_LIMIT_SALT || env.TURNSTILE_SECRET_KEY || 'nayvella-rate-limit-v1';
+    const salt = env.RATE_LIMIT_SALT || env.TURNSTILE_SECRET_KEY;
+    if (!salt) {
+      log('configuration_error', request, { component: 'RATE_LIMIT_SALT' });
+      return json({ error: 'server_configuration_error' }, 500, origin);
+    }
 
     // Indexed, bounded maintenance prevents anti-abuse tables from growing indefinitely.
     await env.DB.prepare(`DELETE FROM lead_dedup WHERE expires_at <= datetime('now')`).run();

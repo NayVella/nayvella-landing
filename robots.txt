@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-Disallow: /styleguide/
 Sitemap: https://nayvella.com/sitemap.xml
