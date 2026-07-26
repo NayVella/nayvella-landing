@@ -104,7 +104,7 @@ export async function onRequestPost({ request, env }) {
   if (hp) return json({ ok: true }, 200, origin);
   if (!ALLOWED_SEGMENTS.has(segment)) return json({ error: 'invalid_segment' }, 400, origin);
   if (partial) return json({ error: 'partial_submission_not_allowed' }, 400, origin);
-  if (!consent) return json({ error: 'consent_required' }, 400, origin);
+  if (consent !== true) return json({ error: 'consent_required' }, 400, origin);
 
   const email = (fields.email || '').trim().toLowerCase();
   if (!validEmail(email)) return json({ error: 'invalid_email' }, 400, origin);
