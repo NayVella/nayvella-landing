@@ -4,6 +4,12 @@ const ALLOWED_SEGMENTS = new Set([
   'clinic_lead',
   'specialist_lead',
 ]);
+const REQUIRED_FIELDS = {
+  customer_lead: ['email'],
+  merchant_lead: ['brand', 'contact', 'email', 'mobile'],
+  clinic_lead: ['name', 'contact', 'email', 'mobile'],
+  specialist_lead: ['name', 'email', 'mobile'],
+};
 const MAX_BODY_BYTES = 20_000;
 const RATE_LIMIT_MAX = 8;
 
@@ -27,6 +33,16 @@ function allowedOrigin(request, env) {
 
 function validEmail(value) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((value || '').trim());
+}
+
+function validMobile(value) {
+  return /^(05\d{8}|\+9665\d{8})$/.test((value || '').replace(/[\s-]/g, ''));
+}
+
+function hasRequiredFields(segment, fields) {
+  return REQUIRED_FIELDS[segment].every((field) => (
+    typeof fields[field] === 'string' && fields[field].trim()
+  ));
 }
 
 function log(event, request, details = {}) {
@@ -105,9 +121,13 @@ export async function onRequestPost({ request, env }) {
   if (!ALLOWED_SEGMENTS.has(segment)) return json({ error: 'invalid_segment' }, 400, origin);
   if (partial) return json({ error: 'partial_submission_not_allowed' }, 400, origin);
   if (consent !== true) return json({ error: 'consent_required' }, 400, origin);
+  if (!hasRequiredFields(segment, fields)) return json({ error: 'missing_required_fields' }, 400, origin);
 
   const email = (fields.email || '').trim().toLowerCase();
   if (!validEmail(email)) return json({ error: 'invalid_email' }, 400, origin);
+  if (segment !== 'customer_lead' && !validMobile(fields.mobile)) {
+    return json({ error: 'invalid_mobile' }, 400, origin);
+  }
   const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
   if (!(await verifyTurnstile(turnstileToken, env.TURNSTILE_SECRET_KEY, ip))) {
     log('turnstile_failed', request, { segment });
