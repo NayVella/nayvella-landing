@@ -1,0 +1,15 @@
+#site-footer img[src$="nayvella-brand-banner.png"]{
+  display:block;
+  width:min(220px,100%)!important;
+  max-width:100%;
+  height:auto!important;
+  object-fit:contain;
+  pointer-events:none;
+}
+#site-footer .footer-col{min-width:0}
+#site-footer .footer-link,
+#site-footer .footer-contact-link{
+  position:relative;
+  z-index:1;
+  overflow-wrap:anywhere;
+}
