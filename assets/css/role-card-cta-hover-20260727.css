@@ -1,0 +1,26 @@
+/* Homepage role-card CTA states only. */
+[data-component="role-card-cta"]:link,
+[data-component="role-card-cta"]:visited{
+  color:#2c1e51;
+  background:transparent;
+  border-color:#2c1e51;
+}
+
+[data-component="role-card-cta"]:hover,
+[data-component="role-card-cta"]:active{
+  color:#fff;
+  background:#2c1e51;
+  border-color:#2c1e51;
+}
+
+[data-component="role-card-cta"]:focus-visible{
+  color:#2c1e51;
+  background:transparent;
+  border-color:#2c1e51;
+  outline:3px solid #d5a9dc;
+  outline-offset:3px;
+}
+
+[data-component="role-card-cta"] .path-arrow{
+  color:inherit;
+}
