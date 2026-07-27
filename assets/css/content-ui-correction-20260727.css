@@ -1,0 +1,100 @@
+/* Focused content, interaction, and Arabic readability correction. */
+:where(a,button):focus-visible{
+  outline:3px solid #d5a9dc;
+  outline-offset:3px;
+}
+
+#site-footer :is(.footer-link,.footer-contact-link):link,
+#site-footer :is(.footer-link,.footer-contact-link):visited{
+  color:#e9e4f0;
+  text-decoration-color:rgba(233,228,240,.55);
+}
+#site-footer :is(.footer-link,.footer-contact-link):hover,
+#site-footer :is(.footer-link,.footer-contact-link):focus-visible{
+  color:#fff;
+  text-decoration-color:#fff;
+}
+#site-footer :is(.footer-link,.footer-contact-link):active{color:#f3cfee}
+
+.primary-btn:link,.primary-btn:visited{color:#fff}
+.primary-btn:hover,.primary-btn:focus-visible{color:#fff}
+.primary-btn:active{color:#f8eaf6}
+.ghost-btn:link,.ghost-btn:visited{color:#2c1e51}
+.ghost-btn:hover,.ghost-btn:focus-visible{color:#2c1e51}
+.ghost-btn-light:link,.ghost-btn-light:visited{color:#fff}
+.ghost-btn-light:hover,.ghost-btn-light:focus-visible{
+  color:#2c1e51;
+  background:#fff;
+}
+.ghost-btn-light:active{color:#2c1e51;background:#f5eaf5}
+.link-btn:link,.link-btn:visited{color:#2c1e51}
+.link-btn:hover,.link-btn:focus-visible{color:#453966}
+
+.reading-container.legal-page,
+.reading-container.contact-page{
+  width:min(100% - 48px,960px);
+  max-width:960px;
+}
+.legal-section{padding-block:clamp(30px,4.5vw,52px)}
+.legal-section h2{
+  font-size:clamp(24px,2.7vw,31px);
+  line-height:1.35;
+  margin-bottom:18px;
+}
+.legal-section p,
+.legal-section li{
+  color:#3d3843;
+  font-size:clamp(17px,1.25vw,18px);
+  font-weight:400;
+  line-height:1.82;
+}
+html[lang="ar"] .legal-section p,
+html[lang="ar"] .legal-section li{
+  font-size:clamp(18px,1.4vw,20px);
+  line-height:1.9;
+}
+.page-hero-copy{color:#453f4b}
+.page-hero-meta{color:#514a58}
+.section-eyebrow{
+  color:#4b4255;
+  font-size:clamp(15px,1.2vw,17px);
+  font-weight:650;
+  letter-spacing:.02em;
+}
+
+.faq-q.nv-s-a41153f47495,
+.faq-q.nv-s-a52687d208e5{
+  width:100%;
+  font-size:clamp(18px,1.55vw,21px);
+  line-height:1.55;
+}
+.faq-q.nv-s-a41153f47495 .faq-icon,
+.faq-q.nv-s-a52687d208e5 .faq-icon{
+  display:inline-grid;
+  flex:0 0 30px;
+  width:30px;
+  height:30px;
+  place-items:center;
+}
+.faq-q:hover,.faq-q:focus-visible{color:#2c1e51;background:#faf5fb}
+.faq-a .nv-s-1a13af8b6ec1,
+.faq-a .nv-s-4bb81247f232{
+  color:#403a46;
+  font-size:clamp(16px,1.3vw,18px);
+  line-height:1.85;
+}
+
+.nv-s-6f7dbe60ec9d:link,
+.nv-s-6f7dbe60ec9d:visited,
+.nv-s-c50a0461bc0b:link,
+.nv-s-c50a0461bc0b:visited{color:#2c1e51}
+.nv-s-6f7dbe60ec9d:hover,
+.nv-s-6f7dbe60ec9d:focus-visible,
+.nv-s-c50a0461bc0b:hover,
+.nv-s-c50a0461bc0b:focus-visible{color:#5d3567}
+
+@media (max-width:600px){
+  .reading-container.legal-page,
+  .reading-container.contact-page{width:min(100% - 32px,960px)}
+  .legal-section{padding-block:28px}
+}
