@@ -1,0 +1,23 @@
+/* Header-only contrast correction; loaded after the shared interaction rules. */
+#site-header a.primary-btn.header-action:link,
+#site-header a.primary-btn.header-action:visited{
+  color:#2c1e51;
+  background:#fff;
+}
+
+#site-header a.primary-btn.header-action:hover{
+  color:#2c1e51;
+  background:#fff;
+}
+
+#site-header a.primary-btn.header-action:focus-visible{
+  color:#2c1e51;
+  background:#fff;
+  outline:3px solid #e2b7dc;
+  outline-offset:3px;
+}
+
+#site-header a.primary-btn.header-action:active{
+  color:#2c1e51;
+  background:#fff;
+}
