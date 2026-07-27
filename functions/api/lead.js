@@ -10,6 +10,16 @@ const REQUIRED_FIELDS = {
   clinic_lead: ['name', 'contact', 'email', 'mobile'],
   specialist_lead: ['name', 'email', 'mobile'],
 };
+const FORM_ATTRIBUTION = {
+  '/ar/customers/': { submissionLanguage: 'ar', segment: 'customer_lead' },
+  '/en/customers/': { submissionLanguage: 'en', segment: 'customer_lead' },
+  '/ar/merchants/': { submissionLanguage: 'ar', segment: 'merchant_lead' },
+  '/en/merchants/': { submissionLanguage: 'en', segment: 'merchant_lead' },
+  '/ar/clinics-doctors/': { submissionLanguage: 'ar', segment: 'clinic_lead' },
+  '/en/clinics-doctors/': { submissionLanguage: 'en', segment: 'clinic_lead' },
+  '/ar/beauty-experts/': { submissionLanguage: 'ar', segment: 'specialist_lead' },
+  '/en/beauty-experts/': { submissionLanguage: 'en', segment: 'specialist_lead' },
+};
 const MAX_BODY_BYTES = 20_000;
 const RATE_LIMIT_MAX = 8;
 
@@ -43,6 +53,21 @@ function hasRequiredFields(segment, fields) {
   return REQUIRED_FIELDS[segment].every((field) => (
     typeof fields[field] === 'string' && fields[field].trim()
   ));
+}
+
+function requestAttribution(request, segment) {
+  const referrer = request.headers.get('Referer') || '';
+  if (!referrer) return null;
+  try {
+    const referrerUrl = new URL(referrer);
+    if (referrerUrl.origin !== new URL(request.url).origin) return null;
+    const sourcePath = `${referrerUrl.pathname.replace(/\/+$/, '')}/`;
+    const attribution = FORM_ATTRIBUTION[sourcePath];
+    if (!attribution || attribution.segment !== segment) return null;
+    return { ...attribution, sourcePath };
+  } catch {
+    return null;
+  }
 }
 
 function log(event, request, details = {}) {
@@ -132,6 +157,8 @@ export async function onRequestPost({ request, env }) {
   const { segment, partial, hp, consent, consentAt, utm, turnstileToken, ...fields } = body || {};
   if (hp) return json({ ok: true }, 200, origin);
   if (!ALLOWED_SEGMENTS.has(segment)) return json({ error: 'invalid_segment' }, 400, origin);
+  const attribution = requestAttribution(request, segment);
+  if (!attribution) return json({ error: 'invalid_attribution' }, 400, origin);
   if (partial) return json({ error: 'partial_submission_not_allowed' }, 400, origin);
   if (consent !== true) return json({ error: 'consent_required' }, 400, origin);
   if (!hasRequiredFields(segment, fields)) return json({ error: 'missing_required_fields' }, 400, origin);
@@ -194,14 +221,19 @@ export async function onRequestPost({ request, env }) {
 
     try {
       await env.DB.prepare(`
-        INSERT INTO nayvella_leads(segment, email, consent, consent_at, payload, utm, created_at)
-        VALUES (?, ?, 1, ?, ?, ?, datetime('now'))
+        INSERT INTO nayvella_leads(
+          segment, email, consent, consent_at, payload, utm,
+          submission_language, source_path, created_at
+        )
+        VALUES (?, ?, 1, ?, ?, ?, ?, ?, datetime('now'))
       `).bind(
         segment,
         email,
         consentAt || new Date().toISOString(),
         JSON.stringify(fields),
-        JSON.stringify(utm || {})
+        JSON.stringify(utm || {}),
+        attribution.submissionLanguage,
+        attribution.sourcePath
       ).run();
     } catch (insertError) {
       await env.DB.prepare(`DELETE FROM lead_dedup WHERE dedupe_hash = ?`).bind(dedupeHash).run();
