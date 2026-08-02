@@ -103,6 +103,7 @@ html[lang="ar"] .legal-section li{
   word-break:normal;
   unicode-bidi:isolate;
 }
+.contact-page .contact-card-content > .feature-card--contact > :is(.nv-s-3983422a5ac9,.nv-s-6f7dbe60ec9d,.nv-s-b411deac1835){text-align:center}
 .contact-page .feature-card--contact .nv-s-6f7dbe60ec9d bdi{unicode-bidi:isolate}
 .contact-page > .nv-s-c9bf4da6212f{
   color:#4a4550!important;
