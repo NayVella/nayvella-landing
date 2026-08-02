@@ -94,10 +94,12 @@ html[lang="ar"] .legal-section li{
 .nv-s-c50a0461bc0b:focus-visible{color:#5d3567}
 
 .contact-page .feature-card--contact{overflow:hidden}
-.contact-page .feature-card--contact .nv-s-6f7dbe60ec9d{
+.contact-page .feature-card--contact :is(.nv-s-6f7dbe60ec9d,.nv-s-b411deac1835){
+  font-size:16px!important;
   min-width:0;
   max-width:100%;
-  overflow-wrap:anywhere;
+  white-space:nowrap;
+  overflow-wrap:normal;
   word-break:normal;
   unicode-bidi:isolate;
 }
