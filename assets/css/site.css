@@ -188,7 +188,7 @@ html[lang^="ar"] .header-cta.header-action{height:36px;min-height:36px;padding-b
   .logo-mark{display:block}
 }
 
-@media (min-width:1120px) and (max-width:1279px){
+@media (min-width:1120px) and (max-width:1399px){
   .header-inner{gap:12px;padding-inline:18px}
   .logo-full{width:195px}
   .header-nav{gap:6px}
