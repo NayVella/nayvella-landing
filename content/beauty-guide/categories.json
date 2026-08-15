@@ -1,0 +1,62 @@
+{
+  "skincare": {
+    "ar": {
+      "name": "العناية بالبشرة",
+      "h1": "العناية بالبشرة",
+      "intro": "أدلة عملية تساعدك على فهم نوع بشرتك وبناء روتين أبسط وأكثر ملاءمة لاحتياجاتها اليومية."
+    },
+    "en": {
+      "name": "Skincare",
+      "h1": "Skincare",
+      "intro": "Practical guides to help you understand your skin and build a simpler routine around its everyday needs."
+    }
+  },
+  "makeup": {
+    "ar": {
+      "name": "المكياج",
+      "h1": "المكياج",
+      "intro": "أدلة تساعدك على فهم الدرجات والتغطية والاختيارات الجمالية بطريقة عملية دون قواعد جامدة."
+    },
+    "en": {
+      "name": "Makeup",
+      "h1": "Makeup",
+      "intro": "Practical guidance on shades, coverage and beauty choices without unnecessary rigid rules."
+    }
+  },
+  "haircare": {
+    "ar": {
+      "name": "العناية بالشعر",
+      "h1": "العناية بالشعر",
+      "intro": "معلومات عملية لاختيار روتين ومنتجات العناية بالشعر مع مراعاة فروة الرأس وحالة الشعر وطريقة التصفيف."
+    },
+    "en": {
+      "name": "Haircare",
+      "h1": "Haircare",
+      "intro": "Practical information for choosing haircare routines and products while considering the scalp, hair condition and styling habits."
+    }
+  },
+  "guides": {
+    "ar": {
+      "name": "أدلة واختيارات",
+      "h1": "أدلة واختيارات",
+      "intro": "أدلة تساعدك على قراءة معلومات المنتجات وفهم الفئات المختلفة واتخاذ اختيارات أكثر وعيًا."
+    },
+    "en": {
+      "name": "Guides & Selections",
+      "h1": "Guides & Selections",
+      "intro": "Guides to help you interpret product information, understand beauty categories and make more informed choices."
+    }
+  },
+  "seasonal": {
+    "ar": {
+      "name": "نصائح موسمية",
+      "h1": "نصائح موسمية",
+      "intro": "تعديلات عملية تساعدك على تكييف روتين الجمال والعناية مع المواسم والظروف اليومية المختلفة."
+    },
+    "en": {
+      "name": "Seasonal Tips",
+      "h1": "Seasonal Tips",
+      "intro": "Practical adjustments for adapting beauty and personal-care routines to seasonal and everyday conditions."
+    }
+  }
+}

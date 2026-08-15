@@ -1,0 +1,22 @@
+{
+  "name": "nayvella-landing",
+  "version": "2.3.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "validate:content": "node scripts/validate-guide-content.mjs",
+    "build": "node scripts/build-guide.mjs",
+    "build:production": "node scripts/build-guide.mjs production",
+    "build:preview": "node scripts/build-guide.mjs preview",
+    "test:guards": "node scripts/test-build-guards.mjs",
+    "test": "npm run build:production && npm run build:preview && npm run test:guards"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "3.1.6",
+    "markdown-it": "15.0.0",
+    "yaml": "2.9.0"
+  }
+}
