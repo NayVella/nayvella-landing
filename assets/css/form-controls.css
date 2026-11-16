@@ -1,0 +1,35 @@
+/* Shared single-line controls: keep native checkbox, range and picker behavior. */
+:root{--nv-control-height:48px;--nv-control-radius:10px}
+input:not([type]):not([hidden]):not([aria-hidden="true"]),
+input:is([type="text"],[type="search"],[type="email"],[type="tel"],[type="url"],[type="password"],[type="number"],[type="date"],[type="time"],[type="datetime-local"],[type="month"],[type="week"]):not([hidden]):not([aria-hidden="true"]),
+select:not([multiple]):not([size]):not([hidden]),select[size="1"]:not([hidden]){
+  box-sizing:border-box!important;
+  width:100%;min-width:0;max-width:100%;
+  height:var(--nv-control-height)!important;min-height:var(--nv-control-height)!important;
+  margin:0; padding:10px 14px!important;
+  border:1px solid #dbd0e3;border-radius:var(--nv-control-radius)!important;
+  background-color:#fcfafd;color:#35213f;
+  font-family:inherit;font-size:14px!important;font-weight:400;line-height:1.5!important;
+  vertical-align:middle;
+}
+select:not([multiple]):not([size]):not([hidden]),select[size="1"]:not([hidden]){
+  appearance:none;-webkit-appearance:none;
+  padding-inline-end:42px!important;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23634b78' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")!important;
+  background-repeat:no-repeat!important;background-size:16px 16px!important;background-position:right 14px center!important;
+  text-overflow:ellipsis;
+}
+[dir="rtl"] select:not([multiple]):not([size]),[dir="rtl"] select[size="1"]{background-position:left 14px center!important}
+textarea:not([hidden]){
+  box-sizing:border-box;width:100%;max-width:100%;min-width:0;
+  min-height:120px;padding:12px 14px!important;border-radius:var(--nv-control-radius)!important;
+  font-family:inherit;font-size:14px!important;line-height:1.65!important;resize:vertical;
+}
+.nvx-field{gap:8px}
+.nvx-discovery-filters{grid-template-columns:repeat(2,minmax(0,1fr))}
+.pp-search{gap:8px}
+.pp-duration select{width:140px;flex-shrink:0}
+@media(max-width:767px){
+  input:not([type]):not([hidden]):not([aria-hidden="true"]),input:is([type="text"],[type="search"],[type="email"],[type="tel"],[type="url"],[type="password"],[type="number"],[type="date"],[type="time"],[type="datetime-local"],[type="month"],[type="week"]):not([hidden]):not([aria-hidden="true"]),select,textarea:not([hidden]){font-size:16px!important}
+  .nvx-discovery-filters{grid-template-columns:minmax(0,1fr)}
+}

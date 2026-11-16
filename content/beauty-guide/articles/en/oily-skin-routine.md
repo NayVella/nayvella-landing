@@ -67,3 +67,7 @@ Persistent inflammation, pain, significant irritation, rash or other concerning 
 ## Summary
 
 A useful oily-skin routine can remain simple: gentle cleansing, appropriate hydration and daytime sun protection, with additional steps introduced only when needed.
+
+## Further Reading
+
+- [American Academy of Dermatology: How to control oily skin](https://www.aad.org/public/everyday-care/skin-care-basics/dry/oily-skin).

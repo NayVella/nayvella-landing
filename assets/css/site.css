@@ -160,8 +160,8 @@ main{flex:1}
 .header-nav{display:flex;align-items:center;gap:clamp(10px,1.2vw,24px);margin-inline:auto;flex-wrap:nowrap}
 .site-header--home .header-nav{margin-inline-start:64px;margin-inline-end:auto}
 .nav-link{background:transparent;border:none;font-size:14.5px;font-weight:400;line-height:20px;color:rgba(255,255,255,.78);letter-spacing:.1px;white-space:nowrap;padding:8px 16px;border-radius:999px;transition:color 220ms ease,background-color 220ms ease,box-shadow 220ms ease,transform 220ms cubic-bezier(.2,.8,.2,1)}
-.nav-link.active{font-weight:600;color:#fff;background:rgba(255,255,255,.11);box-shadow:inset 0 1px 0 rgba(255,255,255,.16),inset 0 0 0 1px rgba(255,255,255,.06);transform:scale(1.02)}
-.nav-link:not(.active):hover,.nav-link:not(.active):focus-visible{color:#fff;background:rgba(255,255,255,.06)}
+.nav-link.active{font-weight:700;color:#fff;background:transparent;box-shadow:none;transform:none}
+.nav-link:not(.active):hover,.nav-link:not(.active):focus-visible{color:#fff;background:transparent}
 .header-actions{display:flex;align-items:center;gap:12px;margin-inline-start:auto}
 #lang-toggle{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.22);color:#fff;font-size:13px;font-weight:500;line-height:18px;letter-spacing:.5px;padding:8px 12px;border-radius:999px;font-family:'Jost',sans-serif}
 #lang-toggle:hover,#lang-toggle:focus-visible{background:rgba(255,255,255,.12);color:#fff}
@@ -170,14 +170,15 @@ html[data-lang="en"] #lang-toggle{font-family:'Lama Sans',sans-serif}
 .header-action{display:inline-flex;align-items:center;justify-content:center;min-height:46px;font-size:14.5px;line-height:18px}
 .header-action--mobile{width:100%;margin-top:12px}
 html[lang^="ar"] .header-nav .nav-link{height:36px;display:inline-flex;align-items:center;font-size:15px;font-weight:500;line-height:20px}
+html[lang^="ar"] .header-nav .nav-link.active{font-weight:700}
 html[lang^="ar"] .header-cta.header-action{height:36px;min-height:36px;padding-block:8px;padding-inline:18px;font-size:13px;font-weight:500;line-height:18px}
 #burger-btn{display:none;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.28);border-radius:10px;width:42px;height:42px;flex-direction:column;justify-content:center;align-items:center;gap:4px}
 #burger-btn:hover,#burger-btn:focus-visible{background:rgba(255,255,255,.12)}
 #burger-btn span{width:18px;height:1.6px;background:#fff;display:block}
 #mobile-menu{border-top:1px solid rgba(255,255,255,.14);background:#2C1E51;padding:12px clamp(18px,4vw,40px) 20px;flex-direction:column;gap:4px}
 .mobile-nav-link{background:transparent;border:none;text-align:start;font-size:16px;font-weight:400;color:rgba(255,255,255,.78);padding:12px 16px;border-radius:12px}
-.mobile-nav-link:hover,.mobile-nav-link:focus-visible{color:#fff;background:rgba(255,255,255,.06)}
-.mobile-nav-link.active{font-weight:600;color:#fff;background:rgba(255,255,255,.12)}
+.mobile-nav-link:hover,.mobile-nav-link:focus-visible{color:#fff;background:transparent}
+.mobile-nav-link.active{font-weight:700;color:#fff;background:transparent;box-shadow:none}
 .logo-link:focus-visible,.nav-link:focus-visible,#lang-toggle:focus-visible,.header-action:focus-visible,#burger-btn:focus-visible,.mobile-nav-link:focus-visible{outline-color:#fff}
 
 @media (max-width:1119px){
@@ -537,3 +538,7 @@ button:disabled{cursor:progress;opacity:.72}
 .error-card hr{border:0;border-top:1px solid rgba(255,255,255,.2);margin:32px 0}
 .ghost-btn-light{display:inline-flex;color:#fff;border:1px solid rgba(255,255,255,.55);border-radius:999px;padding:12px 24px;text-decoration:none}
 @media(max-width:560px){.legal-section p,.legal-section li{font-size:15.5px}.error-card{border-radius:20px;padding:28px 20px}}
+
+/* Navigation overlays must not push the document away from its reading position. */
+#mobile-menu{position:absolute;inset-inline:0;top:100%;max-height:calc(100dvh - 80px);overflow-y:auto;overscroll-behavior:contain}
+main :target, #main-content:target, #site-footer:target{scroll-margin-top:100px}

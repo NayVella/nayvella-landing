@@ -1,0 +1,84 @@
+
+/* NayVella web identity. One pearl surface behind the light content. */
+#main-content {
+  --nv-pearl: url("/assets/images/identity/nayvella-pearl-en.webp");
+  --nv-light-x: 76%;
+  --nv-light-y: 52%;
+  background-color: #f8f5fb;
+  border-image: var(--nv-pearl) 0 fill / 0;
+}
+
+html[dir="rtl"] #main-content {
+  --nv-pearl: url("/assets/images/identity/nayvella-pearl-ar.webp");
+  --nv-light-x: 24%;
+}
+
+#main-content :is(
+  .page-hero--role:not(.nv-tech-hero, .editorial-image-hero),
+  .page-hero--compact:not(.editorial-image-hero),
+  .guide-hero:not(.editorial-image-hero),
+  .guide-section--tinted,
+  .guide-section--seasonal,
+  .guide-cta,
+  .role-features,
+  .nv-role-section,
+  .nvx-experience
+) {
+  background: transparent;
+}
+
+#main-content .guide-hero {
+  border-color: transparent;
+}
+
+#main-content :is(.page-hero--role:not(.nv-tech-hero, .editorial-image-hero), .page-hero--compact:not(.editorial-image-hero))::before {
+  opacity: 0;
+}
+
+.page-hero--role:not(.nv-tech-hero) .glow-wrap,
+.nv-home-v2 .hp-ambient-ring {
+  visibility: hidden;
+}
+
+/* Keep the dark copy area while diffusing light behind the portrait. */
+.nv-home-v2 .hp-hero {
+  background-color: #21132f;
+  background-image:
+    radial-gradient(ellipse 26% 60% at var(--nv-light-x) var(--nv-light-y), #8c629c86, transparent 100%),
+    radial-gradient(ellipse 58% 116% at var(--nv-light-x) 30%, #67458299, transparent 78%),
+    linear-gradient(180deg, #2c1e51 0%, #21132f 100%);
+}
+
+/* Lazy decorative thumbnails use the existing catalogue image slots. */
+.pp-product-art {
+  background: #f2e8f6;
+}
+
+.pp-product-art img {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  transform: translate(-50%, -50%);
+  inline-size: auto;
+  block-size: 115%;
+  max-inline-size: none;
+}
+
+html[dir="rtl"] .pp-product-art img {
+  transform: translate(50%, -50%);
+}
+
+@media (max-width: 760px) {
+  .nv-home-v2 .hp-hero {
+    --nv-light-x: 50%;
+    --nv-light-y: 78%;
+    background-image:
+      radial-gradient(ellipse 73% 35% at var(--nv-light-x) var(--nv-light-y), #8c629c73, transparent 100%),
+      radial-gradient(ellipse 110% 48% at 50% 95%, #674582a6, transparent 95%),
+      linear-gradient(180deg, #2c1e51 0%, #21132f 72%);
+  }
+
+  .pp-product-art img {
+    block-size: 100%;
+  }
+}

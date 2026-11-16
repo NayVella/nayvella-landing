@@ -1,28 +1,16 @@
-function json(body, status = 200, origin = '') {
-  const headers = {
-    'Content-Type': 'application/json; charset=utf-8',
-    'Cache-Control': 'no-store',
-    'Vary': 'Origin',
-    'X-Content-Type-Options': 'nosniff',
-  };
-  if (origin) headers['Access-Control-Allow-Origin'] = origin;
-  return new Response(JSON.stringify(body), { status, headers });
-}
+import { allowedOrigin, apiHeaders, turnstileConfig } from '../../lib/lead-security.mjs';
 
-function allowedOrigin(request, env) {
-  const origin = request.headers.get('Origin') || '';
-  if (!origin) return '';
-  const requestOrigin = new URL(request.url).origin;
-  const configured = (env.SITE_ORIGIN || '').replace(/\/$/, '');
-  return origin === requestOrigin || (configured && origin === configured) ? origin : null;
+function json(body, status = 200, origin = '') {
+  return new Response(JSON.stringify(body), { status, headers: apiHeaders(origin) });
 }
 
 export async function onRequestGet({ request, env }) {
   const origin = allowedOrigin(request, env);
   if (origin === null) return json({ error: 'origin_not_allowed' }, 403);
-  const fullyConfigured = Boolean(env.TURNSTILE_SITE_KEY && env.TURNSTILE_SECRET_KEY);
+  const config = turnstileConfig(request, env);
+  const fullyConfigured = config.enabled;
   return json({
-    turnstileSiteKey: fullyConfigured ? env.TURNSTILE_SITE_KEY : '',
+    turnstileSiteKey: fullyConfigured ? config.siteKey : '',
     turnstileEnabled: fullyConfigured,
   }, 200, origin);
 }

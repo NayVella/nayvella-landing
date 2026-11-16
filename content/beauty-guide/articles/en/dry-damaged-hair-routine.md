@@ -48,3 +48,7 @@ Some products can temporarily improve their appearance or feel, but a physically
 ## Summary
 
 Focus on suitable cleansing, conditioning, gentle handling and reducing heat and mechanical stress.
+
+## Further Reading
+
+- [American Academy of Dermatology: Hair care habits that can damage hair](https://www.aad.org/public/everyday-care/hair-scalp-care/hair/habits-that-damage-hair).

@@ -1,3 +1,5 @@
+import { allowedOrigin, apiHeaders, cleanFields, cleanUtm, turnstileConfig } from '../../lib/lead-security.mjs';
+
 const ALLOWED_SEGMENTS = new Set([
   'customer_lead',
   'merchant_lead',
@@ -24,21 +26,7 @@ const MAX_BODY_BYTES = 20_000;
 const RATE_LIMIT_MAX = 8;
 
 function json(body, status = 200, origin = '') {
-  const headers = {
-    'Content-Type': 'application/json; charset=utf-8',
-    'Cache-Control': 'no-store',
-    'Vary': 'Origin',
-  };
-  if (origin) headers['Access-Control-Allow-Origin'] = origin;
-  return new Response(JSON.stringify(body), { status, headers });
-}
-
-function allowedOrigin(request, env) {
-  const origin = request.headers.get('Origin') || '';
-  if (!origin) return '';
-  const requestOrigin = new URL(request.url).origin;
-  const configured = (env.SITE_ORIGIN || '').replace(/\/$/, '');
-  return origin === requestOrigin || (configured && origin === configured) ? origin : null;
+  return new Response(JSON.stringify(body), { status, headers: apiHeaders(origin) });
 }
 
 function validEmail(value) {
@@ -86,20 +74,24 @@ async function sha256(value) {
   return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
-async function verifyTurnstile(token, secret, ip, expectedHostnames = '') {
+async function verifyTurnstile(token, secret, ip, expectedHostnames, allowTestKeys) {
   if (!secret || !token) return false;
   const normalizedToken = String(token).trim();
   const isPreviewTestToken = normalizedToken === 'XXXX.DUMMY.TOKEN.XXXX';
   const hasValidProductionShape = /^[A-Za-z0-9._-]{20,2048}$/.test(normalizedToken);
+  if (isPreviewTestToken && !allowTestKeys) return false;
   if (!isPreviewTestToken && !hasValidProductionShape) return false;
   const form = new FormData();
   form.append('secret', secret);
   form.append('response', normalizedToken);
   if (ip) form.append('remoteip', ip);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000);
   try {
     const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
       method: 'POST',
       body: form,
+      signal: controller.signal,
     });
     if (!response.ok) return false;
     const result = await response.json();
@@ -108,9 +100,11 @@ async function verifyTurnstile(token, secret, ip, expectedHostnames = '') {
       .split(',')
       .map((hostname) => hostname.trim().toLowerCase())
       .filter(Boolean);
-    return !allowedHostnames.length || allowedHostnames.includes(String(result.hostname || '').toLowerCase());
+    return (allowTestKeys && isPreviewTestToken) || allowedHostnames.includes(String(result.hostname || '').toLowerCase());
   } catch {
     return false;
+  } finally {
+    clearTimeout(timeout);
   }
 }
 
@@ -132,7 +126,7 @@ export async function onRequestOptions({ request, env }) {
 
 export async function onRequestPost({ request, env }) {
   const origin = allowedOrigin(request, env);
-  if (origin === null) {
+  if (origin === null || request.headers.get('Sec-Fetch-Site') === 'cross-site') {
     log('blocked_origin', request);
     return json({ error: 'origin_not_allowed' }, 403);
   }
@@ -147,20 +141,39 @@ export async function onRequestPost({ request, env }) {
 
   let body;
   try {
-    const raw = await request.text();
-    if (new TextEncoder().encode(raw).byteLength > MAX_BODY_BYTES) return json({ error: 'payload_too_large' }, 413, origin);
-    body = JSON.parse(raw);
+    const reader = request.body?.getReader();
+    if (!reader) return json({ error: 'invalid_json' }, 400, origin);
+    const chunks = [];
+    let size = 0;
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > MAX_BODY_BYTES) {
+        await reader.cancel();
+        return json({ error: 'payload_too_large' }, 413, origin);
+      }
+      chunks.push(value);
+    }
+    const bytes = new Uint8Array(size);
+    let offset = 0;
+    for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.byteLength; }
+    body = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes));
   } catch {
     return json({ error: 'invalid_json' }, 400, origin);
   }
 
-  const { segment, partial, hp, consent, consentAt, utm, turnstileToken, ...fields } = body || {};
+  if (!body || typeof body !== 'object' || Array.isArray(body)) return json({ error: 'invalid_payload' }, 400, origin);
+  const { segment, partial, hp, consent, consentAt, utm, turnstileToken, ...submittedFields } = body;
   if (hp) return json({ ok: true }, 200, origin);
   if (!ALLOWED_SEGMENTS.has(segment)) return json({ error: 'invalid_segment' }, 400, origin);
   const attribution = requestAttribution(request, segment);
   if (!attribution) return json({ error: 'invalid_attribution' }, 400, origin);
   if (partial) return json({ error: 'partial_submission_not_allowed' }, 400, origin);
   if (consent !== true) return json({ error: 'consent_required' }, 400, origin);
+  const fields = cleanFields(segment, submittedFields);
+  const attributionTags = cleanUtm(utm);
+  if (!fields || !attributionTags) return json({ error: 'invalid_fields' }, 400, origin);
   if (!hasRequiredFields(segment, fields)) return json({ error: 'missing_required_fields' }, 400, origin);
 
   const email = (fields.email || '').trim().toLowerCase();
@@ -168,19 +181,22 @@ export async function onRequestPost({ request, env }) {
   if (segment !== 'customer_lead' && !validMobile(fields.mobile)) {
     return json({ error: 'invalid_mobile' }, 400, origin);
   }
+  const config = turnstileConfig(request, env);
+  if (!config.enabled) return json({ error: 'server_configuration_error' }, 503, origin);
   const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
   if (!(await verifyTurnstile(
     turnstileToken,
-    env.TURNSTILE_SECRET_KEY,
+    config.secret,
     ip,
-    env.TURNSTILE_EXPECTED_HOSTNAMES
+    config.expectedHostnames,
+    config.allowTestKeys
   ))) {
     log('turnstile_failed', request, { segment });
     return json({ error: 'turnstile_failed' }, 400, origin);
   }
 
   try {
-    const salt = env.RATE_LIMIT_SALT || env.TURNSTILE_SECRET_KEY;
+    const salt = env.RATE_LIMIT_SALT || config.secret;
     if (!salt) {
       log('configuration_error', request, { component: 'RATE_LIMIT_SALT' });
       return json({ error: 'server_configuration_error' }, 500, origin);
@@ -229,9 +245,9 @@ export async function onRequestPost({ request, env }) {
       `).bind(
         segment,
         email,
-        consentAt || new Date().toISOString(),
+        new Date().toISOString(),
         JSON.stringify(fields),
-        JSON.stringify(utm || {}),
+        JSON.stringify(attributionTags),
         attribution.submissionLanguage,
         attribution.sourcePath
       ).run();
@@ -250,5 +266,7 @@ export async function onRequestPost({ request, env }) {
 
 export async function onRequestGet({ request, env }) {
   const origin = allowedOrigin(request, env);
-  return json({ error: 'method_not_allowed' }, 405, origin === null ? '' : origin);
+  const response = json({ error: 'method_not_allowed' }, 405, origin === null ? '' : origin);
+  response.headers.set('Allow', 'POST, OPTIONS');
+  return response;
 }

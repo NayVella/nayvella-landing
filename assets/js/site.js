@@ -6,6 +6,7 @@
   const lang = document.documentElement.lang.startsWith('ar') ? 'ar' : 'en';
   const text = {
     ar: {
+      unavailable: 'تسجيل الاهتمام غير متاح مؤقتًا لأن التحقق الأمني لم يكتمل. أعد تحميل الصفحة أو تواصل مع الفريق.',
       network: 'تعذر إرسال الطلب حالياً. حاول مرة أخرى.',
       duplicate: 'سبق تسجيل هذا البريد لهذه الفئة خلال آخر 24 ساعة.',
       rate: 'تم تجاوز عدد المحاولات المسموح. حاول لاحقاً.',
@@ -14,6 +15,7 @@
       sending: 'جارٍ إرسال الطلب بأمان…'
     },
     en: {
+      unavailable: 'Registration is temporarily unavailable because the security check could not load. Reload the page or contact the team.',
       network: 'The request could not be submitted. Please try again.',
       duplicate: 'This email has already been registered for this category within the last 24 hours.',
       rate: 'Too many attempts. Please try again later.',
@@ -31,15 +33,6 @@
   });
 
   const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-
-  // Cross-document navigation must not inherit a previous page's footer position.
-  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-  const resetDocumentScroll = () => {
-    if (location.hash) return;
-    window.requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: 'auto' }));
-  };
-  resetDocumentScroll();
-  window.addEventListener('pageshow', resetDocumentScroll);
 
   function setVisible(element, visible, display = 'block') {
     if (!element) return;
@@ -59,6 +52,16 @@
     burger.setAttribute('aria-controls', 'mobile-menu');
     burger.setAttribute('aria-expanded', 'false');
     burger.addEventListener('click', () => setMenu(!mobileMenu.classList.contains('js-show-flex')));
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && burger.getAttribute('aria-expanded') === 'true') {
+        setMenu(false);
+        burger.focus({ preventScroll: true });
+      }
+    });
+    document.addEventListener('click', event => {
+      if (!event.target.closest('#site-header')) setMenu(false);
+    });
+    window.matchMedia('(min-width: 1280px)').addEventListener('change', () => setMenu(false));
     $$('#mobile-menu a').forEach((link) => link.addEventListener('click', () => setMenu(false)));
   }
 
@@ -111,6 +114,7 @@
     input.addEventListener('input', () => {
       const show = input.value.length > 0 && !validator(input.value);
       showErrors(`.${errorClass}`, show);
+      input.setAttribute('aria-invalid', String(show));
     });
   }
   wireLiveValidation('customer-email', 'customer-email-err', isValidEmail);
@@ -123,12 +127,14 @@
 
   // Yes/no groups.
   $$('.yn-btn').forEach((button) => {
+    button.setAttribute('aria-pressed', String(button.classList.contains('active')));
     button.addEventListener('click', () => {
       const group = button.dataset.ynGroup;
       const value = button.dataset.ynVal;
       if (!group) return;
-      $$(`.yn-btn[data-yn-group="${CSS.escape(group)}"]`).forEach((item) => item.classList.remove('active'));
+      $$(`.yn-btn[data-yn-group="${CSS.escape(group)}"]`).forEach((item) => { item.classList.remove('active'); item.setAttribute('aria-pressed', 'false'); });
       button.classList.add('active');
+      button.setAttribute('aria-pressed', 'true');
       const hidden = document.getElementById(group);
       if (hidden) hidden.value = value || '';
     });
@@ -137,6 +143,7 @@
   // Expert location multi-select.
   const selectedLocations = new Set();
   $$('.loc-btn').forEach((button) => {
+    button.setAttribute('aria-pressed', 'false');
     button.addEventListener('click', () => {
       const value = button.dataset.loc || button.textContent.trim();
       if (selectedLocations.has(value)) {
@@ -146,6 +153,7 @@
         selectedLocations.add(value);
         button.classList.add('active');
       }
+      button.setAttribute('aria-pressed', String(selectedLocations.has(value)));
       const hidden = $('#expert-locations');
       if (hidden) hidden.value = Array.from(selectedLocations).join(', ');
     });
@@ -163,6 +171,7 @@
     const label = document.querySelector(`.step-label[data-form="${formName}"]`);
     if (!step1 || !step2) return;
 
+    let firstStepScroll = null;
     const updateLabel = (step) => {
       if (label) label.textContent = lang === 'ar' ? `الخطوة ${step} من 2` : `Step ${step} of 2`;
     };
@@ -182,18 +191,22 @@
         if (formStatus) formStatus.textContent = text.invalid;
         return;
       }
+      firstStepScroll = window.scrollY;
       setVisible(step1, false);
       setVisible(step2, true);
       progress?.classList.add('is-complete');
       updateLabel(2);
-      const top = form.getBoundingClientRect().top + window.scrollY - 100;
-      window.scrollTo({ top, behavior: reduceMotion ? 'auto' : 'smooth' });
+      step2.querySelector('input:not([type=hidden]), select, textarea, button')?.focus({ preventScroll: true });
+      const top = form.getBoundingClientRect().top + window.scrollY - ($('#site-header')?.offsetHeight || 80) - 16;
+      window.scrollTo({ top, behavior: 'instant' });
     });
     back?.addEventListener('click', () => {
       setVisible(step2, false);
       setVisible(step1, true);
       progress?.classList.remove('is-complete');
       updateLabel(1);
+      next?.focus({ preventScroll: true });
+      if (firstStepScroll !== null) window.scrollTo({ top: firstStepScroll, behavior: 'instant' });
     });
     updateLabel(1);
   }
@@ -205,13 +218,21 @@
   const turnstileWidgetIds = new WeakMap();
   let turnstileConfigured = false;
 
+  async function fetchWithTimeout(url, options = {}) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+    try { return await fetch(url, { ...options, signal: controller.signal }); }
+    finally { clearTimeout(timeout); }
+  }
+
   function loadTurnstileScript() {
     if (window.turnstile) return Promise.resolve();
     return new Promise((resolve, reject) => {
       const existing = document.querySelector('script[data-turnstile-loader]');
       if (existing) {
-        existing.addEventListener('load', resolve, { once: true });
-        existing.addEventListener('error', reject, { once: true });
+        const timeout = setTimeout(() => reject(new Error('security_check_unavailable')), 15000);
+        existing.addEventListener('load', () => { clearTimeout(timeout); resolve(); }, { once: true });
+        existing.addEventListener('error', () => { clearTimeout(timeout); reject(new Error('security_check_unavailable')); }, { once: true });
         return;
       }
       const script = document.createElement('script');
@@ -219,8 +240,9 @@
       script.async = true;
       script.defer = true;
       script.dataset.turnstileLoader = 'true';
-      script.addEventListener('load', resolve, { once: true });
-      script.addEventListener('error', reject, { once: true });
+      const timeout = setTimeout(() => reject(new Error('security_check_unavailable')), 15000);
+      script.addEventListener('load', () => { clearTimeout(timeout); resolve(); }, { once: true });
+      script.addEventListener('error', () => { clearTimeout(timeout); reject(new Error('security_check_unavailable')); }, { once: true });
       document.head.appendChild(script);
     });
   }
@@ -228,15 +250,14 @@
   async function initializeTurnstile() {
     const slots = $$('.turnstile-slot');
     if (!slots.length) return;
-    const response = await fetch('/api/public-config', {
+    const response = await fetchWithTimeout('/api/public-config', {
       headers: { Accept: 'application/json' },
       credentials: 'same-origin'
     });
     if (!response.ok) return;
     const config = await response.json();
     const siteKey = String(config.turnstileSiteKey || '').trim();
-    if (!siteKey) return;
-    turnstileConfigured = true;
+    if (!config.turnstileEnabled || !siteKey) return;
     await loadTurnstileScript();
     slots.forEach((slot) => {
       const form = slot.closest('form');
@@ -254,6 +275,7 @@
       });
       turnstileWidgetIds.set(form, widgetId);
     });
+    turnstileConfigured = true;
   }
 
   const turnstileInitialization = initializeTurnstile().catch(() => undefined);
@@ -276,8 +298,10 @@
       turnstileToken: turnstileTokens.get(form) || ''
     };
     $$('input, select, textarea', form).forEach((field) => {
-      if (!field.id) return;
-      const key = field.id.startsWith(prefix) ? field.id.slice(prefix.length) : field.id;
+      // Turnstile may insert its own hidden response field. Only our declared
+      // form controls belong in the lead payload; the token is sent separately.
+      if (!field.id || !field.id.startsWith(prefix)) return;
+      const key = field.id.slice(prefix.length);
       if (key === 'hp') payload.hp = field.value;
       else if (key === 'consent') payload.consent = Boolean(field.checked);
       else payload[key] = field.type === 'checkbox' ? Boolean(field.checked) : field.value;
@@ -288,7 +312,7 @@
 
   async function submitLead(payload) {
     try {
-      const response = await fetch('/api/lead', {
+      const response = await fetchWithTimeout('/api/lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         credentials: 'same-origin',
@@ -305,6 +329,8 @@
     if (error === 'duplicate_submission') return text.duplicate;
     if (error === 'rate_limited') return text.rate;
     if (error === 'turnstile_failed') return text.turnstile;
+    if (error === 'server_configuration_error') return text.unavailable;
+    if (/^(invalid_|missing_|consent_required)/.test(error || '')) return text.invalid;
     return text.network;
   }
 
@@ -314,6 +340,7 @@
     if (widgetId !== undefined && window.turnstile) window.turnstile.reset(widgetId);
   }
 
+  const submittingForms = new WeakSet();
   function wireForm(formName, options) {
     const form = document.getElementById(`form-${formName}`);
     if (!form) return;
@@ -325,6 +352,7 @@
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
+      if (submittingForms.has(form)) return;
       const honeypot = document.getElementById(`${formName}-hp`);
       if (honeypot?.value) return;
       const email = options.email ? document.getElementById(options.email) : null;
@@ -338,38 +366,57 @@
       showErrors(`.${formName}-consent-err`, !consent?.checked, 'flex');
       showErrors(`.${formName}-email-err`, Boolean(email && !isValidEmail(email.value)));
       showErrors(`.${formName}-mobile-err`, Boolean(mobile && !isValidMobile(mobile.value)));
+      const controls = [...(options.required || []).map(id => document.getElementById(id)), email, mobile, consent].filter(Boolean);
+      controls.forEach(input => {
+        const invalid = input === consent ? !input.checked : input === email ? !isValidEmail(input.value) : input === mobile ? !isValidMobile(input.value) : !input.value.trim();
+        input.setAttribute('aria-invalid', String(invalid));
+      });
       if (!valid) {
+        controls.find(input => input.getAttribute('aria-invalid') === 'true')?.focus();
         if (status) status.textContent = text.invalid;
         return;
       }
 
-      await turnstileInitialization;
-      if (turnstileConfigured && !turnstileTokens.get(form)) {
-        if (status) status.textContent = text.turnstile;
-        return;
-      }
-
       const submit = form.querySelector('.primary-btn[type="submit"], button[type="submit"]');
+      submittingForms.add(form);
       if (submit) submit.disabled = true;
       form.setAttribute('aria-busy', 'true');
       if (status) status.textContent = text.sending;
-      showErrors(`.${formName}-submit-err`, false);
-      const result = await submitLead(buildPayload(formName, form));
-      if (submit) submit.disabled = false;
-      form.removeAttribute('aria-busy');
-      if (result.ok) {
-        setVisible(form, false);
-        const success = form.parentElement?.querySelector('.success-state');
-        setVisible(success, true, 'flex');
-      } else {
-        if (status) status.textContent = '';
-        const submitError = form.querySelector(`.${formName}-submit-err`);
-        if (submitError) {
-          const messageNode = submitError.querySelector('span:last-child') || submitError;
-          messageNode.textContent = errorMessage(result.error);
+      try {
+        await turnstileInitialization;
+        if (!turnstileConfigured) {
+          if (status) status.textContent = text.unavailable;
+          return;
         }
-        showErrors(`.${formName}-submit-err`, true, 'flex');
-        if (result.error === 'turnstile_failed') resetTurnstile(form);
+        if (!turnstileTokens.get(form)) {
+          if (status) status.textContent = text.turnstile;
+          return;
+        }
+        showErrors(`.${formName}-submit-err`, false);
+        const result = await submitLead(buildPayload(formName, form));
+        if (result.ok) {
+          setVisible(form, false);
+          const success = form.parentElement?.querySelector('.success-state');
+          setVisible(success, true, 'flex');
+          if (success) {
+            success.tabIndex = -1;
+            success.focus({ preventScroll: true });
+            window.scrollTo({ top: window.scrollY + success.getBoundingClientRect().top - ($('#site-header')?.offsetHeight || 80) - 16, behavior: 'instant' });
+          }
+        } else {
+          if (status) status.textContent = '';
+          const submitError = form.querySelector(`.${formName}-submit-err`);
+          if (submitError) {
+            const messageNode = submitError.querySelector('span:last-child') || submitError;
+            messageNode.textContent = errorMessage(result.error);
+          }
+          showErrors(`.${formName}-submit-err`, true, 'flex');
+          if (result.error === 'turnstile_failed') resetTurnstile(form);
+        }
+      } finally {
+        submittingForms.delete(form);
+        if (submit) submit.disabled = false;
+        form.removeAttribute('aria-busy');
       }
     });
   }

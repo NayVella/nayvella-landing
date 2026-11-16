@@ -12,11 +12,18 @@
     "build:production": "node scripts/build-guide.mjs production",
     "build:preview": "node scripts/build-guide.mjs preview",
     "test:guards": "node scripts/test-build-guards.mjs",
-    "test": "npm run build:production && npm run build:preview && npm run test:guards"
+    "test": "npm run build:production && npm run build:preview && npm run test:guards && npm run test:navigation && npm run test:security",
+    "test:navigation": "node --test scripts/test-navigation.mjs",
+    "test:security": "node --test scripts/test-lead-security.mjs scripts/test-client-form-security.mjs"
   },
   "devDependencies": {
     "@11ty/eleventy": "3.1.6",
-    "markdown-it": "15.0.0",
+    "markdown-it": "15.0.3",
     "yaml": "2.9.0"
+  },
+  "overrides": {
+    "@11ty/recursive-copy": {
+      "minimatch": "11.0.3"
+    }
   }
 }

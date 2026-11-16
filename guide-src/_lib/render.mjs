@@ -1,3 +1,4 @@
+import { enrichDiscoveryGraph, identityGraph } from "../../scripts/discovery-schema.mjs";
 import {
   CANONICAL_ORIGIN,
   CATEGORY_ORDER,
@@ -126,6 +127,68 @@ const copy = {
   }
 };
 
+const guideHeadingAccents = {
+  ar: {
+    home: "للجمال والعناية",
+    categories: "حسب الفئة",
+    featured: "مختارة وأساسية",
+    latest: "أحدث",
+    seasonalFeature: "موسمي مختار",
+    guides: "اختيارات",
+    seasonal: "موسمية",
+    "choose-skincare-online": "العناية بالبشرة",
+    "how-to-read-skincare-ingredients": "مكونات منتجات",
+    "serum-moisturizer-toner-guide": "ما الفرق بينها",
+    "choose-the-right-shampoo": "الشامبو المناسب",
+    "dry-damaged-hair-routine": "الجاف والمتضرر",
+    "protect-hair-from-heat": "حرارة الاستشوار",
+    "choose-foundation-shade": "درجة الفاونديشن",
+    "choose-lipstick-shade": "لون أحمر الشفاه",
+    "foundation-coverage-guide": "تغطية الفاونديشن",
+    "ramadan-skincare-routine": "في رمضان",
+    "saudi-summer-skincare": "صيف السعودية",
+    "winter-skincare-dryness": "الشتاء والجفاف",
+    "choose-the-right-sunscreen": "واقي الشمس المناسب",
+    "oily-skin-routine": "البشرة الدهنية",
+    "skin-type-guide": "نوع بشرتك"
+  },
+  en: {
+    home: "Beauty & Care",
+    categories: "by category",
+    featured: "pillar guides",
+    latest: "Latest",
+    seasonalFeature: "Seasonal",
+    guides: "Selections",
+    seasonal: "Seasonal",
+    "choose-skincare-online": "Skincare Products",
+    "how-to-read-skincare-ingredients": "Ingredient Lists",
+    "serum-moisturizer-toner-guide": "What Is the Difference",
+    "choose-the-right-shampoo": "Right Shampoo",
+    "dry-damaged-hair-routine": "Dry and Damaged Hair",
+    "protect-hair-from-heat": "Heat Styling",
+    "choose-foundation-shade": "Foundation Shade",
+    "choose-lipstick-shade": "Lipstick Shade",
+    "foundation-coverage-guide": "Foundation Coverage",
+    "ramadan-skincare-routine": "Ramadan",
+    "saudi-summer-skincare": "Saudi Summer",
+    "winter-skincare-dryness": "Winter Skincare and Dryness",
+    "choose-the-right-sunscreen": "Right Sunscreen",
+    "oily-skin-routine": "Oily Skin",
+    "skin-type-guide": "Skin Type"
+  }
+};
+
+function styledGuideHeading(title, locale, key) {
+  const accent = guideHeadingAccents[locale][key];
+  const start = accent ? title.indexOf(accent) : -1;
+  if (start === -1) return escapeHtml(title);
+
+  const before = escapeHtml(title.slice(0, start));
+  const after = escapeHtml(title.slice(start + accent.length))
+    .replace(/\.$/, '<span class="editorial-heading-period">.</span>');
+  return `${before}<em class="editorial-heading-accent">${escapeHtml(accent)}</em>${after}`;
+}
+
 function navItems(locale) {
   const t = copy[locale];
   return [
@@ -164,6 +227,17 @@ function header(locale, languageRoute) {
 </header>`;
 }
 
+const arSocialFooter = `<nav class="footer-social" aria-label="تابعوا نيفلا">
+<a class="social-icon" href="https://www.instagram.com/nayvella.co/" target="_blank" rel="noopener noreferrer" aria-label="إنستغرام" title="إنستغرام"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect width="20" height="20" x="2" y="2" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37zM17.5 6.5h.01"/></svg></a>
+<a class="social-icon" href="https://www.snapchat.com/@nayvella.co" target="_blank" rel="noopener noreferrer" aria-label="سناب شات" title="سناب شات"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.06c-.012.18-.022.345-.03.51.075.045.203.09.401.09.3-.016.659-.12 1.033-.301.165-.088.344-.104.464-.104.182 0 .359.029.509.09.45.149.734.479.734.838.015.449-.39.839-1.213 1.168-.089.029-.209.075-.344.119-.45.135-1.139.36-1.333.81-.09.224-.061.524.12.868l.015.015c.06.136 1.526 3.475 4.791 4.014.255.044.435.27.42.509 0 .075-.015.149-.045.225-.24.569-1.273.988-3.146 1.271-.059.091-.12.375-.164.57-.029.179-.074.36-.134.553-.076.271-.27.405-.555.405h-.03c-.135 0-.313-.031-.538-.074-.36-.075-.765-.135-1.273-.135-.3 0-.599.015-.897.045l-.015.015c-.044.03-.3.194-.554.194-.09 0-.194-.015-.33-.06-.42-.119-1.082-1.02-1.662-1.158-.06-.015-.119-.03-.179-.03-.494 0-.988.09-1.482.09-1.392 0-2.73-.375-3.462-.78-.255-.15-.33-.375-.254-.645.045-.164.135-.449.135-.449.015-.015.015-.029.015-.059-.015-.014-.149-.015-.239-.015-.899 0-1.751-.255-1.841-.27-.42-.09-.614-.39-.585-.645.03-.254.359-.6 1.556-.705.088-.015.209-.03.359-.06.6-.119 1.347-.285 1.482-.794.045-.15.03-.344-.149-.614-.06-.09-.135-.18-.209-.285-.24-.314-.494-.66-.494-1.098 0-.194.045-.405.255-.689.089-.119.179-.239.284-.359.165-.194.36-.404.54-.613.284-.33.569-.674.824-1.048.809-1.2 1.258-2.789 1.258-4.484 0-2.025-.494-3.794-1.467-5.254-.614-.929-1.452-1.619-2.508-2.058-.748-.314-1.587-.494-2.508-.524-.18-.015-.344-.015-.524-.015z"/></svg></a>
+<a class="social-icon" href="https://www.linkedin.com/showcase/nayvella/" target="_blank" rel="noopener noreferrer" aria-label="لينكدإن" title="لينكدإن"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+</nav>`;
+const enSocialFooter = `<nav class="footer-social" aria-label="Follow NayVella">
+<a class="social-icon" href="https://www.instagram.com/nayvella.co/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect width="20" height="20" x="2" y="2" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37zM17.5 6.5h.01"/></svg></a>
+<a class="social-icon" href="https://www.snapchat.com/@nayvella.co" target="_blank" rel="noopener noreferrer" aria-label="Snapchat" title="Snapchat"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.06c-.012.18-.022.345-.03.51.075.045.203.09.401.09.3-.016.659-.12 1.033-.301.165-.088.344-.104.464-.104.182 0 .359.029.509.09.45.149.734.479.734.838.015.449-.39.839-1.213 1.168-.089.029-.209.075-.344.119-.45.135-1.139.36-1.333.81-.09.224-.061.524.12.868l.015.015c.06.136 1.526 3.475 4.791 4.014.255.044.435.27.42.509 0 .075-.015.149-.045.225-.24.569-1.273.988-3.146 1.271-.059.091-.12.375-.164.57-.029.179-.074.36-.134.553-.076.271-.27.405-.555.405h-.03c-.135 0-.313-.031-.538-.074-.36-.075-.765-.135-1.273-.135-.3 0-.599.015-.897.045l-.015.015c-.044.03-.3.194-.554.194-.09 0-.194-.015-.33-.06-.42-.119-1.082-1.02-1.662-1.158-.06-.015-.119-.03-.179-.03-.494 0-.988.09-1.482.09-1.392 0-2.73-.375-3.462-.78-.255-.15-.33-.375-.254-.645.045-.164.135-.449.135-.449.015-.015.015-.029.015-.059-.015-.014-.149-.015-.239-.015-.899 0-1.751-.255-1.841-.27-.42-.09-.614-.39-.585-.645.03-.254.359-.6 1.556-.705.088-.015.209-.03.359-.06.6-.119 1.347-.285 1.482-.794.045-.15.03-.344-.149-.614-.06-.09-.135-.18-.209-.285-.24-.314-.494-.66-.494-1.098 0-.194.045-.405.255-.689.089-.119.179-.239.284-.359.165-.194.36-.404.54-.613.284-.33.569-.674.824-1.048.809-1.2 1.258-2.789 1.258-4.484 0-2.025-.494-3.794-1.467-5.254-.614-.929-1.452-1.619-2.508-2.058-.748-.314-1.587-.494-2.508-.524-.18-.015-.344-.015-.524-.015z"/></svg></a>
+<a class="social-icon" href="https://www.linkedin.com/showcase/nayvella/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+</nav>`;
+
 function footer(locale) {
   const t = copy[locale];
   const pages = navItems(locale).map(([label, href]) => `<a class="footer-link nav-btn" href="${href}">${escapeHtml(label)}</a>`).join("");
@@ -178,6 +252,7 @@ function footer(locale) {
 <div class="footer-col nv-s-583653abaf86">
 <span class="nv-s-ec18faa33cae"><img alt="NayVella — Curated Beauty. Smarter Choices." class="nv-s-c0476160adac" decoding="async" height="692" loading="lazy" src="/assets/images/nayvella-brand-banner.png" width="2579"></span>
 <p class="body-text footer-brand-copy"><span>${escapeHtml(t.brand)}</span><br><span>${escapeHtml(t.location)}</span></p>
+${locale === "ar" ? arSocialFooter : enSocialFooter}
 </div>
 <div class="footer-col"><p class="disp-font footer-h4"><span>${escapeHtml(t.pages)}</span></p>${pages}<a class="footer-link nav-btn" href="/${locale}/faq/">${escapeHtml(t.faq)}</a></div>
 <div class="footer-col">
@@ -199,27 +274,7 @@ function footer(locale) {
 </footer>`;
 }
 
-function organizationGraph() {
-  return [
-    {
-      "@type": "Organization",
-      "@id": `${CANONICAL_ORIGIN}/#organization`,
-      name: "NayVella",
-      alternateName: "نيفلا",
-      url: `${CANONICAL_ORIGIN}/`,
-      parentOrganization: { "@type": "Organization", name: "Meridian Glow Company" },
-      address: { "@type": "PostalAddress", addressLocality: "Riyadh", addressCountry: "SA" }
-    },
-    {
-      "@type": "WebSite",
-      "@id": `${CANONICAL_ORIGIN}/#website`,
-      url: `${CANONICAL_ORIGIN}/`,
-      name: "NayVella",
-      publisher: { "@id": `${CANONICAL_ORIGIN}/#organization` },
-      inLanguage: ["ar-SA", "en"]
-    }
-  ];
-}
+const organizationGraph = identityGraph;
 
 function breadcrumbGraph(locale, items) {
   return {
@@ -266,12 +321,16 @@ ${hasImage ? `<meta content="${escapeHtml(image)}" name="twitter:image">` : ""}
 <meta content="${robots}" name="robots">
 <link href="/site.webmanifest" rel="manifest">
 ${alternateLinks(alternates, xDefaultRoute)}
-<script type="application/ld+json">${safeJsonLd(jsonLd)}</script>
-<link href="/assets/css/site.css?v=beauty-guide-phase-1-20260815" rel="stylesheet">
-<link href="/assets/css/footer-hotfix-20260726.css" rel="stylesheet">
+<script type="application/ld+json">${safeJsonLd(enrichDiscoveryGraph(jsonLd, { canonical, alternates: alternates.map(a => ({ url: canonicalFor(a.route) })) }))}</script>
+<link href="/assets/css/site.css?v=20261106-navigation-1" rel="stylesheet">
+<link href="/assets/css/footer-hotfix-20260726.css?v=20261108-social-icons" rel="stylesheet">
 <link href="/assets/css/content-ui-correction-20260727.css" rel="stylesheet">
-<link href="/assets/css/header-cta-contrast-20260727.css" rel="stylesheet">
+<link href="/assets/css/header-cta-contrast-20260727.css?v=20261116-transparent-1" rel="stylesheet">
 <link href="/assets/css/beauty-guide.css?v=phase-1" rel="stylesheet">
+<link href="/assets/css/platform-ui-pearl-header-v3.css?v=contrast-1" rel="stylesheet">
+<link href="/assets/css/form-controls.css?v=20261106-fields-1" rel="stylesheet"/>
+<link rel="describedby" href="/llms.txt" type="text/plain" title="NayVella | نيفلا">
+<link href="/assets/css/editorial.css?v=20261116-header-overlay-1" rel="stylesheet"/>
 </head>`;
 }
 
@@ -284,7 +343,7 @@ ${headHtml}
 ${header(locale, languageRoute)}
 <main id="main-content" tabindex="-1">${mainHtml}</main>
 ${footer(locale)}
-<script defer src="/assets/js/navigation-hotfix-20260726.js"></script><script defer src="/assets/js/site.js?v=footer-hotfix-20260726"></script>
+<script defer src="/assets/js/navigation-hotfix-20260726.js?v=20261106-navigation-1"></script><script defer src="/assets/js/site.js?v=20261116-header-glass-1"></script>
 </body>
 </html>`;
 }
@@ -363,13 +422,17 @@ export function renderGuideHome(locale, guideData) {
     robots: "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
     jsonLd: graph
   });
-  const mainHtml = `<section class="guide-hero page-hero page-hero--compact"><div class="page-hero-inner"><p class="guide-kicker">NayVella</p><h1 class="disp-font page-hero-title">${escapeHtml(meta.h1)}</h1><p class="body-text page-hero-copy">${escapeHtml(meta.intro)}</p></div></section>
-<section class="content-container guide-section"><div class="guide-section-heading"><div><h2 class="disp-font">${escapeHtml(t.categories)}</h2><p class="body-text">${escapeHtml(t.categoriesIntro)}</p></div></div><div class="guide-category-grid">${CATEGORY_ORDER.map((category) => categoryCard(category, guideData.categories[category][locale], locale)).join("")}</div></section>
-<section class="guide-section guide-section--tinted"><div class="content-container"><div class="guide-section-heading"><h2 class="disp-font">${escapeHtml(t.featured)}</h2></div><div class="guide-card-grid">${featured.map((article) => articleCard(article, locale, { featured: true, categoryName: guideData.categories[article.category][locale].name })).join("")}</div></div></section>
-<section class="content-container guide-section"><div class="guide-section-heading"><h2 class="disp-font">${escapeHtml(t.latest)}</h2></div><div class="guide-card-grid">${latest.map((article) => articleCard(article, locale, { categoryName: guideData.categories[article.category][locale].name })).join("")}</div></section>
-${seasonal ? `<section class="guide-section guide-section--seasonal"><div class="content-container"><div class="guide-section-heading"><h2 class="disp-font">${escapeHtml(t.seasonal)}</h2></div><div class="guide-feature-single">${articleCard(seasonal, locale, { featured: true, categoryName: guideData.categories[seasonal.category][locale].name })}</div></div></section>` : ""}
+  const fonts = locale === "ar" ? ["font-4e7545c621bd.woff2", "font-56acb238c5e1.woff2"] : ["font-235d8f8964bf.woff2"];
+  const guideHeroPreloads = fonts.map(file => `<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/${file}" crossorigin>`).join("\n") +
+    '<link rel="preload" as="image" href="/assets/images/demo-products/kit-v3-320.webp" fetchpriority="high" media="(max-width: 760px)">' +
+    '<link rel="preload" as="image" href="/assets/images/demo-products/kit-v3-640.webp" fetchpriority="high" media="(min-width: 761px)">';
+  const mainHtml = `<section class="guide-hero guide-hero--editorial editorial-image-hero page-hero page-hero--compact"><div class="page-hero-inner"><p class="guide-kicker">NayVella</p><h1 class="disp-font page-hero-title">${styledGuideHeading(meta.h1, locale, "home")}</h1><p class="body-text page-hero-copy">${escapeHtml(meta.intro)}</p><p class="editorial-hero-credit">${locale === "ar" ? "عبوات توضيحية بهوية نيفلا" : "Illustrative NayVella packaging"}</p></div></section>
+<section class="content-container guide-section"><div class="guide-section-heading"><div><h2 class="disp-font">${styledGuideHeading(t.categories, locale, "categories")}</h2><p class="body-text">${escapeHtml(t.categoriesIntro)}</p></div></div><div class="guide-category-grid">${CATEGORY_ORDER.map((category) => categoryCard(category, guideData.categories[category][locale], locale)).join("")}</div></section>
+<section class="guide-section guide-section--tinted"><div class="content-container"><div class="guide-section-heading"><h2 class="disp-font">${styledGuideHeading(t.featured, locale, "featured")}</h2></div><div class="guide-card-grid">${featured.map((article) => articleCard(article, locale, { featured: true, categoryName: guideData.categories[article.category][locale].name })).join("")}</div></div></section>
+<section class="content-container guide-section"><div class="guide-section-heading"><h2 class="disp-font">${styledGuideHeading(t.latest, locale, "latest")}</h2></div><div class="guide-card-grid">${latest.map((article) => articleCard(article, locale, { categoryName: guideData.categories[article.category][locale].name })).join("")}</div></section>
+${seasonal ? `<section class="guide-section guide-section--seasonal"><div class="content-container"><div class="guide-section-heading"><h2 class="disp-font">${styledGuideHeading(t.seasonal, locale, "seasonalFeature")}</h2></div><div class="guide-feature-single">${articleCard(seasonal, locale, { featured: true, categoryName: guideData.categories[seasonal.category][locale].name })}</div></div></section>` : ""}
 ${infoCta(locale)}`;
-  return pageShell({ locale, languageRoute: guideRoute(otherLocale), headHtml, mainHtml });
+  return pageShell({ locale, languageRoute: guideRoute(otherLocale), headHtml: headHtml.replace('<meta charset="utf-8">', '<meta charset="utf-8">' + guideHeroPreloads), mainHtml });
 }
 
 export function renderCategoryPage(page, guideData) {
@@ -411,7 +474,7 @@ export function renderCategoryPage(page, guideData) {
   });
   const otherCategoryLinks = CATEGORY_ORDER.filter((id) => id !== category).map((id) => `<a href="${categoryRoute(locale, id)}">${escapeHtml(guideData.categories[id][locale].name)}</a>`).join("");
   const mainHtml = `<div class="content-container guide-breadcrumb-wrap">${breadcrumbs(locale, breadcrumbItems)}</div>
-<section class="guide-hero guide-hero--category page-hero page-hero--compact"><div class="page-hero-inner"><p class="guide-kicker">${escapeHtml(t.guide)}</p><h1 class="disp-font page-hero-title">${escapeHtml(meta.h1)}</h1><p class="body-text page-hero-copy">${escapeHtml(meta.intro)}</p></div></section>
+<section class="guide-hero guide-hero--category page-hero page-hero--compact"><div class="page-hero-inner"><p class="guide-kicker">${escapeHtml(t.guide)}</p><h1 class="disp-font page-hero-title">${styledGuideHeading(meta.h1, locale, category)}</h1><p class="body-text page-hero-copy">${escapeHtml(meta.intro)}</p></div></section>
 ${pillar ? `<section class="guide-section guide-section--tinted"><div class="content-container"><div class="guide-section-heading"><h2 class="disp-font">${escapeHtml(t.pillar)}</h2></div><div class="guide-feature-single">${articleCard(pillar, locale, { featured: true })}</div></div></section>` : ""}
 <section class="content-container guide-section"><div class="guide-section-heading"><h2 class="disp-font">${escapeHtml(pillar ? t.moreArticles : t.allArticles)}</h2></div><div class="guide-card-grid">${others.map((article) => articleCard(article, locale)).join("")}</div></section>
 <section class="content-container guide-other-categories"><h2 class="disp-font">${escapeHtml(t.otherCategories)}</h2><div>${otherCategoryLinks}</div></section>
@@ -495,7 +558,7 @@ export function renderArticlePage(article, guideData) {
   const tocHtml = toc.length ? `<nav aria-label="${escapeHtml(t.contents)}" class="guide-toc"><h2 class="disp-font">${escapeHtml(t.contents)}</h2><ol>${toc.map((item) => `<li class="guide-toc-level-${item.level}"><a href="#${item.id}">${escapeHtml(item.text)}</a></li>`).join("")}</ol></nav>` : "";
   const mainHtml = `<div class="content-container guide-breadcrumb-wrap">${breadcrumbs(locale, breadcrumbItems)}</div>
 <article class="guide-article">
-<header class="reading-container guide-article-header"><a class="guide-category-label" href="${categoryRoute(locale, article.category)}">${escapeHtml(categoryMeta.name)}</a><h1 class="disp-font">${escapeHtml(article.title)}</h1><div class="guide-article-intro body-text">${introHtml}</div><div class="guide-article-meta"><span>${escapeHtml(t.by)} ${escapeHtml(article.author)}</span>${dateParts}${article.status === "Draft" ? `<span class="guide-status">${escapeHtml(t.draft)}</span>` : ""}</div></header>
+<header class="reading-container guide-article-header"><a class="guide-category-label" href="${categoryRoute(locale, article.category)}">${escapeHtml(categoryMeta.name)}</a><h1 class="disp-font">${styledGuideHeading(article.title, locale, article.slug)}</h1><div class="guide-article-intro body-text">${introHtml}</div><div class="guide-article-meta"><span>${escapeHtml(t.by)} ${escapeHtml(article.author)}</span>${dateParts}${article.status === "Draft" ? `<span class="guide-status">${escapeHtml(t.draft)}</span>` : ""}</div></header>
 ${article.hero_image ? `<figure class="reading-container guide-hero-image"><img alt="${escapeHtml(article.hero_image_alt)}" decoding="async" fetchpriority="high" src="${escapeHtml(article.hero_image)}"${heroDimensions}>${article.hero_image_caption ? `<figcaption>${escapeHtml(article.hero_image_caption)}</figcaption>` : ""}</figure>` : ""}
 <div class="reading-container guide-article-layout">${tocHtml}<div class="guide-article-body body-text">${bodyHtml}</div>${article.summary ? `<aside class="guide-summary"><h2 class="disp-font">${escapeHtml(t.summary)}</h2><p>${escapeHtml(article.summary)}</p></aside>` : ""}</div>
 </article>

@@ -54,3 +54,7 @@ Shade, clothing, sunglasses and other appropriate measures can also help reduce 
 ## Summary
 
 Consider protection level, broad-spectrum coverage, formulation and correct use together.
+
+## Further Reading
+
+- [American Academy of Dermatology: How to apply sunscreen](https://www.aad.org/public/everyday-care/sun-protection/shade-clothing-sunscreen/how-to-apply-sunscreen).

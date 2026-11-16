@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import {
@@ -12,17 +13,6 @@ import {
 } from "./guide-core.mjs";
 
 const CSP_HEADER = "Content-Security-Policy";
-const LEGACY_STALE_HASHES = [
-  "'sha256-olCWI+Odov6OUS7wjsfu8uK4fmKWlZVRDgclBW4kLN0='",
-  "'sha256-JnXdCxgLkP79Fjay1xxqZsI3ega2D9trgEa4l1b0hQU='",
-  "'sha256-0YuryS6uJLvPZN9jHGed4ND+Y/mlQelBI1aeGlKAutI='"
-];
-export const CORRECTED_LEGACY_HASHES = {
-  "/ar/beauty-experts/": "'sha256-jJJNT7OUMylefTp/JxC0G0tuC15tRRzWTV2AU0AKDGA='",
-  "/ar/customers/": "'sha256-bQvyL5WBCGUkDwdCtcCNE2yapoCxagl4M8bvfrfJAkY='",
-  "/ar/merchants/": "'sha256-tk0Mtm7swZYuQufSg5VSd4h2gGr/Zl55DCQh5ZqLmmY='"
-};
-
 async function walk(directory) {
   const files = [];
   for (const entry of await readdir(directory, { withFileTypes: true })) {
@@ -31,10 +21,6 @@ async function walk(directory) {
     else files.push(target);
   }
   return files;
-}
-
-function hashSources(policy) {
-  return [...policy.matchAll(/'sha256-[^']+'/g)].map((match) => match[0]);
 }
 
 function stripHashes(policy) {
@@ -68,7 +54,7 @@ async function jsonLdHashesForFiles(files) {
 async function generateHeaders() {
   const sourcePath = path.join(ROOT, "_headers");
   const outputPath = path.join(OUTPUT_ROOT, "_headers");
-  const source = (await readFile(sourcePath, "utf8")).trimEnd();
+  let source = (await readFile(sourcePath, "utf8")).trimEnd();
   const globalPolicy = globalPolicyFromHeaders(source);
   const basePolicy = stripHashes(globalPolicy);
   const allHtml = (await walk(OUTPUT_ROOT)).filter((file) => file.endsWith("index.html"));
@@ -77,23 +63,10 @@ async function generateHeaders() {
     return /^\/(?:ar|en)\/(?:$|[^/]+\/$)/.test(route) && !route.includes("/beauty-guide/");
   });
   const legacyHashes = await jsonLdHashesForFiles(legacyHtml);
-  const configuredHashes = hashSources(globalPolicy);
-
   if (legacyHtml.length !== 20) throw new Error(`Expected 20 legacy canonical pages, found ${legacyHtml.length}`);
-  if (new Set(configuredHashes).size !== configuredHashes.length) throw new Error("Duplicate hashes exist in the catch-all CSP");
-  if (configuredHashes.length !== legacyHashes.length || configuredHashes.some((hash) => !legacyHashes.includes(hash))) {
-    throw new Error("Catch-all CSP hashes do not exactly cover the 20 legacy JSON-LD blocks");
-  }
-  for (const stale of LEGACY_STALE_HASHES) {
-    if (globalPolicy.includes(stale)) throw new Error(`Stale legacy CSP hash is still present: ${stale}`);
-  }
-  for (const [route, expectedHash] of Object.entries(CORRECTED_LEGACY_HASHES)) {
-    const file = path.join(OUTPUT_ROOT, route.slice(1), "index.html");
-    const blocks = extractJsonLdBlocks(await readFile(file, "utf8"));
-    if (sha256Source(blocks[0]) !== expectedHash || !globalPolicy.includes(expectedHash)) {
-      throw new Error(`Corrected legacy CSP hash is not exact for ${route}`);
-    }
-  }
+  if (new Set(legacyHashes).size !== legacyHashes.length) throw new Error("Duplicate JSON-LD hashes exist across legacy pages");
+  const generatedGlobalPolicy = policyWithHashes(basePolicy, legacyHashes);
+  source = source.replace(globalPolicy, generatedGlobalPolicy);
 
   const scopes = [];
   for (const locale of LOCALES) {
@@ -139,7 +112,46 @@ async function generateRedirects(guideData) {
   return historical.length;
 }
 
+// Bundle the render-blocking sheets in their existing order on photo-led entry pages.
+export async function bundleEditorialStyles() {
+  const routes = ["", "customers", "merchants", "clinics-doctors", "beauty-experts", "beauty-guide"];
+  const stylesheets = /<link href="(\/assets\/css\/[\w.-]+\.css)(?:\?[^"]*)?" rel="stylesheet"\s*\/?>/g;
+  const bundles = new Map();
+  for (const locale of LOCALES) {
+    for (const route of routes) {
+      const page = path.join(OUTPUT_ROOT, locale, route, "index.html");
+      const html = await readFile(page, "utf8");
+      const sheets = [...html.matchAll(stylesheets)].map(match => match[1]);
+      if (sheets.length < 2 || sheets.at(-1) !== "/assets/css/editorial.css") {
+        throw new Error(`Could not bundle editorial styles for ${locale}/${route}`);
+      }
+      const bundleKey = sheets.join("\n");
+      if (!bundles.has(bundleKey)) {
+        const chunks = await Promise.all(sheets.map(sheet => readFile(path.join(OUTPUT_ROOT, sheet), "utf8")));
+        const css = chunks.join("\n");
+        const hash = createHash("sha256").update(css).digest("hex").slice(0, 16);
+        const href = `/assets/css/editorial-${hash}.css`;
+        await writeFile(path.join(OUTPUT_ROOT, href), css);
+        bundles.set(bundleKey, href);
+      }
+      // Insert at the first stylesheet position while preserving the original cascade order.
+      let first = true;
+      const bundled = html.replace(stylesheets, () => {
+        if (!first) return "";
+        first = false;
+        return `<link href="${bundles.get(bundleKey)}" rel="stylesheet"/>`;
+      });
+      await writeFile(page, bundled);
+    }
+  }
+}
+
 export async function finalizeBuild(explicitMode) {
+  const [platformStyles, pearlStyles] = await Promise.all([
+    readFile(path.join(ROOT, "assets/css/platform-ui.css"), "utf8"),
+    readFile(path.join(ROOT, "assets/css/identity-pearl.css"), "utf8")
+  ]);
+  await writeFile(path.join(OUTPUT_ROOT, "assets/css/platform-ui-pearl-header-v3.css"), platformStyles + pearlStyles);
   const guideData = await loadGuideData(explicitMode);
   const [headers, redirectCount] = await Promise.all([
     generateHeaders(),

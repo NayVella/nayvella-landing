@@ -1,16 +1,49 @@
-# NayVella
+# NayVella | نيفلا
 
-NayVella is a Saudi beauty and skincare marketplace and technology platform owned and operated by Meridian Glow Company in Riyadh, Saudi Arabia.
+> نيفلا منصة سعودية للجمال والعناية قيد التطوير، مملوكة ومشغلة من شركة ميريديان جلو في الرياض. NayVella is a Saudi beauty and care platform in development, owned and operated by Meridian Glow Company in Riyadh.
 
-## Core facts
-- Market: Saudi Arabia at launch, with future Gulf expansion potential.
-- Participants: customers, merchants and brands, licensed clinics and doctors, and beauty professionals.
-- AI: guidance-oriented and informational; it does not provide medical diagnosis.
-- Status: in development and preparing for launch.
+المتاح حاليًا: موقع تعريفي بالعربية والإنجليزية، ودليل تعليمي للجمال والعناية، ونماذج لتسجيل الاهتمام قبل الإطلاق. المنصة التشغيلية وخدماتها التجارية لم تُطلق بعد، وتسجيل الاهتمام لا ينشئ حسابًا مفعّلًا أو يؤكد إتاحة خدمة.
 
-## Primary references
-- Arabic overview: https://nayvella.com/ar/
-- English overview: https://nayvella.com/en/
-- Trust Center: https://nayvella.com/en/trust-center/
-- Privacy Policy: https://nayvella.com/en/privacy/
-- Contact: https://nayvella.com/en/contact/
+Available now: this Arabic/English informational website, educational beauty and care guides, and pre-launch interest registration. The full platform and its commercial services have not launched; registering interest does not create an active account or confirm service access.
+
+القدرات المخططة تشمل فهم البشرة والتجربة الافتراضية واكتشاف المنتجات وملف الجمال والروتين والتواصل مع المختصين. التجارب التفاعلية والمنتجات والصور والأسعار بيانات محاكاة توضيحية، وليست تحليلًا فعليًا أو تشخيصًا أو عروض بيع أو شراء أو حجزًا مؤكدًا. المحتوى التعليمي لا يغني عن استشارة مختص.
+
+Planned capabilities include skin insights, virtual try-on, product discovery, beauty profiles, routines and connections with professionals. Interactive previews and catalogue data are illustrative simulations, not real analysis, diagnosis, live offers, purchases or confirmed appointments. Educational content does not replace professional advice.
+
+Arabic pages use /ar/; English pages use /en/. Refer to the relevant page for current details and cite it directly. يُرجع للصفحة المعنية للتحقق من التفاصيل الحالية؛ لا يُفهم ذكر قدرة مخططة على أنها خدمة مفعّلة.
+
+سياسة الزحف واستخدام المحتوى تحددها الإشارات الحالية في /robots.txt؛ هذا الدليل لا يمنح إذنًا إضافيًا للتدريب. Existing /robots.txt signals govern crawling and content use; this guide grants no additional training permission.
+
+## Platform overview | التعريف بالمنصة
+
+- [الرئيسية — العربية](https://nayvella.com/ar/): التعريف بنيفلا ومسارات المنصة المخططة.
+- [Home — English](https://nayvella.com/en/): Platform overview and planned audience journeys.
+
+## Audience journeys | مسارات الفئات والمحاكاة
+
+- [العملاء — العربية](https://nayvella.com/ar/customers/): تجربة توضيحية لذكاء البشرة والتجربة الافتراضية وملف الجمال والاكتشاف والروتين ورعاية المختصين، وتسجيل الاهتمام.
+- [Customers — English](https://nayvella.com/en/customers/): Illustrative customer journeys, product discovery, beauty profiles, routines and expressions of interest.
+- [التجار والعلامات — العربية](https://nayvella.com/ar/merchants/): المسار المخطط للتجار والعلامات وتسجيل الاهتمام.
+- [Merchants and brands — English](https://nayvella.com/en/merchants/): Planned merchant and brand participation and expressions of interest.
+- [العيادات والأطباء — العربية](https://nayvella.com/ar/clinics-doctors/): المسار المخطط للعيادات والأطباء المرخصين وتسجيل الاهتمام.
+- [Clinics and doctors — English](https://nayvella.com/en/clinics-doctors/): Planned participation for licensed clinics and doctors.
+- [خبراء التجميل — العربية](https://nayvella.com/ar/beauty-experts/): المسار المخطط لمحترفي التجميل وتسجيل الاهتمام.
+- [Beauty experts — English](https://nayvella.com/en/beauty-experts/): Planned participation for beauty professionals.
+
+## Beauty and care guide | دليل الجمال والعناية
+
+- [دليل الجمال والعناية — العربية](https://nayvella.com/ar/beauty-guide/): مدخل للمقالات والأدلة التعليمية المنشورة.
+- [Beauty and care guide — English](https://nayvella.com/en/beauty-guide/): Published educational articles and category guides.
+
+## Trust, policies and contact | الثقة والسياسات والتواصل
+
+- [الأسئلة الشائعة — العربية](https://nayvella.com/ar/faq/): إجابات عن المنصة ونطاقها وتسجيل الاهتمام.
+- [Frequently asked questions — English](https://nayvella.com/en/faq/): Questions about the platform, its scope and expressions of interest.
+- [مركز الثقة — العربية](https://nayvella.com/ar/trust-center/): معلومات الثقة وحدود الخدمات والمحتوى.
+- [Trust Center — English](https://nayvella.com/en/trust-center/): Trust information and service and content boundaries.
+- [سياسة الخصوصية — العربية](https://nayvella.com/ar/privacy/): سياسة التعامل مع البيانات والخصوصية.
+- [Privacy Policy — English](https://nayvella.com/en/privacy/): Data handling and privacy policy.
+- [الشروط والأحكام — العربية](https://nayvella.com/ar/terms/): شروط استخدام الموقع.
+- [Terms and Conditions — English](https://nayvella.com/en/terms/): Website terms of use.
+- [تواصل معنا — العربية](https://nayvella.com/ar/contact/): قنوات التواصل الرسمية.
+- [Contact — English](https://nayvella.com/en/contact/): Official contact channels.

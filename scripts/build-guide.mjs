@@ -3,7 +3,7 @@ import path from "node:path";
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { OUTPUT_ROOT, ROOT, getBuildMode } from "./guide-core.mjs";
-import { finalizeBuild } from "./finalize-build.mjs";
+import { bundleEditorialStyles, finalizeBuild } from "./finalize-build.mjs";
 import { validateGuideContent } from "./validate-guide-content.mjs";
 import { verifyBuild } from "./verify-build.mjs";
 
@@ -37,6 +37,7 @@ export async function buildGuide(requestedMode) {
 
   const verification = await verifyBuild(mode);
   console.log(`Build verification passed: ${verification.guidePages} Guide pages, ${verification.sitemapUrls} sitemap URLs, ${verification.headerRules} header rules.`);
+  await bundleEditorialStyles();
   return { mode, validation, finalized, verification };
 }
 

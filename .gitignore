@@ -3,3 +3,5 @@ _site/
 .cache/
 .wrangler/
 .DS_Store
+/backups/
+/output/
