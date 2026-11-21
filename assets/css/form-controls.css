@@ -7,7 +7,7 @@ select:not([multiple]):not([size]):not([hidden]),select[size="1"]:not([hidden]){
   width:100%;min-width:0;max-width:100%;
   height:var(--nv-control-height)!important;min-height:var(--nv-control-height)!important;
   margin:0; padding:10px 14px!important;
-  border:1px solid #dbd0e3;border-radius:var(--nv-control-radius)!important;
+  border:1px solid #e1cee5;border-radius:var(--nv-control-radius)!important;
   background-color:#fcfafd;color:#35213f;
   font-family:inherit;font-size:14px!important;font-weight:400;line-height:1.5!important;
   vertical-align:middle;

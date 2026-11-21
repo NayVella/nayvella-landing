@@ -46,7 +46,7 @@ html[dir="rtl"] #main-content {
   background-image:
     radial-gradient(ellipse 26% 60% at var(--nv-light-x) var(--nv-light-y), #8c629c86, transparent 100%),
     radial-gradient(ellipse 58% 116% at var(--nv-light-x) 30%, #67458299, transparent 78%),
-    linear-gradient(180deg, #2c1e51 0%, #21132f 100%);
+    linear-gradient(180deg, #471e51 0%, #21132f 100%);
 }
 
 /* Lazy decorative thumbnails use the existing catalogue image slots. */
@@ -75,7 +75,7 @@ html[dir="rtl"] .pp-product-art img {
     background-image:
       radial-gradient(ellipse 73% 35% at var(--nv-light-x) var(--nv-light-y), #8c629c73, transparent 100%),
       radial-gradient(ellipse 110% 48% at 50% 95%, #674582a6, transparent 95%),
-      linear-gradient(180deg, #2c1e51 0%, #21132f 72%);
+      linear-gradient(180deg, #471e51 0%, #21132f 72%);
   }
 
   .pp-product-art img {

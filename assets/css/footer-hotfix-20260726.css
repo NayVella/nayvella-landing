@@ -15,6 +15,6 @@
 }
 
 #site-footer .footer-social{display:flex;flex-wrap:wrap;gap:8px}
-#site-footer .footer-social .social-icon{box-sizing:border-box;width:44px;height:44px;color:#2C1E51;background:#f4e9fa;border-color:transparent}
+#site-footer .footer-social .social-icon{box-sizing:border-box;width:44px;height:44px;color:#471e51;background:#f4e9fa;border-color:transparent}
 #site-footer .footer-social .social-icon:hover{background:#fff}
 #site-footer .footer-social .social-icon:focus-visible{outline-color:#f4e9fa}

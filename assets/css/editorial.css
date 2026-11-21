@@ -1,23 +1,46 @@
 /* NayVella editorial theme. Shared surfaces and page-specific compositions. */
 :root {
-  --editorial-ink: #261b3e;
-  --editorial-plum: #35234e;
-  --editorial-accent: #744a96;
-  --editorial-pearl: #faf7fa;
-  --editorial-line: #e5d9e7;
+  --editorial-ink: #2e1c35;
+  --editorial-plum: #4a2556;
+  --editorial-accent: #864a93;
+  --editorial-pearl: #faf6fb;
+  --editorial-line: #e6d6ea;
   --editorial-shadow: 0 18px 50px -28px #39224c60;
   --editorial-action-shadow: 0 8px 21px #33204725;
+  --content-pearl: #fdf9fd;
+  --content-tint: #f8eff9;
+  --content-card: #ffffff;
+  --content-ink: #2e1c35;
+  --content-muted: #6c5373;
+  --content-accent: #864a93;
+  --content-line: #ecdcef;
+  --content-action: #6e3c7c;
+  --content-action-hover: #5c3068;
+  --content-action-active: #4d2657;
+  --content-secondary: #f4e6f6;
+  --content-secondary-hover: #ecd8ef;
+  --content-secondary-active: #e3cae8;
+  --content-secondary-ink: #5a2d66;
+  --content-secondary-border: #9a6aa5;
+  --content-focus: #9a5fab;
+  --content-dark: #3a1f45;
+  --content-dark-edge: #52295f;
+  --content-on-dark: #ffffff;
+  --content-on-dark-muted: #f3e4f6;
+  --content-on-dark-accent: #f2cdf5;
+  --content-on-dark-focus: #ebc2f0;
+  --workspace-toolbar: #4a2756;
+  --workspace-sidebar: #5e3470;
+  --workspace-hover: #6a3c7c;
 }
 
 #main-content {
-  background: radial-gradient(ellipse at 84% 15%, #f4e7ed 0%, transparent 42%),
-    linear-gradient(145deg, #faf8fc, #f7f0f6 57%, #fcfafc);
+  background: linear-gradient(145deg, var(--content-pearl), var(--content-tint) 57%, var(--content-card));
   border-image: none;
 }
 
 :where(html[dir="rtl"]) #main-content {
-  background: radial-gradient(ellipse at 16% 15%, #f4e7ed 0%, transparent 42%),
-    linear-gradient(215deg, #faf8fc, #f7f0f6 57%, #fcfafc);
+  background: linear-gradient(215deg, var(--content-pearl), var(--content-tint) 57%, var(--content-card));
 }
 
 #main-content :is(.glass-card, .form-card, .hp-feature-panel, .nvx-workspace, .nv-disclosure) {
@@ -50,8 +73,17 @@
 }
 
 #site-footer {
-  background: linear-gradient(135deg, #211732, #342044 75%, #412945);
+  background: linear-gradient(135deg, var(--content-dark), var(--content-dark-edge));
   border-top: 1px solid #af8fbd65;
+}
+
+/* Shared tonal stops for photo-led heroes. The scene determines the last tint. */
+#main-content :is(.hp-hero, .editorial-image-hero) {
+  --hero-mauve: #301a36;
+  --hero-warm-mauve: #342137;
+  --hero-rose-mauve: #553240;
+  --hero-photo-tint: #8b505619;
+  --hero-photo-edge: #805260;
 }
 
 /* Large portrait, calm copy area, and a real HTML preview card. */
@@ -61,7 +93,7 @@
   display: grid;
   align-items: center;
   padding: clamp(44px, 4.6vw, 76px) clamp(22px, 5vw, 92px) clamp(48px, 5.2vw, 84px);
-  background: #302341;
+  background: var(--hero-mauve);
 }
 
 .editorial-portrait,
@@ -74,8 +106,10 @@
 .editorial-portrait::after {
   content: "";
   z-index: auto;
-  background: linear-gradient(90deg, #251a3ced 0%, #2b2041c7 28%, #36264e54 56%, transparent 80%),
-    linear-gradient(0deg, #2b203e83, transparent 27%);
+  background: linear-gradient(90deg,
+    var(--hero-mauve) 0%, var(--hero-warm-mauve) 24%, #3a253bdd 34%,
+    #55324080 45%, #80505b35 56%, var(--hero-photo-tint) 73%
+  );
 }
 
 .editorial-portrait img {
@@ -177,7 +211,7 @@
 
 .editorial-image-credit {
   width: fit-content;
-  background: #292039e8;
+  background: #342039e8;
   color: #fff;
   border-radius: 8px;
   padding: 5px 8px;
@@ -282,7 +316,7 @@
 #main-content .legal-section { border-color: var(--editorial-line); }
 
 .error-page #main-content {
-  background: radial-gradient(ellipse at 80% 20%, #79547a, transparent 60%), #291d3d;
+  background: radial-gradient(ellipse at 80% 20%, #79547a, transparent 60%), #371d3d;
 }
 
 @media (max-width: 760px) {
@@ -295,8 +329,10 @@
   .editorial-portrait { top: auto; height: 350px; }
   .editorial-portrait img { object-position: 75% 48%; }
   .editorial-portrait::after {
-    background: linear-gradient(180deg, #302341, #3023410a 38%, transparent 70%, #3023418a),
-      linear-gradient(90deg, #30234140, transparent 68%);
+    background: linear-gradient(180deg,
+      var(--hero-mauve) 0%, #342137cf 14%, #55324068 29%,
+      var(--hero-photo-tint) 49%
+    );
   }
   .nv-home-v2 .hp-hero-inner { grid-template-columns: 1fr; gap: 24px; }
   .nv-home-v2 .hp-hero h1 { font-size: clamp(45px, 11vw, 69px); }
@@ -336,7 +372,7 @@
 }
 .nv-home-v2 #home-paths .feature-card {
   padding: clamp(14px, 1.65vw, 25px);
-  background: linear-gradient(150deg, #fff, #f9f0f7);
+  background: linear-gradient(150deg, var(--content-card), var(--content-tint));
 }
 @media (max-width: 970px) {
   .nv-home-v2 #home-paths .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -365,7 +401,7 @@
   box-shadow: 0 18px 46px #2b193332;
 }
 
-.partner-story-photo { min-height: 230px; background: #e9ddeb; }
+.partner-story-photo { min-height: 230px; background: #e9dbed; }
 .partner-story-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .partner-story--merchant img { object-fit: contain; }
 .partner-story--clinic img { object-position: center; }
@@ -373,12 +409,12 @@
 .partner-story-label { color: #6a487b; font-size: 12px; font-weight: 600; margin: 0 0 5px; }
 .partner-story-title { font-size: clamp(17px, 1.6vw, 25px); line-height: 1.4; }
 .partner-story dl { margin: 14px 0; }
-.partner-story dl div { padding-block: 9px; border-block-start: 1px solid #e1d5e5; }
+.partner-story dl div { padding-block: 9px; border-block-start: 1px solid #e4d2e8; }
 .partner-story dt { font-weight: 600; font-size: 13px; }
 .partner-story dd { margin: 3px 0 0; font-size: 13px; color: #5a4764; }
 .partner-story small { color: #64516e; font-size: 11px; }
 .pp-dashboard { box-shadow: var(--editorial-shadow); border-radius: 22px; }
-.pp-dashboard .pp-dashboard-bar { background: #302244; color: #fff; }
+.pp-dashboard .pp-dashboard-bar { background: #3d2244; color: #fff; }
 .pp-dashboard .pp-dashboard-bar b { color: #efdcfc; }
 .pp-dashboard .pp-panel-area { background: #fcf8fc; }
 [dir="rtl"] .pp-eyebrow { letter-spacing: 0; }
@@ -408,7 +444,7 @@
   object-fit: cover;
   object-position: center 40%;
   display: block;
-  background: #e8dcea;
+  background: #e8daec;
 }
 .expert-journey-body { padding: clamp(17px, 2vw, 27px); }
 .expert-journey-body h3 { font-size: clamp(19px, 2.1vw, 25px); line-height: 1.5; margin: 0 0 8px; }
@@ -440,7 +476,7 @@
   border-radius: 10px;
   background:
     linear-gradient(30deg, transparent 47%, #fff 47% 53%, transparent 53%),
-    repeating-linear-gradient(120deg, #efe7f2 0 23px, #fff 23px 28px, #e5d7eb 28px 47px);
+    repeating-linear-gradient(120deg, #f0e7f2 0 23px, #fff 23px 28px, #e5d7eb 28px 47px);
 }
 .expert-location-map span {
   width: 27px;
@@ -467,13 +503,22 @@
 #beauty-expert-workspace { scroll-margin-top: 100px; }
 .partner-story--experts img { object-position: center 40%; }
 
-/* Full-width image bands with a legible text area and unboxed subjects. */
+/* Photo-led heroes: ONE shared system whose geometry matches the approved Home hero.
+   Shared for every page: base surface, text-protection scrim and photo-edge feather.
+   They are measured on the hero (or a fixed length), never on the photo width.
+   The photo box (--hero-photo-width) is the same on every page, so the feather ends
+   at the same point everywhere. Allowed per image only: --hero-image,
+   --hero-position and --hero-tone (multiply tone that keeps light photos rich
+   instead of hazy). */
 #main-content .editorial-image-hero {
-  --hero-mask-angle: 90deg;
   --hero-gradient-angle: 90deg;
   --hero-position: center;
-  --hero-photo-width: 72%;
-  --hero-photo-edge: #705266;
+  --hero-photo-width: 70%;
+  --hero-photo-anchor: right;
+  --hero-edge-anchor: left;
+  --hero-feather: clamp(90px, 9vw, 140px);
+  --hero-mask-angle: var(--hero-gradient-angle);
+  --hero-tone: 0%;
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -487,16 +532,20 @@
   border: 0;
   border-radius: 0;
   box-shadow: none;
-  background-color: #251934;
-  background-image: linear-gradient(var(--hero-gradient-angle), #251934 43%, #332446 55%, var(--hero-photo-edge));
+  background-color: var(--hero-mauve);
+  background-image: linear-gradient(var(--hero-gradient-angle),
+    var(--hero-mauve) 0%, var(--hero-warm-mauve) 40%, #3d2639 100%
+  );
   color: white;
 }
 
 [dir="rtl"] #main-content .editorial-image-hero {
-  --hero-mask-angle: 270deg;
   --hero-gradient-angle: 270deg;
+  --hero-photo-anchor: left;
+  --hero-edge-anchor: right;
 }
 
+/* Photo layer: framing only. One short feather on the edge that faces the copy. */
 #main-content .editorial-image-hero::after {
   content: "";
   position: absolute;
@@ -505,50 +554,74 @@
   width: var(--hero-photo-width);
   z-index: -2;
   pointer-events: none;
-  background: var(--hero-image) center var(--hero-position) / cover no-repeat;
-  mask-image: linear-gradient(var(--hero-mask-angle), transparent 7%, #0007 28%, #000 55%);
+  background-color: transparent;
+  background-image:
+    linear-gradient(color-mix(in srgb, #b08893 var(--hero-tone), #fff), color-mix(in srgb, #b08893 var(--hero-tone), #fff)),
+    var(--hero-image);
+  background-position: center, center var(--hero-position);
+  background-size: 100% 100%, cover;
+  background-repeat: no-repeat;
+  background-blend-mode: multiply, normal;
+  mask-image: linear-gradient(var(--hero-mask-angle),
+    transparent 0, #0005 calc(var(--hero-feather) * .35),
+    #000c calc(var(--hero-feather) * .7), #000 var(--hero-feather)
+  );
 }
 
-/* Keep copy on a dark surface even when a bright photo reaches its column. */
+/* Text protection: the Home hero's stop positions and opacities (24/34/45/56/73%), in one
+   dark mauve tone so it only darkens the photo and never turns dark areas milky. */
 #main-content .editorial-image-hero::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
-  opacity: 1;
   pointer-events: none;
-  background: linear-gradient(var(--hero-gradient-angle), #251934 32%, #251934bd 48%, transparent 67%);
+  /* Older grid-pattern rules (platform-ui.css, technology-refinement.css) also target
+     .page-hero--role/--compact::before. Neutralise them so every page gets the full scrim. */
+  opacity: 1;
+  mask-image: none;
+  background: linear-gradient(var(--hero-gradient-angle),
+    var(--hero-mauve) 0%, var(--hero-warm-mauve) 24%, #342137de 34%,
+    #34213780 45%, #34213736 56%, var(--hero-photo-tint) 73%
+  );
 }
 
 #main-content .editorial-role--customers {
   --hero-image: url("/assets/images/editorial/home-mobile.webp");
-  --hero-photo-width: 64%;
   --hero-position: 41%;
 }
 
 #main-content .editorial-role--beauty-experts {
   --hero-image: url("/assets/images/editorial/beauty-experts.webp");
-  --hero-photo-width: 64%;
   --hero-position: 39%;
 }
 
 #main-content .pp-theme-clinic.editorial-image-hero {
   --hero-image: url("/assets/images/editorial/clinics-doctors.webp");
-  --hero-photo-width: 72%;
   --hero-position: 43%;
+  --hero-tone: 25%;
 }
 
-#main-content :is(.pp-theme-merchant, .guide-hero--editorial).editorial-image-hero {
-  --hero-photo-width: min(53%, 720px);
-  --hero-photo-edge: #e4d4e7;
+/* Square product photos: shown whole at full hero height against the outer edge.
+   The rest of the shared photo box repeats the photo's own inner edge (the same
+   image stretched horizontally), so the join is seamless without new assets. */
+#main-content :is(.pp-theme-merchant, .guide-hero--editorial).editorial-image-hero::after {
+  background-image:
+    linear-gradient(color-mix(in srgb, #b08893 var(--hero-tone), #fff), color-mix(in srgb, #b08893 var(--hero-tone), #fff)),
+    var(--hero-image), var(--hero-image);
+  background-position: center, var(--hero-photo-anchor) center, var(--hero-edge-anchor) center;
+  background-size: 100% 100%, auto 100%, 100000% 100%;
+  background-blend-mode: multiply, normal, normal;
 }
 
 #main-content .pp-theme-merchant.editorial-image-hero {
   --hero-image: url("/assets/images/demo-products/cream-v3-640.webp");
+  --hero-tone: 70%;
 }
 
 #main-content .guide-hero--editorial {
   --hero-image: url("/assets/images/demo-products/kit-v3-640.webp");
+  --hero-tone: 60%;
 }
 
 #main-content .editorial-image-hero :is(.pp-hero-inner, .page-hero-inner) {
@@ -589,21 +662,48 @@
 }
 
 @media (max-width: 760px) {
+  /* Mobile: one vertical system for every page: the Home mobile scrim stops and
+     one shared top feather on the photo. */
   #main-content .editorial-image-hero {
+    --hero-mobile-photo-height: clamp(260px, 69vw, 400px);
     padding-block: 38px clamp(250px, 65vw, 370px);
     min-height: 0;
-    background: #2b1d40;
+    background: linear-gradient(180deg,
+      var(--hero-mauve) 0%, var(--hero-warm-mauve) calc(100% - var(--hero-mobile-photo-height)),
+      var(--hero-rose-mauve) calc(100% - var(--hero-mobile-photo-height) * .65),
+      var(--hero-photo-edge) 100%
+    );
   }
-  #main-content .editorial-image-hero::before { display: none; }
+  #main-content .editorial-image-hero::before {
+    inset-block-start: auto;
+    height: var(--hero-mobile-photo-height);
+    background: linear-gradient(180deg,
+      var(--hero-mauve) 0%, #342137cf 14%, #55324068 29%,
+      var(--hero-photo-tint) 49%
+    );
+  }
   #main-content .editorial-image-hero::after {
     inset-block-start: auto;
     width: 100%;
-    height: clamp(260px, 69vw, 400px);
-    mask-image: linear-gradient(180deg, transparent 0%, #000 30%);
+    height: var(--hero-mobile-photo-height);
+    --hero-top-feather: linear-gradient(180deg, transparent 0%, #0004 13%, #000b 24%, #000 43%);
+    mask-image: var(--hero-top-feather);
   }
+  /* Square product photos stay whole (contained). The same top feather applies;
+     only the side edges that do not reach the screen edge get an extra feather. */
   #main-content :is(.pp-theme-merchant, .guide-hero--editorial).editorial-image-hero::after {
-    background-size: contain;
-    background-color: #e4d4e7;
+    --hero-photo-gutter: max(0px, (100% - var(--hero-mobile-photo-height)) / 2);
+    --hero-side-fade: calc(var(--hero-photo-gutter) + clamp(18px, 7vw, 34px));
+    background-image:
+      linear-gradient(color-mix(in srgb, #b08893 var(--hero-tone), #fff), color-mix(in srgb, #b08893 var(--hero-tone), #fff)),
+      var(--hero-image);
+    background-position: center, center;
+    background-size: var(--hero-mobile-photo-height) 100%, contain;
+    mask-image: var(--hero-top-feather), linear-gradient(90deg,
+      transparent var(--hero-photo-gutter), #000 var(--hero-side-fade),
+      #000 calc(100% - var(--hero-side-fade)), transparent calc(100% - var(--hero-photo-gutter))
+    );
+    mask-composite: intersect;
   }
   #main-content .editorial-image-hero .pp-hero-inner > div,
   #main-content .editorial-image-hero :is(.page-hero-title, .page-hero-copy) { max-width: 100%; }
@@ -648,7 +748,7 @@ html[data-lang="en"] :is(.hp-hero, .editorial-image-hero) h1 {
 }
 .editorial-heading-accent,
 .editorial-heading-period {
-  color: var(--editorial-heading-pink, #8f315b);
+  color: var(--editorial-heading-color, var(--content-accent));
 }
 html[data-lang="en"] .editorial-heading-accent {
   font-family: "Instrument Serif", "Times New Roman", serif;
@@ -656,11 +756,13 @@ html[data-lang="en"] .editorial-heading-accent {
   font-style: italic;
 }
 html[data-lang="ar"] .editorial-heading-accent {
-  font-style: oblique;
+  font-family: "NayVella Arabic Accent", "Lama Sans", serif;
+  font-style: normal;
+  font-size: 1em;
 }
 .hp-hero,
 .editorial-image-hero {
-  --editorial-heading-pink: #f3b8d7;
+  --editorial-heading-color: #f3b8d7;
 }
 .nv-home-v2 .hp-hero .editorial-title-tail { color: #fff5fc; }
 .editorial-profile {
@@ -674,26 +776,26 @@ html[data-lang="ar"] .editorial-heading-accent {
 .editorial-profile a { border-color: #ffffff40; }
 .editorial-profile-wrap { width: min(100%, 246px); padding-bottom: 0; }
 .hp-platform-section .hp-feature-tabs {
-  background: linear-gradient(110deg, #e9ddee8c, #f7e4ea75);
+  background: var(--content-secondary);
   border: 1px solid #fff9;
 }
 .hp-feature-tabs button[aria-selected="true"] {
-  background: linear-gradient(120deg, #503263, #342145e0);
+  background: var(--content-action);
   border-color: #9c76b499;
 }
 .hp-feature-tabs button:is(:hover, :focus-visible):not([aria-selected="true"]) { background: #ffffff70; }
 #main-content .feature-card--path {
-  background: linear-gradient(140deg, #ffffffa8, #f7edf3b8);
+  background: linear-gradient(140deg, var(--content-card), var(--content-tint));
   border-color: #ffffff;
   box-shadow: 0 10px 26px #3420470c;
 }
 #main-content .pp-home-row {
-  background: linear-gradient(115deg, #fff9, #f1e5f09c);
-  border-color: #e4d5e7;
+  background: linear-gradient(115deg, var(--content-card), var(--content-tint));
+  border-color: #e4d3e9;
   box-shadow: 0 12px 34px #3721450b;
 }
 .partner-story {
-  background: linear-gradient(145deg, #fcf8fbd9, #f2e8f2b3);
+  background: linear-gradient(145deg, var(--content-card), var(--content-tint));
   border-color: #ffffffbd;
   box-shadow: 0 12px 30px #291a3520;
 }
@@ -734,10 +836,10 @@ html[data-lang="ar"] .editorial-heading-accent {
 /* Shared surfaces for the existing merchant, care and beauty-expert previews. */
 .pp-dashboard,
 .expert-journeys .expert-journey-card {
-  --preview-surface: #fffdfd;
-  --preview-ink: #332440;
-  --preview-muted: #5e506a;
-  --preview-rule: #e6dce8;
+  --preview-surface: var(--content-card);
+  --preview-ink: var(--content-ink);
+  --preview-muted: var(--content-muted);
+  --preview-rule: var(--content-line);
   background: var(--preview-surface);
   color: var(--preview-ink);
   border: 1px solid var(--preview-rule);
@@ -746,30 +848,27 @@ html[data-lang="ar"] .editorial-heading-accent {
 }
 
 .pp-dashboard .pp-dashboard-bar {
-  background: linear-gradient(110deg, #302041, #473153);
+  background: var(--workspace-toolbar);
   padding: 15px clamp(16px, 3vw, 30px);
 }
 .pp-dashboard .pp-dashboard-bar > span:first-child { font-weight: 600; }
-.pp-dashboard .pp-dashboard-bar > span:last-child { font-size: 12px; color: #f6eaf6; }
+.pp-dashboard .pp-dashboard-bar > span:last-child { font-size: 12px; color: var(--content-on-dark-muted); }
 .pp-dashboard .pp-dashboard-layout { min-height: 0; }
 .pp-dashboard .pp-sidebar {
-  background: #f7f1f8;
+  background: var(--workspace-sidebar);
   padding: 14px 10px;
   gap: 4px;
 }
 .pp-dashboard .pp-sidebar button {
   min-height: 48px;
   padding: 10px;
-  color: #594866;
+  color: var(--content-on-dark);
   font-size: 13px;
   line-height: 1.55;
 }
-#main-content .pp-dashboard .pp-sidebar button[aria-selected="true"] {
-  background: var(--pp-soft);
-  color: var(--pp-dark);
+#main-content .pp-dashboard .pp-sidebar button:hover:not([aria-selected="true"]) {
+  background: var(--workspace-hover);
 }
-.pp-dashboard .pp-sidebar button[aria-selected="true"] svg { color: var(--pp-accent); }
-.pp-dashboard .pp-sidebar button:hover:not([aria-selected="true"]) { background: #eee6f0; }
 .pp-dashboard .pp-panel-area { background: var(--preview-surface); }
 .pp-dashboard .pp-panel { padding: clamp(18px, 3vw, 36px); }
 .pp-dashboard .pp-module-heading h3 { font-size: clamp(21px, 2.25vw, 28px); margin-block: 7px 9px; }
@@ -853,7 +952,7 @@ html[data-lang="ar"] .editorial-heading-accent {
   background: #f7f1f8;
   border-color: var(--preview-rule);
 }
-.expert-journey-card .expert-journey-body details[open] { background: #f1e8f2; }
+.expert-journey-card .expert-journey-body details[open] { background: #f0e7f3; }
 .expert-journey-card .expert-journey-body details:first-of-type { border-radius: 10px 10px 0 0; }
 .expert-journey-card .expert-journey-body details:last-of-type { border-radius: 0 0 10px 10px; }
 
@@ -887,16 +986,9 @@ html[data-lang="ar"] .editorial-heading-accent {
   justify-self: end;
   margin-inline-start: 0;
   font-size: 11px;
-  color: #64516e;
+  color: var(--content-on-dark-muted);
   opacity: 1;
 }
-#main-content .pp-dashboard .pp-sidebar button[aria-selected="true"] {
-  background: transparent;
-  color: var(--pp-accent);
-  border-color: transparent;
-  font-weight: 700;
-}
-.pp-dashboard .pp-sidebar button[aria-selected="true"] bdi { color: var(--pp-accent); }
 .pp-dashboard .pp-order-row {
   grid-template-columns: 9ch minmax(0, 1fr) minmax(104px, 11ch) 17px;
   gap: clamp(8px, 1.25vw, 15px);
@@ -927,8 +1019,8 @@ html[data-lang="ar"] .editorial-heading-accent {
 }
 
 #main-content .expert-journeys {
-  --preview-body: #fffdfd;
-  --preview-line: #e6dce8;
+  --preview-body: var(--content-card);
+  --preview-line: var(--content-line);
   --preview-gutter: clamp(16px, 3.2vw, 36px);
   width: calc(100% - 2 * clamp(14px, 3vw, 38px));
   margin-block: clamp(32px, 5vw, 72px);
@@ -944,7 +1036,7 @@ html[data-lang="ar"] .editorial-heading-accent {
   max-width: none;
   margin: 0;
   padding: clamp(16px, 2.8vw, 30px) var(--preview-gutter);
-  background: linear-gradient(110deg, #302041, #473153);
+  background: var(--workspace-toolbar);
   color: #fff;
 }
 .expert-journeys > header h2 { font-size: clamp(22px, 2.6vw, 34px); margin-block-end: 7px; }
@@ -1029,4 +1121,315 @@ html[data-lang="ar"] .editorial-heading-accent {
     min-height: 0;
     padding-block-start: calc(38px + var(--header-overlap));
   }
+}
+
+/* Content color roles. Keep the opening sections and navigation on their published styles. */
+#main-content :is(.feature-card-title, .trust-register-card h3, .partner-story-title, .expert-journey-card summary) {
+  color: var(--content-secondary-ink);
+}
+
+#main-content :is(.partner-story-label, .guide-card-link, .nv-help-contact a, .legal-section a) {
+  color: var(--content-accent);
+}
+
+#main-content :is(.partner-story dd, .expert-journey-card .expert-journey-body p, .pp-module-heading p) {
+  color: var(--content-muted);
+}
+
+#main-content :is(.hp-platform-section, .pp-home, .guide-cta, .nv-help-contact, .form-card) :is(.primary-btn, .hp-action--purple, .pp-button),
+#main-content :is(.nvx-button--primary, .pp-dashboard .pp-action) {
+  color: var(--content-on-dark);
+  background: var(--content-action);
+  border-color: var(--content-action);
+}
+
+#main-content :is(.hp-platform-section, .pp-home, .guide-cta, .nv-help-contact, .form-card) :is(.primary-btn, .hp-action--purple, .pp-button):hover,
+#main-content :is(.nvx-button--primary, .pp-dashboard .pp-action):hover {
+  color: var(--content-on-dark);
+  background: var(--content-action-hover);
+  border-color: var(--content-action-hover);
+}
+
+#main-content :is(.hp-platform-section, .pp-home, .guide-cta, .nv-help-contact, .form-card) :is(.primary-btn, .hp-action--purple, .pp-button):active,
+#main-content :is(.nvx-button--primary, .pp-dashboard .pp-action):active {
+  background: var(--content-action-active);
+  border-color: var(--content-action-active);
+}
+
+#main-content :is(.feature-card, .hp-platform-section, .pp-home, .nv-help-contact) :is(.ghost-btn, .hp-action--light) {
+  color: var(--content-secondary-ink);
+  border-color: var(--content-secondary-border);
+  background: var(--content-secondary);
+}
+
+#main-content :is(.feature-card, .hp-platform-section, .pp-home, .nv-help-contact) :is(.ghost-btn, .hp-action--light):hover {
+  color: var(--content-secondary-ink);
+  border-color: var(--content-secondary-border);
+  background: var(--content-secondary-hover);
+}
+
+#main-content :is(.feature-card, .hp-platform-section, .pp-home, .nv-help-contact) :is(.ghost-btn, .hp-action--light):active {
+  background: var(--content-secondary-active);
+}
+
+#main-content .contact-page .nv-interest-path {
+  color: var(--content-secondary-ink) !important;
+  border-color: var(--content-secondary-border) !important;
+  background: var(--content-card) !important;
+}
+
+#main-content .contact-page .nv-interest-path:is(:hover, :focus-visible) {
+  background: var(--content-secondary-hover) !important;
+}
+
+#main-content .contact-page .nv-interest-arrow { color: var(--content-accent); }
+
+#main-content .form-card :is(.yn-btn, .loc-btn).active {
+  background: var(--content-action) !important;
+  border-color: var(--content-action) !important;
+  color: var(--content-on-dark) !important;
+}
+
+#main-content :is(.form-card, .feature-card, .hp-platform-section, .pp-home, .guide-cta, .nv-help-contact, .nvx-experience, .pp-dashboard)
+:is(a, button, input, select, textarea):not([role="tab"]):focus-visible {
+  outline: 2px solid var(--content-focus);
+  outline-offset: 3px;
+}
+
+.nv-home-v2 #main-content .nv-s-25fd5b338a6b,
+#main-content .expert-journeys > header {
+  --editorial-heading-color: var(--content-on-dark-accent);
+}
+
+.nv-home-v2 #main-content .nv-s-25fd5b338a6b {
+  background: linear-gradient(112deg, var(--content-dark), var(--content-dark-edge)) !important;
+}
+
+.nv-home-v2 #main-content .nv-s-25fd5b338a6b .ghost-btn {
+  color: var(--content-on-dark);
+  border-color: #cca4d7;
+}
+
+.nv-home-v2 #main-content .nv-s-25fd5b338a6b .ghost-btn:hover {
+  background: #ffffff13;
+}
+
+.nv-home-v2 #main-content .nv-s-25fd5b338a6b .ghost-btn:focus-visible {
+  outline-color: var(--content-on-dark-focus);
+}
+
+#main-content .nvx-experience {
+  --x-ink: var(--content-ink);
+  --x-muted: var(--content-muted);
+  --x-purple: var(--content-accent);
+  --x-line: var(--content-line);
+  --x-soft: var(--content-tint);
+  background: linear-gradient(180deg, var(--content-pearl), var(--content-tint) 54%, var(--content-pearl));
+}
+
+#main-content .nvx-experience .nvx-chrome {
+  background: var(--workspace-toolbar);
+  color: var(--content-on-dark);
+  border-color: var(--content-secondary-border);
+}
+
+#main-content :is(.nvx-chrome > button, .nvx-nav > button, .pp-dashboard .pp-sidebar button) {
+  color: var(--content-on-dark);
+}
+
+#main-content :is(.nvx-chrome-label, .nvx-sidebar-title, .nvx-sidebar-bottom, .nvx-nav small) {
+  color: var(--content-on-dark-muted);
+}
+
+#main-content .nvx-experience .nvx-sidebar {
+  background: var(--workspace-sidebar);
+  color: var(--content-on-dark);
+}
+
+#main-content .nvx-nav > button:hover:not([aria-selected="true"]) {
+  background: var(--workspace-hover);
+}
+
+#main-content :is(.nvx-nav, .pp-dashboard .pp-sidebar) > button[aria-selected="true"] {
+  background: var(--workspace-toolbar);
+  color: var(--content-on-dark);
+  border-color: transparent;
+  border-inline-start-color: var(--content-on-dark-focus);
+  box-shadow: none;
+  font-weight: 700;
+}
+
+#main-content :is(.nvx-nav, .pp-dashboard .pp-sidebar) button[aria-selected="true"] :is(svg, small, bdi) {
+  color: var(--content-on-dark-accent);
+}
+
+#main-content :is(.nvx-nav, .nvx-chrome, .pp-dashboard .pp-sidebar) button:focus-visible {
+  outline: 2px solid var(--content-on-dark-focus);
+  outline-offset: 1px;
+}
+
+#main-content :is(.pp-filters button, .nvx-button)[aria-pressed="true"] {
+  color: var(--content-on-dark);
+  background: var(--content-action);
+  border-color: var(--content-action);
+}
+
+#main-content :is(.guide-category-card h3, .guide-card h3, .guide-status, .guide-card-link,
+.guide-breadcrumb [aria-current="page"], .guide-other-categories a, .guide-category-label,
+.guide-article-body h3, .guide-article-body a) {
+  color: var(--content-accent);
+}
+
+#main-content :is(.guide-status, .guide-category-label) { background: var(--content-secondary); }
+#main-content .guide-other-categories a:hover { border-color: var(--content-secondary-border); }
+
+/* Shift the card toward the image-side edge without reflowing the hero. */
+@media (min-width: 1024px) {
+  .nv-home-v2 .hp-hero .editorial-profile-wrap {
+    position: relative;
+    /* Lower and at the inner edge of the photo column (nearest the middle of the hero),
+       as far from the face as the copy allows; the grid gap keeps it clear of the text. */
+    justify-self: start;
+    inset-inline-start: calc(-1 * clamp(0px, 43vw - 422px, 200px));
+    inset-block-start: clamp(40px, 4.5vw, 72px);
+  }
+}
+
+/* Bring the two larger desktop introductions into scale with neighboring pages.
+   Scaling the text in place preserves its published wrapping and the photo area's height. */
+@media (min-width: 1100px) {
+  #main-content :is(.editorial-role--customers, .editorial-role--beauty-experts)
+  :is(.page-hero-title, .page-hero-copy) {
+    transform: scale(.9);
+    transform-origin: left center;
+  }
+
+  [dir="rtl"] #main-content :is(.editorial-role--customers, .editorial-role--beauty-experts)
+  :is(.page-hero-title, .page-hero-copy) {
+    transform-origin: right center;
+  }
+}
+
+/* Colour purity pass: pure mauve family only (no blue/navy cast).
+   Sticky header: dark, see-through mauve glass (about 78% tint with a saturated blur and a
+   soft inner highlight), so content shows through without turning the bar grey. */
+#site-header {
+  background: linear-gradient(180deg, #2f1838d1, #2f1838bd);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid #ffffff1f;
+  box-shadow: inset 0 1px 0 #ffffff14, 0 8px 28px #1a081f24;
+}
+.prelaunch-strip { background: #f8eef9; border-top-color: #ecdcef; }
+.prelaunch-strip :is(.prelaunch-copy, .prelaunch-note) { color: #6c5373; }
+
+/* Arabic accent words: a typeface drawn for slanted writing (Amiri Italic, SIL OFL 1.1),
+   the Arabic counterpart of Instrument Serif Italic used for English accents. */
+@font-face {
+  font-family: "NayVella Arabic Accent";
+  src: url("/assets/fonts/amiri-arabic-italic.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+
+/* Photos mirror with the reading direction so each subject faces the copy in both languages.
+   Product packaging is never mirrored (the brand name would read backwards). */
+[dir="rtl"] #main-content .editorial-role--customers,
+html:not([dir="rtl"]) #main-content :is(.pp-theme-clinic.editorial-image-hero, .editorial-role--beauty-experts) {
+  --hero-mask-angle: calc(var(--hero-gradient-angle) + 180deg);
+}
+[dir="rtl"] #main-content .editorial-role--customers::after,
+html:not([dir="rtl"]) #main-content :is(.pp-theme-clinic.editorial-image-hero, .editorial-role--beauty-experts)::after {
+  transform: scaleX(-1);
+}
+
+/* Arabic and English share the same sizes and line spacing. */
+.nv-home-v2 .hp-hero h1,
+[dir="rtl"] .nv-home-v2 .hp-hero h1 {
+  font-size: clamp(44px, 5vw, 76px);
+  line-height: 1.17;
+}
+html[lang] .page-hero-title { line-height: 1.28; }
+html[lang] .page-hero-copy { line-height: 1.72; }
+html[lang] .header-nav .nav-link { height: 36px; display: inline-flex; align-items: center; font-size: 15px; line-height: 20px; }
+html[lang] .guide-article-header h1 { font-size: clamp(30px, 4.6vw, 48px); line-height: 1.35; }
+@media (max-width: 760px) {
+  .nv-home-v2 .hp-hero h1,
+  [dir="rtl"] .nv-home-v2 .hp-hero h1 { font-size: clamp(37px, 10vw, 60px); }
+}
+/* Same opening-section height in Arabic and English, page by page. Each value is the taller of the
+   two languages' natural content height in that width range (measured), so neither language
+   gets a taller or shorter opening than the other; pages keep their own content-fitted size. */
+@media (max-width: 360px) {  /* sampled widths: [320, 360] */
+  .nv-home-v2 .hp-hero { --hero-parity: 987px; }
+  #main-content .editorial-role--customers { --hero-parity: 851px; }
+  #main-content .pp-theme-merchant.editorial-image-hero { --hero-parity: 858px; }
+  #main-content .pp-theme-clinic.editorial-image-hero { --hero-parity: 901px; }
+  #main-content .editorial-role--beauty-experts { --hero-parity: 806px; }
+}
+@media (min-width: 361px) and (max-width: 430px) {  /* sampled widths: [375, 390, 412, 430] */
+  .nv-home-v2 .hp-hero { --hero-parity: 963px; }
+  #main-content .editorial-role--customers { --hero-parity: 780px; }
+  #main-content .pp-theme-merchant.editorial-image-hero { --hero-parity: 835px; }
+  #main-content .pp-theme-clinic.editorial-image-hero { --hero-parity: 889px; }
+  #main-content .editorial-role--beauty-experts { --hero-parity: 779px; }
+}
+@media (min-width: 431px) and (max-width: 760px) {  /* sampled widths: [500, 600, 700, 760] */
+  .nv-home-v2 .hp-hero { --hero-parity: 950px; }
+  #main-content .editorial-role--customers { --hero-parity: 798px; }
+  #main-content .pp-theme-merchant.editorial-image-hero { --hero-parity: 840px; }
+  #main-content .pp-theme-clinic.editorial-image-hero { --hero-parity: 840px; }
+  #main-content .editorial-role--beauty-experts { --hero-parity: 787px; }
+}
+@media (min-width: 761px) and (max-width: 999px) {  /* sampled widths: [800, 900] */
+  .nv-home-v2 .hp-hero { --hero-parity: 718px; }
+  #main-content .editorial-role--customers { --hero-parity: 568px; }
+  #main-content .pp-theme-merchant.editorial-image-hero { --hero-parity: 610px; }
+  #main-content .pp-theme-clinic.editorial-image-hero { --hero-parity: 659px; }
+  #main-content .editorial-role--beauty-experts { --hero-parity: 598px; }
+}
+@media (min-width: 1000px) and (max-width: 1119px) {  /* sampled widths: [1000, 1024, 1119] */
+  .nv-home-v2 .hp-hero { --hero-parity: 702px; }
+  #main-content .editorial-role--customers { --hero-parity: 633px; }
+  #main-content .pp-theme-merchant.editorial-image-hero { --hero-parity: 594px; }
+  #main-content .pp-theme-clinic.editorial-image-hero { --hero-parity: 597px; }
+  #main-content .editorial-role--beauty-experts { --hero-parity: 644px; }
+}
+@media (min-width: 1120px) and (max-width: 1279px) {  /* sampled widths: [1120, 1180, 1200, 1279] */
+  .nv-home-v2 .hp-hero { --hero-parity: 763px; }
+  #main-content .editorial-role--customers { --hero-parity: 690px; }
+  #main-content .pp-theme-merchant.editorial-image-hero { --hero-parity: 648px; }
+  #main-content .pp-theme-clinic.editorial-image-hero { --hero-parity: 648px; }
+  #main-content .editorial-role--beauty-experts { --hero-parity: 684px; }
+}
+@media (min-width: 1280px) and (max-width: 1365px) {  /* sampled widths: [1280, 1365] */
+  .nv-home-v2 .hp-hero { --hero-parity: 787px; }
+  #main-content .editorial-role--customers { --hero-parity: 792px; }
+  #main-content .pp-theme-merchant.editorial-image-hero { --hero-parity: 649px; }
+  #main-content .pp-theme-clinic.editorial-image-hero { --hero-parity: 668px; }
+  #main-content .editorial-role--beauty-experts { --hero-parity: 704px; }
+}
+@media (min-width: 1366px) and (max-width: 1599px) {  /* sampled widths: [1366, 1440, 1536, 1599] */
+  .nv-home-v2 .hp-hero { --hero-parity: 837px; }
+  #main-content .editorial-role--customers { --hero-parity: 804px; }
+  #main-content .pp-theme-merchant.editorial-image-hero { --hero-parity: 648px; }
+  #main-content .pp-theme-clinic.editorial-image-hero { --hero-parity: 680px; }
+  #main-content .editorial-role--beauty-experts { --hero-parity: 716px; }
+}
+@media (min-width: 1600px) {  /* sampled widths: [1600, 1700, 1920, 2200] */
+  .nv-home-v2 .hp-hero { --hero-parity: 843px; }
+  #main-content .editorial-role--customers { --hero-parity: 804px; }
+  #main-content .pp-theme-merchant.editorial-image-hero { --hero-parity: 648px; }
+  #main-content .pp-theme-clinic.editorial-image-hero { --hero-parity: 680px; }
+  #main-content .editorial-role--beauty-experts { --hero-parity: 716px; }
+}
+.nv-home-v2 .hp-hero { min-height: max(calc(clamp(552px, 45vw, 730px) + var(--header-overlap)), var(--hero-parity, 0px)); }
+#main-content .editorial-image-hero { min-height: max(calc(clamp(445px, 40vw, 640px) + var(--header-overlap)), var(--hero-parity, 0px)); }
+@media (max-width: 760px) {
+  .nv-home-v2 .hp-hero, #main-content .editorial-image-hero { min-height: var(--hero-parity, 0px); }
+}
+@media (max-width: 760px) {
+  #main-content .editorial-image-hero { align-content: start; }
 }

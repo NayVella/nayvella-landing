@@ -1,5 +1,5 @@
 /* NayVella shared interface — public pages, help and editorial content. */
-:root{--ui-ink:#2d203e;--ui-muted:#6e617a;--ui-accent:#75518e;--ui-deep:#2c1e51;--ui-line:#e5ddeb;--ui-surface:#f8f5fb;--ui-radius:14px;--ui-focus:#966eb5}
+:root{--ui-ink:#38203e;--ui-muted:#6e617a;--ui-accent:#75518e;--ui-deep:#471e51;--ui-line:#e9dbed;--ui-surface:#f8f5fb;--ui-radius:14px;--ui-focus:#966eb5}
 body{font-weight:400;color:var(--ui-ink)}
 .body-text{font-weight:400}.feature-card-copy{font-weight:400!important}
 main:before{opacity:.16}
@@ -28,7 +28,7 @@ button:active:not(:disabled){transform:none}
 .nav-link.active{background:transparent;box-shadow:none}
 #lang-toggle{border-radius:10px;border-color:#ffffff29;background:#ffffff06;letter-spacing:0}
 #burger-btn{border-radius:11px;border-color:#ffffff29}
-#mobile-menu{border-top:1px solid #ffffff1c;background:#30213f;box-shadow:0 20px 30px #1c112a20}
+#mobile-menu{border-top:1px solid #ffffff1c;background:#30213f;box-shadow:0 20px 30px #25112a20}
 .mobile-nav-link{border-radius:9px;min-height:44px;align-content:center}
 .mobile-nav-link.active{background:transparent;box-shadow:none}
 /* Action hierarchy, including recently introduced platform actions. */
@@ -91,7 +91,7 @@ button:active:not(:disabled){transform:none}
 .form-card{border-radius:20px;border:1px solid #ddd0e7;background:#fff;box-shadow:0 16px 45px #35204407;backdrop-filter:none}
 .form-panel{padding:clamp(24px,4vw,40px)}
 .form-card h2{color:#382447}
-.text-input{border:1px solid #dbd0e3!important;border-radius:10px!important;background:#fcfafd!important;color:#35213f!important;min-height:48px!important;padding:12px 14px!important;font-size:14px!important;font-weight:400!important;line-height:1.65!important;max-width:100%;transition:background .18s,border-color .18s,box-shadow .18s}
+.text-input{border:1px solid #e1cee5!important;border-radius:10px!important;background:#fcfafd!important;color:#35213f!important;min-height:48px!important;padding:12px 14px!important;font-size:14px!important;font-weight:400!important;line-height:1.65!important;max-width:100%;transition:background .18s,border-color .18s,box-shadow .18s}
 .text-input::placeholder{color:#95839f;opacity:1}
 .text-input:hover{border-color:#b99acb!important}
 .text-input:focus{outline:0;border-color:#946caf!important;box-shadow:0 0 0 3px #946caf19!important;background:#fff!important}
@@ -130,7 +130,7 @@ textarea.text-input{min-height:120px!important;resize:vertical}
 /* Footer and prelaunch information stay readable without competing with the page. */
 .prelaunch-strip{background:#f2edf6;border-top:1px solid #e6dced}
 .prelaunch-copy,.prelaunch-note{font-weight:400;color:#786784;font-size:11px;line-height:1.9}
-#site-footer{background:linear-gradient(130deg,#2b1c41,#30213f);color:#d0c3db}
+#site-footer{background:linear-gradient(130deg,#3a1c41,#30213f);color:#d0c3db}
 .footer-grid{gap:34px;padding-top:48px;padding-bottom:35px}
 .footer-col{gap:10px}.footer-h4{font-size:11px;letter-spacing:.07em;color:#efe6f6;opacity:1;margin-bottom:9px}
 .footer-link,.footer-contact-link{font-size:13px;color:#cabbd6;line-height:1.8}
@@ -144,14 +144,14 @@ textarea.text-input{min-height:120px!important;resize:vertical}
 
 .nv-disclosure[open]>summary:hover .nv-disclosure-toggle{color:#fff}.nv-disclosure>summary:focus-visible{outline:2px solid #966eb5;outline-offset:-4px}
 
-.guide-article-body,.guide-article-intro{font-weight:400;color:#66586f}.guide-toc{border-color:#e5ddeb;border-radius:14px;background:#fcfafd}.guide-toc h2{color:#4b335c}.guide-article-body blockquote{border-inline-start-width:2px;border-color:#a381b8;background:#f6f0fa;color:#71617e}
+.guide-article-body,.guide-article-intro{font-weight:400;color:#66586f}.guide-toc{border-color:#e9dbed;border-radius:14px;background:#fcfafd}.guide-toc h2{color:#4b335c}.guide-article-body blockquote{border-inline-start-width:2px;border-color:#a381b8;background:#f6f0fa;color:#71617e}
 
 .yn-btn,.loc-btn{border-radius:10px!important;min-height:42px;font-size:14px!important}.contact-page>.nv-s-a8cc981c2ca5{border-radius:11px!important}
-.error-page{background:radial-gradient(ellipse at 30% 15%,#75518e30,transparent 60%),#231730}.error-card{border-radius:22px;border-color:#ffffff20;box-shadow:0 25px 65px #140b2240}.error-card h1,.error-card h2{color:#fff}.error-card p{color:#d5c8df}
+.error-page{background:radial-gradient(ellipse at 30% 15%,#75518e30,transparent 60%),#231730}.error-card{border-radius:22px;border-color:#ffffff20;box-shadow:0 25px 65px #1d0b2240}.error-card h1,.error-card h2{color:#fff}.error-card p{color:#d5c8df}
 @media(max-width:1119px){.logo-full{display:block!important;width:clamp(132px,25vw,180px)!important;max-width:100%;height:auto}.logo-mark{display:none!important}}
 @media(max-width:620px){.logo-link{flex:0 0 132px;width:132px;max-width:132px}.logo-full{width:132px!important;max-width:132px!important}.header-inner{padding-inline:14px;gap:12px}.header-actions{gap:10px;min-width:0;margin-inline-start:auto}}
 
-.contact-page .nv-interest-path{display:flex!important;align-items:center;justify-content:space-between;gap:15px;text-align:start!important;background:#fff!important;border:1px solid #e5ddeb!important;border-radius:12px!important;padding:18px 20px!important;font-size:13px!important;color:#6b4a83!important;transition:background .18s,border-color .18s}.contact-page .nv-interest-path:hover{background:#f7f1fb!important;border-color:#b99bcd!important}.nv-interest-arrow{width:18px;height:18px;flex-shrink:0;color:#9c7bb1}[dir=rtl] .nv-interest-arrow{transform:rotate(180deg)}a[data-event=whatsapp_click]{border-radius:11px!important}
+.contact-page .nv-interest-path{display:flex!important;align-items:center;justify-content:space-between;gap:15px;text-align:start!important;background:#fff!important;border:1px solid #e9dbed!important;border-radius:12px!important;padding:18px 20px!important;font-size:13px!important;color:#6b4a83!important;transition:background .18s,border-color .18s}.contact-page .nv-interest-path:hover{background:#f7f1fb!important;border-color:#b99bcd!important}.nv-interest-arrow{width:18px;height:18px;flex-shrink:0;color:#9c7bb1}[dir=rtl] .nv-interest-arrow{transform:rotate(180deg)}a[data-event=whatsapp_click]{border-radius:11px!important}
 
 .nv-field-help{font-size:11px;color:#786486;line-height:1.8;margin-top:8px}.text-input[aria-invalid=true]{border-color:#ac5368!important}.form-panel label[for$="-consent"]{display:block;cursor:pointer}
 

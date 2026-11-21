@@ -322,15 +322,15 @@ ${hasImage ? `<meta content="${escapeHtml(image)}" name="twitter:image">` : ""}
 <link href="/site.webmanifest" rel="manifest">
 ${alternateLinks(alternates, xDefaultRoute)}
 <script type="application/ld+json">${safeJsonLd(enrichDiscoveryGraph(jsonLd, { canonical, alternates: alternates.map(a => ({ url: canonicalFor(a.route) })) }))}</script>
-<link href="/assets/css/site.css?v=20261106-navigation-1" rel="stylesheet">
-<link href="/assets/css/footer-hotfix-20260726.css?v=20261108-social-icons" rel="stylesheet">
-<link href="/assets/css/content-ui-correction-20260727.css" rel="stylesheet">
-<link href="/assets/css/header-cta-contrast-20260727.css?v=20261116-transparent-1" rel="stylesheet">
-<link href="/assets/css/beauty-guide.css?v=phase-1" rel="stylesheet">
-<link href="/assets/css/platform-ui-pearl-header-v3.css?v=contrast-1" rel="stylesheet">
-<link href="/assets/css/form-controls.css?v=20261106-fields-1" rel="stylesheet"/>
+<link href="/assets/css/site.css?v=20261121-mauve-1" rel="stylesheet">
+<link href="/assets/css/footer-hotfix-20260726.css?v=20261121-mauve-1" rel="stylesheet">
+<link href="/assets/css/content-ui-correction-20260727.css?v=20261121-mauve-1" rel="stylesheet">
+<link href="/assets/css/header-cta-contrast-20260727.css?v=20261121-mauve-1" rel="stylesheet">
+<link href="/assets/css/beauty-guide.css?v=20261121-mauve-1" rel="stylesheet">
+<link href="/assets/css/platform-ui-pearl-header-v3.css?v=20261121-mauve-1" rel="stylesheet">
+<link href="/assets/css/form-controls.css?v=20261121-mauve-1" rel="stylesheet"/>
 <link rel="describedby" href="/llms.txt" type="text/plain" title="NayVella | نيفلا">
-<link href="/assets/css/editorial.css?v=20261116-header-overlay-1" rel="stylesheet"/>
+<link href="/assets/css/editorial.css?v=20261121-mauve-1" rel="stylesheet"/>
 </head>`;
 }
 
