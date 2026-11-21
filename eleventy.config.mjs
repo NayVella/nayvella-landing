@@ -7,6 +7,7 @@ export default function (eleventyConfig) {
     "404.html",
     "favicon.png",
     "index.html",
+    "en.html",
     "llms.txt",
     "robots.txt",
     "site.webmanifest",

@@ -63,7 +63,7 @@ const copy = {
     infoCtaTitle: "تعرّفي أكثر على نيفلا",
     infoCtaText: "اكتشفي كيف تجمع نيفلا المعلومات والخدمات المتخصصة في تجربة واحدة.",
     infoCtaLink: "اكتشفي نيفلا",
-    prelaunch: "نيفلا حالياً في مرحلة التطوير والاستعداد للإطلاق — تسجيل الاهتمام لا يعني قبولاً نهائياً أو إنشاء حساب مفعّل.",
+    prelaunch: "تستكمل نيفلا مراحل التطوير والتكامل والاختبارات التشغيلية استعدادًا للإطلاق. ولا يعني تسجيل الاهتمام قبولًا نهائيًا أو إنشاء حساب مفعّل.",
     disclaimer: "نيفلا منصة تقنية. أي معلومات متعلقة بالجمال أو العناية بالبشرة تُعرض في هذا الموقع هي لأغراض معلوماتية عامة ولا تغني عن الاستشارة المتخصصة عند الحاجة.",
     brand: "نيفلا — من شركة ميريديان جلو",
     location: "الرياض، المملكة العربية السعودية",
@@ -118,7 +118,7 @@ const copy = {
     infoCtaTitle: "Learn more about NayVella",
     infoCtaText: "Discover how NayVella brings information and specialist services into one experience.",
     infoCtaLink: "Discover NayVella",
-    prelaunch: "NayVella is currently in development and preparing for launch — registering interest does not constitute final acceptance or an active account.",
+    prelaunch: "NayVella continues its development, integration, and operational testing in preparation for launch. Registering interest does not constitute final acceptance or an active account.",
     disclaimer: "NayVella is a technology platform. Any beauty or skincare information shown on this website is for general informational purposes and does not replace professional advice where applicable.",
     brand: "NayVella — By Meridian Glow Company",
     location: "Riyadh, Saudi Arabia",
@@ -189,10 +189,14 @@ function styledGuideHeading(title, locale, key) {
   return `${before}<em class="editorial-heading-accent">${escapeHtml(accent)}</em>${after}`;
 }
 
+function homepageRoute(locale) {
+  return locale === "ar" ? "/" : "/en";
+}
+
 function navItems(locale) {
   const t = copy[locale];
   return [
-    [t.home, `/${locale}/`],
+    [t.home, homepageRoute(locale)],
     [t.customers, `/${locale}/customers/`],
     [t.merchants, `/${locale}/merchants/`],
     [t.clinics, `/${locale}/clinics-doctors/`],
@@ -212,9 +216,9 @@ function header(locale, languageRoute) {
 
   return `<header id="site-header">
 <div class="header-inner">
-<a aria-label="NayVella" class="logo-link nav-btn" href="/${locale}/">
-<img alt="NayVella — Curated Beauty. Smarter Choices." class="logo-full" decoding="async" fetchpriority="high" height="528" src="/assets/images/nayvella-logo-primary-tagline-white.svg" width="2000">
-<img alt="NayVella — Curated Beauty. Smarter Choices." class="logo-mark" decoding="async" height="322" src="/assets/images/nayvella-logo-symbol-white.svg" width="259">
+<a aria-label="NayVella" class="logo-link nav-btn" href="${homepageRoute(locale)}">
+<img alt="${locale === "ar" ? "شعار نيفلا — جمال مختار. خيارات أذكى." : "NayVella logo — Curated Beauty. Smarter Choices."}" class="logo-full" decoding="async" fetchpriority="high" height="528" src="/assets/images/nayvella-logo-primary-tagline-white.svg" width="2000">
+<img alt="${locale === "ar" ? "شعار نيفلا" : "NayVella logo"}" class="logo-mark" decoding="async" height="322" src="/assets/images/nayvella-logo-symbol-white.svg" width="259">
 </a>
 <nav aria-label="${escapeHtml(t.navLabel)}" class="main-nav header-nav">${desktop}</nav>
 <div class="header-actions">
@@ -250,7 +254,7 @@ function footer(locale) {
 <footer id="site-footer">
 <div class="footer-grid">
 <div class="footer-col nv-s-583653abaf86">
-<span class="nv-s-ec18faa33cae"><img alt="NayVella — Curated Beauty. Smarter Choices." class="nv-s-c0476160adac" decoding="async" height="692" loading="lazy" src="/assets/images/nayvella-brand-banner.png" width="2579"></span>
+<span class="nv-s-ec18faa33cae"><img alt="${locale === "ar" ? "شعار نيفلا — جمال مختار. خيارات أذكى." : "NayVella logo — Curated Beauty. Smarter Choices."}" class="nv-s-c0476160adac" decoding="async" height="692" loading="lazy" src="/assets/images/nayvella-brand-banner.png" width="2579"></span>
 <p class="body-text footer-brand-copy"><span>${escapeHtml(t.brand)}</span><br><span>${escapeHtml(t.location)}</span></p>
 ${locale === "ar" ? arSocialFooter : enSocialFooter}
 </div>
@@ -264,8 +268,8 @@ ${locale === "ar" ? arSocialFooter : enSocialFooter}
 </div>
 <div class="footer-col">
 <p class="disp-font footer-h4"><span>${escapeHtml(t.getInTouch)}</span></p>
-<a class="footer-contact-link" dir="ltr" href="mailto:hello@meridianglow.sa" rel="noopener">hello@meridianglow.sa</a>
-<a class="footer-contact-link" dir="ltr" href="mailto:partnerships@meridianglow.sa" rel="noopener">partnerships@meridianglow.sa</a>
+<a class="footer-contact-link" dir="ltr" href="mailto:hello@meridianglow.sa" rel="noopener"><bdi dir="${locale === "ar" ? "rtl" : "ltr"}">${locale === "ar" ? "الاستفسارات العامة" : "General enquiries"}</bdi> · hello@meridianglow.sa</a>
+<a class="footer-contact-link" dir="ltr" href="mailto:partnerships@meridianglow.sa" rel="noopener"><bdi dir="${locale === "ar" ? "rtl" : "ltr"}">${locale === "ar" ? "الشراكات" : "Partnerships"}</bdi> · partnerships@meridianglow.sa</a>
 <a class="footer-contact-link" dir="ltr" href="tel:+966114509803" rel="noopener">+966 11 450 9803</a>
 <a class="footer-contact-link" dir="ltr" href="tel:+966504111020">+966 50 411 1020</a>
 </div>
@@ -343,7 +347,7 @@ ${headHtml}
 ${header(locale, languageRoute)}
 <main id="main-content" tabindex="-1">${mainHtml}</main>
 ${footer(locale)}
-<script defer src="/assets/js/navigation-hotfix-20260726.js?v=20261121-navigation-2"></script><script defer src="/assets/js/site.js?v=20261116-header-glass-1"></script>
+<script defer src="/assets/js/navigation-hotfix-20260726.js?v=20261121-navigation-2"></script><script defer src="/assets/js/site.js?v=20261121-form-copy-1"></script>
 </body>
 </html>`;
 }
@@ -394,7 +398,7 @@ export function renderGuideHome(locale, guideData) {
   const featured = localeArticles.filter((article) => article.is_featured);
   const latest = [...localeArticles].sort((a, b) => b.translation_group_id.localeCompare(a.translation_group_id)).slice(0, 6);
   const seasonal = localeArticles.find((article) => article.is_seasonal_featured);
-  const breadcrumbItems = [{ name: t.home, route: `/${locale}/` }, { name: meta.h1, route }];
+  const breadcrumbItems = [{ name: t.home, route: homepageRoute(locale) }, { name: meta.h1, route }];
   const graph = {
     "@context": "https://schema.org",
     "@graph": [
@@ -445,7 +449,7 @@ export function renderCategoryPage(page, guideData) {
     || null;
   const others = pillar ? articles.filter((article) => article.id !== pillar.id) : articles;
   const title = `${meta.h1} | ${locale === "ar" ? "دليل نيفلا" : "NayVella Guide"}`;
-  const breadcrumbItems = [{ name: t.home, route: `/${locale}/` }, { name: t.guide, route: guideRoute(locale) }, { name: meta.h1, route }];
+  const breadcrumbItems = [{ name: t.home, route: homepageRoute(locale) }, { name: t.guide, route: guideRoute(locale) }, { name: meta.h1, route }];
   const graph = {
     "@context": "https://schema.org",
     "@graph": [
@@ -497,7 +501,7 @@ export function renderArticlePage(article, guideData) {
   const { introHtml, bodyHtml, toc } = renderArticleMarkdown(article, guideData);
   const related = article.related_article_ids.map((id) => guideData.resolveLocalized(id, locale, true)).filter(Boolean);
   const breadcrumbItems = [
-    { name: t.home, route: `/${locale}/` },
+    { name: t.home, route: homepageRoute(locale) },
     { name: t.guide, route: guideRoute(locale) },
     { name: categoryMeta.name, route: categoryRoute(locale, article.category) },
     { name: article.title, route: article.route }

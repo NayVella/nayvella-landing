@@ -30,7 +30,7 @@ export function escapeXml(value = "") {
 }
 
 export function canonicalFor(route) {
-  if (!route?.startsWith("/") || !route.endsWith("/")) {
+  if (route !== "/en" && (!route?.startsWith("/") || !route.endsWith("/"))) {
     throw new Error(`Cannot generate canonical for invalid route: ${route}`);
   }
   return `${CANONICAL_ORIGIN}${route}`;
@@ -55,6 +55,7 @@ export function outputPathForRoute(route) {
 export function routeForOutputFile(filePath) {
   const relative = path.relative(OUTPUT_ROOT, filePath).split(path.sep).join("/");
   if (relative === "index.html") return "/";
+  if (relative === "en.html") return "/en";
   if (relative.endsWith("/index.html")) return `/${relative.slice(0, -"index.html".length)}`;
   return `/${relative}`;
 }

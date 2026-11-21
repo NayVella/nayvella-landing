@@ -7,7 +7,7 @@ const root = path.resolve(process.argv[2] || '_site'), origin = 'https://nayvell
 const walk = d => fs.readdirSync(d, {withFileTypes:true}).flatMap(e => e.isDirectory() ? walk(path.join(d,e.name)) : [path.join(d,e.name)]);
 const attrs = tag => Object.fromEntries([...tag.matchAll(/([\w:-]+)\s*=\s*["']([^"']*)["']/g)].map(m => [m[1],m[2]]));
 const tags = (s,t) => [...s.matchAll(new RegExp(`<${t}\\b[^>]*>`, 'gi'))].map(m => attrs(m[0]));
-const exists = url => { const p = new URL(url,origin).pathname;return fs.existsSync(path.join(root,p,p.endsWith('/')?'index.html':'')); };
+const exists = url => { const p = new URL(url,origin).pathname; return fs.existsSync(path.join(root, p === '/en' ? 'en.html' : p, p.endsWith('/') ? 'index.html' : '')); };
 const rules=[];
 for(const line of fs.readFileSync(path.join(root,'_headers'),'utf8').split(/\r?\n/)) {
  if(!line.trim()||line.trim().startsWith('#'))continue;
@@ -22,9 +22,9 @@ const headers = route => {
  }return out;
 };
 const pages = new Map();let assetReferences=0,translationLinks=0,faqQuestions=0;
-for(const file of walk(root).filter(f=>/\/(ar|en)\/.*index\.html$/.test(f))) {
- const html=fs.readFileSync(file,'utf8'),route='/'+path.relative(root,file).split(path.sep).join('/').replace(/index\.html$/,'');
- const lang=route.startsWith('/ar/')?'ar-SA':'en',dir=lang==='en'?'ltr':'rtl';
+for(const file of walk(root).filter(f => /\/(ar|en)\/.*index\.html$/.test(f) || [path.join(root, 'index.html'), path.join(root, 'en.html')].includes(f))) {
+ const html=fs.readFileSync(file,'utf8'),route='/'+path.relative(root,file).split(path.sep).join('/').replace(/index\.html$/,'').replace(/^en\.html$/, 'en');
+ const lang=route === '/' || route.startsWith('/ar/')?'ar-SA':'en',dir=lang==='en'?'ltr':'rtl';
  const h=tags(html,'html')[0];assert.equal(h.lang,lang,route+' lang');assert.equal(h.dir,dir,route+' dir');
  const links=tags(html,'link'),canonical=links.filter(a=>a.rel==='canonical');assert.equal(canonical.length,1);assert.equal(canonical[0].href,origin+route);
  const descriptions=tags(html,'meta').filter(a=>a.name==='description');assert.equal(descriptions.length,1);assert.ok(descriptions[0].content);

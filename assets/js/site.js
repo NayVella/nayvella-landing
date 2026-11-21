@@ -6,16 +6,16 @@
   const lang = document.documentElement.lang.startsWith('ar') ? 'ar' : 'en';
   const text = {
     ar: {
-      unavailable: 'تسجيل الاهتمام غير متاح مؤقتًا لأن التحقق الأمني لم يكتمل. أعد تحميل الصفحة أو تواصل مع الفريق.',
-      network: 'تعذر إرسال الطلب حالياً. حاول مرة أخرى.',
+      unavailable: 'تعذّر تشغيل النموذج. جرّب تحديث الصفحة أو راسلنا عبر البريد أدناه.',
+      network: 'تعذر إرسال الطلب حاليًا. حاول مرة أخرى.',
       duplicate: 'سبق تسجيل هذا البريد لهذه الفئة خلال آخر 24 ساعة.',
-      rate: 'تم تجاوز عدد المحاولات المسموح. حاول لاحقاً.',
+      rate: 'تم تجاوز عدد المحاولات المسموح. حاول لاحقًا.',
       turnstile: 'أكمل التحقق الأمني ثم أعد المحاولة.',
       invalid: 'يرجى مراجعة البيانات المطلوبة.',
       sending: 'جارٍ إرسال الطلب بأمان…'
     },
     en: {
-      unavailable: 'Registration is temporarily unavailable because the security check could not load. Reload the page or contact the team.',
+      unavailable: 'The form could not load. Try refreshing the page or email us using the address below.',
       network: 'The request could not be submitted. Please try again.',
       duplicate: 'This email has already been registered for this category within the last 24 hours.',
       rate: 'Too many attempts. Please try again later.',
@@ -216,7 +216,10 @@
   // Cloudflare Turnstile public configuration is injected by a same-origin endpoint.
   const turnstileTokens = new WeakMap();
   const turnstileWidgetIds = new WeakMap();
-  let turnstileConfigured = false;
+  function showFormUnavailable(form) {
+    const status = form?.querySelector('.form-status');
+    if (status) status.textContent = text.unavailable;
+  }
 
   async function fetchWithTimeout(url, options = {}) {
     const controller = new AbortController();
@@ -254,31 +257,36 @@
       headers: { Accept: 'application/json' },
       credentials: 'same-origin'
     });
-    if (!response.ok) return;
+    if (!response.ok) throw new Error('security_check_unavailable');
     const config = await response.json();
     const siteKey = String(config.turnstileSiteKey || '').trim();
-    if (!config.turnstileEnabled || !siteKey) return;
+    if (!config.turnstileEnabled || !siteKey) throw new Error('security_check_unavailable');
     await loadTurnstileScript();
+    if (!window.turnstile) throw new Error('security_check_unavailable');
     slots.forEach((slot) => {
       const form = slot.closest('form');
-      if (!form || !window.turnstile) return;
+      if (!form) return;
       const widgetId = window.turnstile.render(slot, {
         sitekey: siteKey,
         theme: 'light',
         callback: (token) => {
           turnstileTokens.set(form, token);
           const status = form.querySelector('.form-status');
-          if (status?.textContent === text.turnstile) status.textContent = '';
+          if (status && [text.turnstile, text.unavailable].includes(status.textContent)) status.textContent = '';
         },
         'expired-callback': () => turnstileTokens.delete(form),
-        'error-callback': () => turnstileTokens.delete(form)
+        'error-callback': () => {
+          turnstileTokens.delete(form);
+          showFormUnavailable(form);
+        }
       });
       turnstileWidgetIds.set(form, widgetId);
     });
-    turnstileConfigured = true;
   }
 
-  const turnstileInitialization = initializeTurnstile().catch(() => undefined);
+  const turnstileInitialization = initializeTurnstile().catch(() => {
+    $$('.turnstile-slot').forEach(slot => showFormUnavailable(slot.closest('form')));
+  });
 
   const segmentMap = {
     customer: 'customer_lead',
@@ -384,8 +392,8 @@
       if (status) status.textContent = text.sending;
       try {
         await turnstileInitialization;
-        if (!turnstileConfigured) {
-          if (status) status.textContent = text.unavailable;
+        if (!turnstileWidgetIds.has(form)) {
+          showFormUnavailable(form);
           return;
         }
         if (!turnstileTokens.get(form)) {

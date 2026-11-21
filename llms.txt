@@ -10,14 +10,14 @@ Available now: this Arabic/English informational website, educational beauty and
 
 Planned capabilities include skin insights, virtual try-on, product discovery, beauty profiles, routines and connections with professionals. Interactive previews and catalogue data are illustrative simulations, not real analysis, diagnosis, live offers, purchases or confirmed appointments. Educational content does not replace professional advice.
 
-Arabic pages use /ar/; English pages use /en/. Refer to the relevant page for current details and cite it directly. يُرجع للصفحة المعنية للتحقق من التفاصيل الحالية؛ لا يُفهم ذكر قدرة مخططة على أنها خدمة مفعّلة.
+The Arabic homepage is at / and the English homepage is at /en. Subpages use /ar/ and /en/ respectively. Refer to the relevant page for current details and cite it directly. يُرجع للصفحة المعنية للتحقق من التفاصيل الحالية؛ لا يُفهم ذكر قدرة مخططة على أنها خدمة مفعّلة.
 
 سياسة الزحف واستخدام المحتوى تحددها الإشارات الحالية في /robots.txt؛ هذا الدليل لا يمنح إذنًا إضافيًا للتدريب. Existing /robots.txt signals govern crawling and content use; this guide grants no additional training permission.
 
 ## Platform overview | التعريف بالمنصة
 
-- [الرئيسية — العربية](https://nayvella.com/ar/): التعريف بنيفلا ومسارات المنصة المخططة.
-- [Home — English](https://nayvella.com/en/): Platform overview and planned audience journeys.
+- [الرئيسية — العربية](https://nayvella.com/): التعريف بنيفلا ومسارات المنصة المخططة.
+- [Home — English](https://nayvella.com/en): Platform overview and planned audience journeys.
 
 ## Audience journeys | مسارات الفئات والمحاكاة
 

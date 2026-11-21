@@ -101,9 +101,7 @@ export async function verifyBuild(explicitMode) {
   const errors = [];
   const allFiles = await walk(OUTPUT_ROOT);
   const allOutputRoutes = new Set(allFiles.map((file) => {
-    const relative = path.relative(OUTPUT_ROOT, file).split(path.sep).join("/");
-    if (relative.endsWith("index.html")) return routeForOutputFile(file);
-    return `/${relative}`;
+    return routeForOutputFile(file);
   }));
   const guideHtmlFiles = allFiles.filter((file) => file.endsWith("index.html") && routeForOutputFile(file).includes("/beauty-guide/"));
   const expectedGuideRoutes = new Set([
@@ -118,7 +116,7 @@ export async function verifyBuild(explicitMode) {
   const outputHeaders = await readFile(path.join(OUTPUT_ROOT, "_headers"), "utf8");
   const headerRules = parseHeaderRules(outputHeaders);
   const sourceRules = parseHeaderRules(sourceHeaders);
-  const globalPolicy = headersForRoute(sourceRules, "/ar/").get("content-security-policy");
+  const globalPolicy = headersForRoute(sourceRules, "/").get("content-security-policy");
   const basePolicy = stripHashes(globalPolicy);
   assert(headerRules.length <= 100, `_headers has ${headerRules.length} rules; Cloudflare maximum is 100`, errors);
   for (const line of outputHeaders.split(/\r?\n/)) {
@@ -187,6 +185,16 @@ export async function verifyBuild(explicitMode) {
     }
   }
 
+  for (const [relative, route, language] of [["index.html", "/", "ar"], ["en.html", "/en", "en"]]) {
+    const html = await readFile(path.join(OUTPUT_ROOT, relative), "utf8");
+    assert(html === await readFile(path.join(ROOT, relative), "utf8"), `${relative}: homepage changed during passthrough`, errors);
+    assert(html.includes(`href="${CANONICAL_ORIGIN}${route}" rel="canonical"`), `${relative}: homepage canonical mismatch`, errors);
+    assert(html.includes(`id="lang-toggle"`) && new RegExp(`href="${language === "ar" ? "/en" : "/"}" id="lang-toggle"`).test(html), `${relative}: homepage language switch mismatch`, errors);
+    const hash = sha256Source(extractJsonLdBlocks(html)[0]);
+    assert(headersForRoute(headerRules, route).get("content-security-policy")?.includes(hash), `${relative}: homepage CSP hash missing`, errors);
+  }
+  assert(!allOutputRoutes.has("/ar/") && !allOutputRoutes.has("/en/"), "Redirects must not also serve homepage documents", errors);
+
   const sitemap = await readFile(path.join(OUTPUT_ROOT, "sitemap.xml"), "utf8");
   const sitemapLocs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
   assert(sitemapLocs.length === 20 + 2 + 10 + guideData.publishedArticles.length, `Sitemap URL count is ${sitemapLocs.length}; expected ${20 + 2 + 10 + guideData.publishedArticles.length}`, errors);
@@ -196,7 +204,13 @@ export async function verifyBuild(explicitMode) {
   assert(!/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/.test(sitemap) || guideData.publishedArticles.some((article) => article.published_at || article.updated_at), "Sitemap invented a lastmod date", errors);
 
   const redirects = await readFile(path.join(OUTPUT_ROOT, "_redirects"), "utf8");
-  assert(redirects.split(/\r?\n/).includes("/ /ar/ 302"), "Generated redirects changed the root redirect", errors);
+  for (const redirect of ["/ar / 301", "/ar/ / 301", "/en/ /en 301"]) {
+    assert(redirects.split(/\r?\n/).includes(redirect), `Missing generated homepage redirect: ${redirect}`, errors);
+  }
+  for (const route of ["/", "/en"]) {
+    assert(sitemapLocs.includes(CANONICAL_ORIGIN + route), `Sitemap missing homepage ${route}`, errors);
+  }
+  assert(!sitemapLocs.some(url => ["/ar", "/ar/", "/en/"].some(route => CANONICAL_ORIGIN + route === url)), "Sitemap includes a homepage redirect", errors);
   for (const article of guideData.publishedArticles) {
     for (const previous of guideData.routeLock[article.id].previous) {
       assert(redirects.split(/\r?\n/).includes(`${previous} ${article.route} 301`), `Missing historical 301 ${previous}`, errors);

@@ -57,10 +57,10 @@ async function generateHeaders() {
   let source = (await readFile(sourcePath, "utf8")).trimEnd();
   const globalPolicy = globalPolicyFromHeaders(source);
   const basePolicy = stripHashes(globalPolicy);
-  const allHtml = (await walk(OUTPUT_ROOT)).filter((file) => file.endsWith("index.html"));
+  const allHtml = (await walk(OUTPUT_ROOT)).filter((file) => file.endsWith("index.html") || file === path.join(OUTPUT_ROOT, "en.html"));
   const legacyHtml = allHtml.filter((file) => {
     const route = routeForOutputFile(file);
-    return /^\/(?:ar|en)\/(?:$|[^/]+\/$)/.test(route) && !route.includes("/beauty-guide/");
+    return route === "/" || route === "/en" || /^\/(?:ar|en)\/(?:$|[^/]+\/$)/.test(route) && !route.includes("/beauty-guide/");
   });
   const legacyHashes = await jsonLdHashesForFiles(legacyHtml);
   if (legacyHtml.length !== 20) throw new Error(`Expected 20 legacy canonical pages, found ${legacyHtml.length}`);
@@ -119,7 +119,9 @@ export async function bundleEditorialStyles() {
   const bundles = new Map();
   for (const locale of LOCALES) {
     for (const route of routes) {
-      const page = path.join(OUTPUT_ROOT, locale, route, "index.html");
+      const page = route
+        ? path.join(OUTPUT_ROOT, locale, route, "index.html")
+        : path.join(OUTPUT_ROOT, locale === "ar" ? "index.html" : "en.html");
       const html = await readFile(page, "utf8");
       const sheets = [...html.matchAll(stylesheets)].map(match => match[1]);
       if (sheets.length < 2 || sheets.at(-1) !== "/assets/css/editorial.css") {

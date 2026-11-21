@@ -6,7 +6,7 @@
     "title": "Understand. Explore. Make it yours.",
     "intro": "A beauty platform that connects skin insights, virtual try-on, personalised discovery and professional care — in one continuous journey, on the web and in the app.",
     "notice": "Interactive platform simulation",
-    "disclaimer": "Explore original, fictional scenarios. No real skin analysis, camera access, medical diagnosis, product offers or appointment booking. Selections stay in this page only.",
+    "disclaimer": "Explore fictional examples. No real skin analysis, camera access, medical diagnosis, product offers or appointment booking. Selections stay in this page only.",
     "nav": [
       "My beauty space",
       "Skin intelligence",
@@ -269,7 +269,7 @@
     "ecosystemCopy": [
       "Bring goals, skin preferences, sample reports and routines into a coherent personal context.",
       "Skincare, makeup, haircare, fragrance, bath and body, tools, accessories and sets — alongside professional services.",
-      "Keep favourite products, virtual shades and discovery choices close to the next step.",
+      "Save your favourite products and the shades you tried virtually so you can return to them whenever you like.",
       "Consultation context, routine review, order journeys and support form part of the wider planned experience."
     ],
     "heroTitle": "Beauty intelligence. Connected to you.",
@@ -283,7 +283,7 @@
     "title": "افهم احتياجك. جرّب خياراتك. اصنع تجربتك.",
     "intro": "منصة جمال تربط فهم البشرة والتجربة الافتراضية والاكتشاف المخصص والرعاية المتخصصة في رحلة واحدة متصلة عبر الويب والتطبيق.",
     "notice": "محاكاة تفاعلية للمنصة",
-    "disclaimer": "استكشف سيناريوهات أصلية افتراضية، دون تحليل فعلي للبشرة أو تشغيل الكاميرا أو تشخيص طبي أو عروض منتجات أو حجز مواعيد. تبقى الاختيارات داخل هذه الصفحة فقط.",
+    "disclaimer": "استكشف أمثلة افتراضية، دون تحليل فعلي للبشرة أو تشغيل الكاميرا أو تشخيص طبي أو عروض منتجات أو حجز مواعيد. تبقى الاختيارات داخل هذه الصفحة فقط.",
     "nav": [
       "مساحة جمالي",
       "ذكاء البشرة",
@@ -546,7 +546,7 @@
     "ecosystemCopy": [
       "اجمع الأهداف وتفضيلات البشرة والتقارير والروتين ضمن سياق شخصي واحد.",
       "العناية بالبشرة والمكياج والشعر والعطور والجسم والأدوات والإكسسوارات والأطقم، إلى جانب الخدمات المهنية.",
-      "احتفظ بالمنتجات المفضلة والدرجات الافتراضية واختيارات الاكتشاف قريبًا من خطوتك التالية.",
+      "احتفظ بمنتجاتك المفضلة ودرجات الألوان التي جرّبتها افتراضيًا، لتعود إليها متى شئت.",
       "سياق الاستشارة ومراجعة الروتين ورحلة الطلبات والدعم أجزاء من التجربة الأوسع المخططة."
     ],
     "heroTitle": "ذكاء للجمال. وتجربة تنطلق منك.",

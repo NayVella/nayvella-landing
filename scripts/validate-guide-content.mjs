@@ -70,7 +70,7 @@ async function existingCanonicalRoutes() {
         }
       }
     }
-    routes.push(`/${locale}/`);
+    routes.push(locale === "ar" ? "/" : "/en");
   }
   return routes.sort();
 }
@@ -285,7 +285,9 @@ export async function validateGuideContent(explicitMode) {
   }
   for (const gap of routeHistoryGaps(routeLock, committedHistory)) errors.push(gap);
 
-  assert(redirectsSource.split(/\r?\n/).includes("/ /ar/ 302"), "Existing root redirect must remain exactly / /ar/ 302", errors);
+  for (const redirect of ["/ar / 301", "/ar/ / 301", "/en/ /en 301"]) {
+    assert(redirectsSource.split(/\r?\n/).includes(redirect), `Missing homepage redirect: ${redirect}`, errors);
+  }
 
   const stateFixtures = [
     { status: "Published" },
