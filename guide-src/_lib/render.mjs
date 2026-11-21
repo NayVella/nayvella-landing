@@ -330,7 +330,7 @@ ${alternateLinks(alternates, xDefaultRoute)}
 <link href="/assets/css/platform-ui-pearl-header-v3.css?v=20261121-mauve-1" rel="stylesheet">
 <link href="/assets/css/form-controls.css?v=20261121-mauve-1" rel="stylesheet"/>
 <link rel="describedby" href="/llms.txt" type="text/plain" title="NayVella | نيفلا">
-<link href="/assets/css/editorial.css?v=20261121-mauve-1" rel="stylesheet"/>
+<link href="/assets/css/editorial.css?v=20261121-guide-mobile-1" rel="stylesheet"/>
 </head>`;
 }
 

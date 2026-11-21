@@ -715,7 +715,10 @@
   #main-content .editorial-role--beauty-experts { --hero-image: url("/assets/images/editorial/beauty-experts-400.webp"); }
   #main-content .pp-theme-clinic.editorial-image-hero { --hero-image: url("/assets/images/editorial/clinics-doctors-640.webp"); }
   #main-content .pp-theme-merchant.editorial-image-hero { --hero-image: url("/assets/images/demo-products/cream-v3-320.webp"); }
-  #main-content .guide-hero--editorial { --hero-image: url("/assets/images/demo-products/kit-v3-320.webp"); }
+  #main-content .guide-hero--editorial {
+    --hero-image: url("/assets/images/demo-products/kit-v3-320.webp");
+    padding-block-end: calc(var(--hero-mobile-photo-height) + 16px);
+  }
 }
 
 .prelaunch-strip :is(.prelaunch-copy, .prelaunch-note) { color: #64536e; }
