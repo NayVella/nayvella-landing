@@ -2,14 +2,14 @@
 
 - Public site: https://nayvella.com/
 - Cloudflare Pages project: `nayvella-landing`, production branch `main`
-- Published deployment: `ee0cf2f2-0d9a-4e53-9068-3b8ce29bdd2d`
-- Deployment URL: https://ee0cf2f2.nayvella-landing.pages.dev/
+- Published deployment: `2ad01abc-2c74-40bf-b835-7cb92d2a2efb`
+- Deployment URL: https://2ad01abc.nayvella-landing.pages.dev/
 - Riyadh release date: 2026-11-21
-- Published source commit: `bac0fc57d70d6f95bf496994063aa794e787bb2e`
-- Release tag: `production/2026-11-21-ee0cf2f2`
-- Local archive: `backups/2026-11-21-ee0cf2f2/NayVella-Production-2026-11-21-ee0cf2f2.tar.gz`
-- External recovery location: `Meridian Glow-MacBook Air/NayVella Production Backups/2026-11-21-ee0cf2f2`
-- Previous production deployment: `2f3098e3-6ede-4950-9f6d-5434f500c5bd` (Git `65b00c2`)
+- Published source commit: `d6627f7d666980ad5485917b31e91b3127a997fe`
+- Release tag: `production/2026-11-21-2ad01abc`
+- Local archive: `backups/2026-11-21-2ad01abc/NayVella-Production-2026-11-21-2ad01abc.tar.gz`
+- External recovery location: `Meridian Glow-MacBook Air/NayVella Production Backups/2026-11-21-2ad01abc`
+- Previous production deployment: `ee0cf2f2-0d9a-4e53-9068-3b8ce29bdd2d` (Git `bac0fc5`)
 
 The release tag identifies the exact source used to build production. This
 reference document is recorded in a documentation-only commit after deployment.
