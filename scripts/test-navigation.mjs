@@ -14,7 +14,7 @@ function browser({ hash = '', saved = null, blocked = false } = {}) {
     sessionStorage: { getItem: () => { if (blocked) throw Error('blocked'); return JSON.stringify(saved); }, removeItem() {} },
     document: {
       fonts: { ready: Promise.resolve() },
-      querySelector: selector => selector.includes('header-inner') ? { offsetHeight: 68 } : null,
+      querySelector: selector => selector === '#site-header' ? { offsetHeight: 68 } : null,
       querySelectorAll: selector => selector.startsWith('main [id]') ? [anchor] : [],
       getElementById: id => id === 'section' ? anchor : null,
       addEventListener: (name, fn) => { (documentEvents[name] ||= []).push(fn); }
@@ -63,7 +63,7 @@ test('a shrinking accordion keeps its clicked control at the same viewport posit
     getClientRects: () => [1], getBoundingClientRect: () => ({ top }) };
   const event = { target: { closest: () => control }, defaultPrevented: false };
   page.context.scrollY = 500;
-  page.documentEvents.click[1](event);
+  page.documentEvents.click.at(-1)(event);
   top = 180;
   page.frames.shift()();
   assert.equal(page.context.scrollY, 380);
@@ -81,4 +81,29 @@ test('incomplete or future language records cannot break ordinary page entry', a
 test('an obsolete language selector falls back to the matching section', async () => {
   const page=browser({saved:{target:'/en/',time:Date.now(),position:{selector:'obsolete',id:'section',offset:23,top:100},tabs:[],details:[]}});
   await page.show(); assert.equal(page.context.scrollY,393);
+});
+
+test('a language change from the page top stays at the top even when an anchor resolves', async () => {
+  const page = browser({ saved: { target: '/en/', time: Date.now(), position: { id: 'section', top: 0, offset: 40 } } });
+  await page.show();
+  assert.equal(page.context.scrollY, 0);
+});
+
+test('language handoff preserves reading progress through rewrapped content', async () => {
+  const page = browser({ saved: { target: '/en/', time: Date.now(), position: { id: 'section', top: 120, offset: -30, progress: 0.25 } } });
+  // The equivalent block is 400px tall on this page.
+  page.context.document.getElementById('section').getBoundingClientRect = () => ({
+    top: 500 - page.context.scrollY, bottom: 900 - page.context.scrollY, height: 400
+  });
+  await page.show();
+  assert.equal(page.context.scrollY, 516);
+});
+
+test('back-forward and same-document fragment navigation use the sticky-header offset', async () => {
+  const page = browser({ hash: '#section' });
+  await page.show(true);
+  assert.equal(page.context.scrollY, 416);
+  page.context.scrollY = 700;
+  page.events.hashchange();
+  assert.equal(page.context.scrollY, 416);
 });

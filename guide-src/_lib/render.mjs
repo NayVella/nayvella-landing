@@ -343,7 +343,7 @@ ${headHtml}
 ${header(locale, languageRoute)}
 <main id="main-content" tabindex="-1">${mainHtml}</main>
 ${footer(locale)}
-<script defer src="/assets/js/navigation-hotfix-20260726.js?v=20261106-navigation-1"></script><script defer src="/assets/js/site.js?v=20261116-header-glass-1"></script>
+<script defer src="/assets/js/navigation-hotfix-20260726.js?v=20261121-navigation-2"></script><script defer src="/assets/js/site.js?v=20261116-header-glass-1"></script>
 </body>
 </html>`;
 }
