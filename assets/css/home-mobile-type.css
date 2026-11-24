@@ -1,0 +1,17 @@
+/* On the Arabic homepage, let light and semibold text on phones share
+   the regular and bold Lama Sans files already needed by the opening screen. */
+@media (max-width: 760px) {
+  @font-face {
+    font-family: "Lama Sans";
+    src: url("/assets/fonts/font-4e7545c621bd.woff2") format("woff2");
+    font-weight: 300;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Lama Sans";
+    src: url("/assets/fonts/font-56acb238c5e1.woff2") format("woff2");
+    font-weight: 600;
+    font-display: swap;
+  }
+}
