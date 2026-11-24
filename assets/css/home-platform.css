@@ -13,3 +13,17 @@
 @media(max-width:760px){.hp-hero{padding:40px 22px 55px}.hp-hero-inner{grid-template-columns:1fr;gap:28px}.hp-hero h1{font-size:36px;letter-spacing:-.8px}.hp-hero-description{font-size:16px}.hp-hero-visual{max-width:390px;padding:15px 34px 25px}.hp-hero-actions{gap:18px;margin:24px 0}.hp-hero-note{margin-top:20px}.hp-floating--look{top:22%}.hp-floating--care{bottom:0}.hp-floating{max-width:175px}.hp-platform-section{padding:50px 20px}.hp-section-heading{grid-template-columns:1fr;gap:20px;margin-bottom:26px}.hp-section-heading h2{font-size:31px}.hp-section-heading>div>p:last-child{font-size:14px}.hp-feature-tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.hp-feature-tabs button:last-child{grid-column:1/-1;display:grid;grid-template-columns:40px 1fr;column-gap:12px}.hp-feature-tabs button:last-child .hp-tab-top{grid-row:1/3;margin:0}.hp-feature-tabs button:last-child .hp-tab-top bdi{display:none}.hp-tab-top{margin-bottom:10px}.hp-feature-tabs small{font-size:10px}.hp-feature-panel{grid-template-columns:1fr;border-radius:18px;min-height:0}.hp-feature-copy{padding:28px 24px}.hp-feature-copy h3{font-size:25px}.hp-feature-copy>p{font-size:14px}.hp-feature-copy ul{margin:22px 0}.hp-feature-copy .hp-action{font-size:12px;width:100%;padding:13px 10px}.hp-feature-visual{padding:22px}.hp-skin-body{gap:15px}.hp-section-footer{align-items:flex-start;flex-direction:column;gap:8px}.hp-stage-note{font-size:10px}.hp-skin-metrics>div{margin:11px 0}.hp-mini-buttons button{font-size:10px;padding:7px 9px}.hp-status{font-size:11px}.hp-hero-screen{padding:11px}.hp-hero-note{font-size:11px}}
 @media(max-width:360px){.hp-hero{padding-inline:18px}.hp-hero h1{font-size:30px}.hp-platform-section{padding-inline:14px}.hp-feature-copy,.hp-feature-visual{padding:20px}.hp-hero-visual{padding-inline:22px}.hp-floating{max-width:155px;font-size:10px}.hp-floating>svg{width:22px}.hp-floating b{font-size:11px}.hp-floating small{font-size:9px}.hp-skin-metrics h4{font-size:11px}.hp-skin-metrics span{font-size:10px}.hp-skin-body{gap:12px}.hp-section-heading h2{font-size:27px}}
 @media(prefers-reduced-motion:reduce){.hp-feature-tabs button{transition:none}.hp-platform-section{scroll-behavior:auto}}
+
+/* Amiri Italic subset for the Arabic homepage accents. The full face in
+   editorial.css remains available for characters outside these ranges. */
+@font-face {
+  font-family: "NayVella Home Arabic Accent";
+  src: url("/assets/fonts/amiri-italic-home-arabic.woff2") format("woff2");
+  font-weight: 400 700;
+  font-display: swap;
+  unicode-range: U+0621-063A, U+0640-065F, U+0660-0669, U+0670;
+}
+
+html[data-lang="ar"] .nv-home-v2 .editorial-heading-accent {
+  font-family: "NayVella Home Arabic Accent", "NayVella Arabic Accent", "Lama Sans", serif;
+}
